@@ -68,14 +68,14 @@ Examples of possible groundings are showed in the following figure. In the figur
 atomic formula (predicate), while <img src="https://render.githubusercontent.com/render/math?math=\forall x (friend(John, x) \implies friend(Mary, x))"/> is a closed formula (all the variables are
 quantified). The letter <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}"/> is the grounding, the function which maps the logical domain into the Real domain.
 
-![Grounding_illustration](../new/LTNtorch/images/framework_grounding.png)
+![Grounding_illustration](../LTNtorch/images/framework_grounding.png)
 
 In practice, LTN converts Real Logic formulas (e.g. <img src="https://render.githubusercontent.com/render/math?math=\forall x (cat(x) \implies \exists y (partOf(x,y) \land tail(y)))"/> into [PyTorch](https://www.pytorch.org/) 
 computational graphs. Such formulas can express complex queries about the data, prior knowledge to satisfy during 
 learning, statements to prove, etc. An example on how LTN converts such formulas into PyTorch computational graphs is 
 showed in the following figure.
 
-![Computational_graph_illustration](../new/LTNtorch/images/framework_computational_graph.png)
+![Computational_graph_illustration](../LTNtorch/images/framework_computational_graph.png)
 
 Using LTN, one can represent and effectively compute some of the most important tasks of deep learning. Examples of such 
 tasks are classification, regression, clustering, and so on.
@@ -125,7 +125,7 @@ are already well documented. In the future, a GitHub documentation will be relea
 The tutorials cover the following topics:
 1. [Grounding in LTN (part 1)](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/1-grounding_non_logical_symbols.ipynb): Real Logic, constants, predicates, functions, variables;
 2. [Grounding in LTN (part 2)](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/2-grounding_connectives.ipynb): connectives and quantifiers (+ [complement](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/2b-operators_and_gradients.ipynb): choosing appropriate operators for learning),
-3. [Learning in LTN](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase_and_learning.ipynb): using satisfiability of LTN formulas as a training objective.
+3. [Learning in LTN](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb): using satisfiability of LTN formulas as a training objective.
 
 The tutorials are implemented using jupyter notebooks.
 
