@@ -55,7 +55,7 @@ the same shape *d*;
 mathematical function which take as input some tensors (individuals) and return a tensor. In this definition, <img src="https://render.githubusercontent.com/render/math?math=\theta"/> are the learnable parameters
 of the function, <img src="https://render.githubusercontent.com/render/math?math=MLP_{\theta}"/> is the neural network representing the function and parametrized by <img src="https://render.githubusercontent.com/render/math?math=\theta"/>. Note that a function 
 could take multiple tensors (individuals) as input;
-- <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}(P \mid $\theta$) = x \mapsto \sigma (MLP_{\theta}(x))"/>: a logical formula (atomic or not) 
+- <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}(P \mid \theta) = x \mapsto \sigma (MLP_{\theta}(x))"/>: a logical formula (atomic or not) 
 is grounded into a mathematical function which take as input some tensors (individuals) and return a value in [0., 1.]. In this case,
 the logistic function assure the output to be in the range [0., 1.], resulting in a value which can be interpreted as a
 fuzzy truth value. Note that a predicate of formula could take multiple tensors (individuals) as input.
@@ -68,14 +68,14 @@ Examples of possible groundings are showed in the following figure. In the figur
 atomic formula (predicate), while <img src="https://render.githubusercontent.com/render/math?math=\forall x (friend(John, x) \implies friend(Mary, x))"/> is a closed formula (all the variables are
 quantified). The letter <img src="https://render.githubusercontent.com/render/math?math=\mathcal{G}"/> is the grounding, the function which maps the logical domain into the Real domain.
 
-![Grounding_illustration](../LTNtorch/images/framework_grounding.png)
+![Grounding_illustration](./images/framework_grounding.png)
 
 In practice, LTN converts Real Logic formulas (e.g. <img src="https://render.githubusercontent.com/render/math?math=\forall x (cat(x) \implies \exists y (partOf(x,y) \land tail(y)))"/> into [PyTorch](https://www.pytorch.org/) 
 computational graphs. Such formulas can express complex queries about the data, prior knowledge to satisfy during 
 learning, statements to prove, etc. An example on how LTN converts such formulas into PyTorch computational graphs is 
 showed in the following figure.
 
-![Computational_graph_illustration](../LTNtorch/images/framework_computational_graph.png)
+![Computational_graph_illustration](./images/framework_computational_graph.png)
 
 Using LTN, one can represent and effectively compute some of the most important tasks of deep learning. Examples of such 
 tasks are classification, regression, clustering, and so on.
