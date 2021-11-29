@@ -1,5 +1,4 @@
 import torch
-import numpy as np
 from ltn import LTNObject
 """
 This module of the LTN framework contains the PyTorch implementation of some common fuzzy logic operators. Refer to the
