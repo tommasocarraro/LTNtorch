@@ -1,6 +1,6 @@
-# Logic Tensor Networks (LTN)
+# PyTorch's implementation of Logic Tensor Networks (LTN)
 
-Welcome to the PyTorch implementation of [Logic Tensor Networks](https://arxiv.org/abs/2012.13635)!
+Welcome to the PyTorch's implementation of [Logic Tensor Networks](https://arxiv.org/abs/2012.13635)!
 
 ### Basic idea of the framework
 
@@ -44,7 +44,7 @@ if some logical constants have been learned, their parameters can be interpreted
 
 ### Real Logic logical language
 
-To make this learning possible, LTN uses a differentiable first-order logic language, called Real Logic, which enable 
+To make this learning possible, LTN uses a differentiable first-order logic language, called Real Logic, which enables 
 the incorporation of data and logic.
 
 Real Logic defines the concept of `grounding` (different from the grounding of logic), which is a mapping from the logical domain (i.e., constants, variables, and logical symbols)
@@ -122,7 +122,7 @@ are already well documented. In the future, a GitHub documentation will be relea
 `tutorials/` contains some important tutorials to getting started with coding in LTN. We suggest completing the tutorials in order.
 The tutorials cover the following topics:
 1. [Grounding in LTN (part 1)](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/1-grounding_non_logical_symbols.ipynb): Real Logic, constants, predicates, functions, variables;
-2. [Grounding in LTN (part 2)](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/2-grounding_connectives.ipynb): connectives and quantifiers (+ [complement](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/2b-operators_and_gradients.ipynb): choosing appropriate operators for learning);
+2. [Grounding in LTN (part 2)](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/2-grounding_connectives.ipynb): connectives and quantifiers (+ [complement](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/2b-operators-and-gradients.ipynb): choosing appropriate operators for learning);
 3. [Learning in LTN](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb): using satisfiability of LTN formulas as a training objective.
 
 The tutorials are implemented using jupyter notebooks.

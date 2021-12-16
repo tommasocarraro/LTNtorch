@@ -1,13 +1,18 @@
+"""
+.. _fuzzyop:
+
+The `ltn.fuzzy_ops` module contains the PyTorch implementation of some common fuzzy logic operators and aggregators.
+Refer to the `LTN paper <https://arxiv.org/abs/2012.13635>`_ for a detailed description of these operators
+(see the Appendix).
+
+All the operators included in this module support the traditional NumPy/PyTorch broadcasting.
+
+The operators have been designed to be used with :class:`ltn.core.Connective` or :class:`ltn.core.Quantifier`.
+"""
+
 import torch
 from ltn import LTNObject
-"""
-This module of the LTN framework contains the PyTorch implementation of some common fuzzy logic operators. Refer to the
-LTN paper for a detailed description of these operators (see the Appendix).
-The operators support the traditional NumPy/PyTorch broadcasting.
 
-In order to use these fuzzy operators with LTN formulas (broadcasting w.r.t. LTN variables appearing in a formula), 
-it is necessary to wrap the operators with `ltn.Connective` or `ltn.Quantifier`. 
-"""
 # these are the projection functions to make the Product Real Logic stable. These functions help to change the input
 # of particular fuzzy operators in such a way they do not lead to gradient problems (vanishing, exploding).
 eps = 1e-4  # epsilon is set to small value in such a way to not change the input too much
@@ -71,8 +76,8 @@ def check_values(*values):
     values = list(values)
     for v in values:
         if not torch.all(torch.where(torch.logical_or(torch.logical_and(v >= 0., v <= 1.), torch.isnan(v)), 1., 0.)):
-            raise ValueError("The input/inputs must contain truth values in [0., 1.]. Some of the values of "
-                             "the input/inputs are out of this range.")
+            raise ValueError("Expected attribute 'value' of the given LTNObject(s) to contain truth values "
+                             "in the range [0., 1.]`, but got some values outside of this range.")
 
 
 # here, it begins the implementation of fuzzy operators in PyTorch
@@ -81,18 +86,22 @@ class ConnectiveOperator:
     """
     Abstract class for connective operators.
 
-    Every connective operator implemented in LTN must inherit from this class and implement the __call__ method.
+    Every connective operator implemented in LTNtorch must inherit from this class and implements
+    the `__call__()` method.
 
     Raises
     -----------
     :class:`NotImplementedError`
-        Raised when __call__ is not implemented in the sub-class.
+        Raised when `__call__()` is not implemented in the sub-class.
     """
     def __call__(self, *args, **kwargs):
         """
-        Call method for the connective operator.
+        Implements the behavior of the connective operator.
 
-        This method implements the behavior of the connective operator, which is usually an element-wise operation.
+        Parameters
+        ----------
+        args : :class:`torch.Tensor`, or :obj:`tuple` of :class:`torch.Tensor`
+            Operand (operands) on which the unary (binary) connective operator has to be applied.
         """
         raise NotImplementedError()
 
@@ -101,18 +110,22 @@ class UnaryConnectiveOperator(ConnectiveOperator):
     """
     Abstract class for unary connective operators.
 
-    Every unary connective operator implemented in LTN must inherit from this class and implement the __call__ method.
+    Every unary connective operator implemented in LTNtorch must inherit from this class and
+    implement the `__call__()` method.
 
     Raises
     -----------
     :class:`NotImplementedError`
-        Raised when __call__ is not implemented in the sub-class.
+        Raised when `__call__()` is not implemented in the sub-class.
     """
     def __call__(self, *args, **kwargs):
         """
-        Call method for the connective operator.
+        Implements the behavior of the unary connective operator.
 
-        This method implements the behavior of the connective operator, which is usually an element-wise operation.
+        Parameters
+        ----------
+        args : :class:`torch.Tensor`
+            Operand on which the unary connective operator has to be applied.
         """
         raise NotImplementedError()
 
@@ -121,18 +134,22 @@ class BinaryConnectiveOperator(ConnectiveOperator):
     """
     Abstract class for binary connective operators.
 
-    Every binary connective operator implemented in LTN must inherit from this class and implement the __call__ method.
+    Every binary connective operator implemented in LTNtorch must inherit from this class
+    and implement the `__call__()` method.
 
     Raises
     -----------
     :class:`NotImplementedError`
-        Raised when __call__ is not implemented in the sub-class.
+        Raised when `__call__()` is not implemented in the sub-class.
     """
     def __call__(self, *args, **kwargs):
         """
-        Call method for the connective operator.
+        Implements the behavior of the binary connective operator.
 
-        This method implements the behavior of the connective operator, which is usually an element-wise operation.
+        Parameters
+        ----------
+        args : :obj:`tuple` of :class:`torch.Tensor`
+            Operands on which the binary connective operator has to be applied.
         """
         raise NotImplementedError()
 
@@ -141,21 +158,39 @@ class BinaryConnectiveOperator(ConnectiveOperator):
 
 class NotStandard(UnaryConnectiveOperator):
     """
-    Implementation of the standard fuzzy negation.
+    Standard fuzzy negation operator.
+
+    :math:`\lnot_{standard}(x) = 1 - x`
+
+    Examples
+    --------
+    >>> import ltn
+    >>> import torch
+    >>> Not = ltn.Connective(ltn.fuzzy_ops.NotStandard())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(Not(p(x)).value)
+    tensor([0.3635, 0.2891])
+
+    .. automethod:: __call__
     """
     def __call__(self, x):
         """
-        Method __call__ for the standard fuzzy negation operator.
+        It applies the standard fuzzy negation operator to the given operand.
 
         Parameters
         -----------
-        x: :class:`torch.Tensor`
-            The input truth value.
+        x : :class:`torch.Tensor`
+            Operand on which the operator has to be applied.
 
         Returns
         ----------
         :class:`torch.Tensor`
-            The standard negation of the input.
+            The standard fuzzy negation of the given operand.
 
         Raises
         ----------
@@ -168,21 +203,39 @@ class NotStandard(UnaryConnectiveOperator):
 
 class NotGodel(UnaryConnectiveOperator):
     """
-    Implementation of the Godel fuzzy negation.
+    Godel fuzzy negation operator.
+
+    :math:`\lnot_{Godel}(x) = \\left\\{\\begin{array}{ c l }1 & \\quad \\textrm{if } x = 0 \\\ 0 & \\quad \\textrm{otherwise} \\end{array} \\right.`
+
+    Examples
+    --------
+    >>> import ltn
+    >>> import torch
+    >>> Not = ltn.Connective(ltn.fuzzy_ops.NotGodel())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(Not(p(x)).value)
+    tensor([0., 0.])
+
+    .. automethod:: __call__
     """
     def __call__(self, x):
         """
-        Method __call__ for the Godel fuzzy negation operator.
+        It applies the Godel fuzzy negation operator to the given operand.
 
-        Parameters:
+        Parameters
         -----------
-        x: :class:`torch.Tensor`
-            The input truth value.
+        x : :class:`torch.Tensor`
+            Operand on which the operator has to be applied.
 
         Returns
-        -----------
+        -------
         :class:`torch.Tensor`
-            The Godel negation of the input.
+            The Godel fuzzy negation of the given operand.
 
         Raises
         ----------
@@ -190,30 +243,59 @@ class NotGodel(UnaryConnectiveOperator):
             Raises when the values of the operand are not in [0., 1.].
         """
         check_values(x)
-        return torch.eq(x, 0.)
+        return torch.eq(x, 0.).float()
 
 # CONJUNCTION
 
 
 class AndMin(BinaryConnectiveOperator):
     """
-    Implementation of the Godel fuzzy conjunction (min operator).
+    Godel fuzzy conjunction operator (min operator).
+
+    :math:`\land_{Godel}(x, y) = \operatorname{min}(x, y)`
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> And = ltn.Connective(ltn.fuzzy_ops.AndMin())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(And(p(x), p(y)).value)
+    tensor([[0.6365, 0.5498, 0.5250],
+            [0.6682, 0.5498, 0.5250]])
+
+    .. automethod:: __call__
     """
     def __call__(self, x, y):
         """
-        Method __call__ for the Godel fuzzy conjunction operator.
+        It applies the Godel fuzzy conjunction operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input;
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         ----------
         :class:`torch.Tensor`
-            The Godel conjunction of the two inputs.
+            The Godel fuzzy conjunction of the two operands.
 
         Raises
         ----------
@@ -226,7 +308,50 @@ class AndMin(BinaryConnectiveOperator):
 
 class AndProd(BinaryConnectiveOperator):
     """
-    Implementation of the Goguen fuzzy conjunction (product operator).
+    Goguen fuzzy conjunction operator (product operator).
+
+    :math:`\land_{Goguen}(x, y) = xy`
+
+    Parameters
+    ----------
+    stable : :obj:`bool`, default=True
+        Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
+
+    Attributes
+    ----------
+    stable : :obj:`bool`
+        See `stable` parameter.
+
+    Notes
+    -----
+    The Gougen fuzzy conjunction could have vanishing gradients if not used in its :ref:`stable <stable>` version.
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> And = ltn.Connective(ltn.fuzzy_ops.AndProd())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(And(p(x), p(y)).value)
+    tensor([[0.4253, 0.3500, 0.3342],
+            [0.4751, 0.3910, 0.3733]])
+
+    .. automethod:: __call__
     """
     def __init__(self, stable=True):
         """
@@ -235,28 +360,28 @@ class AndProd(BinaryConnectiveOperator):
 
         Parameters
         -----------
-        stable: :obj:`bool`
+        stable : :obj:`bool`, default=True
             A boolean flag indicating whether it has to be used the stable version of the operator or not.
         """
         self.stable = stable
 
     def __call__(self, x, y, stable=None):
         """
-        Method __call__ for the Goguen fuzzy conjunction operator.
+        It applies the Goguen fuzzy conjunction operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
-        stable: :obj:`bool`
-            A boolean flag indicating whether it has to be used the stable version of the operator or not.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
+        stable : :obj:`bool`, default=None
+            Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Goguen conjunction of the two inputs.
+            The Goguen fuzzy conjunction of the two operands.
 
         Raises
         ----------
@@ -272,23 +397,52 @@ class AndProd(BinaryConnectiveOperator):
 
 class AndLuk(BinaryConnectiveOperator):
     """
-    Implementation of the Lukasiewicz fuzzy conjunction.
+    Lukasiewicz fuzzy conjunction operator.
+
+    :math:`\land_{Lukasiewicz}(x, y) = \operatorname{max}(x + y - 1, 0)`
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> And = ltn.Connective(ltn.fuzzy_ops.AndLuk())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(And(p(x), p(y)).value)
+    tensor([[0.3046, 0.1863, 0.1614],
+            [0.3791, 0.2608, 0.2359]])
+
+    .. automethod:: __call__
     """
     def __call__(self, x, y):
         """
-        Method __call__ for the Lukasiewicz fuzzy conjunction operator.
+        It applies the Lukasiewicz fuzzy conjunction operator to the given operands.
 
         Parameters
         -----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Lukasiewicz fuzzy conjunction of the two inputs.
+            The Lukasiewicz fuzzy conjunction of the two operands.
 
         Raises
         ----------
@@ -304,23 +458,52 @@ class AndLuk(BinaryConnectiveOperator):
 
 class OrMax(BinaryConnectiveOperator):
     """
-    Implementation of the Godel fuzzy disjunction (max operator).
+    Godel fuzzy disjunction operator (max operator).
+
+    :math:`\lor_{Godel}(x, y) = \operatorname{max}(x, y)`
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Or = ltn.Connective(ltn.fuzzy_ops.OrMax())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Or(p(x), p(y)).value)
+    tensor([[0.6682, 0.6365, 0.6365],
+            [0.7109, 0.7109, 0.7109]])
+
+    .. automethod:: __call__
     """
     def __call__(self, x, y):
         """
-        Method __call__ for the Godel fuzzy disjunction operator.
+        It applies the Godel fuzzy disjunction operator to the given operands.
 
         Parameters
         -----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Godel fuzzy disjunction of the two inputs.
+            The Godel fuzzy disjunction of the two operands.
 
         Raises
         ----------
@@ -333,7 +516,50 @@ class OrMax(BinaryConnectiveOperator):
 
 class OrProbSum(BinaryConnectiveOperator):
     """
-    Implementation of the Goguen fuzzy disjunction (probabilistic sum operator).
+    Goguen fuzzy disjunction operator (probabilistic sum).
+
+    :math:`\lor_{Goguen}(x, y) = x + y - xy`
+
+    Parameters
+    ----------
+    stable : :obj:`bool`, default=True
+        Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
+
+    Attributes
+    ----------
+    stable : :obj:`bool`
+        See `stable` parameter.
+
+    Notes
+    -----
+    The Gougen fuzzy disjunction could have vanishing gradients if not used in its :ref:`stable <stable>` version.
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Or = ltn.Connective(ltn.fuzzy_ops.OrProbSum())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Or(p(x), p(y)).value)
+    tensor([[0.8793, 0.8363, 0.8273],
+            [0.9040, 0.8698, 0.8626]])
+
+    .. automethod:: __call__
     """
     def __init__(self, stable=True):
         """
@@ -349,21 +575,21 @@ class OrProbSum(BinaryConnectiveOperator):
 
     def __call__(self, x, y, stable=None):
         """
-        Method __call__ for the Goguen fuzzy disjunction operator.
+        It applies the Goguen fuzzy disjunction operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
-        stable: :obj:`bool`
-            A boolean flag indicating whether it has to be used the stable version of the operator or not.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
+        stable : :obj:`bool`, default=None
+            Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Goguen fuzzy disjunction of the two inputs.
+            The Goguen fuzzy disjunction of the two operands.
 
         Raises
         ----------
@@ -379,23 +605,52 @@ class OrProbSum(BinaryConnectiveOperator):
 
 class OrLuk(BinaryConnectiveOperator):
     """
-    Implementation of the Lukasiewicz fuzzy disjunction.
+    Lukasiewicz fuzzy disjunction operator.
+
+    :math:`\lor_{Lukasiewicz}(x, y) = \operatorname{min}(x + y, 1)`
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Or = ltn.Connective(ltn.fuzzy_ops.OrLuk())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Or(p(x), p(y)).value)
+    tensor([[1., 1., 1.],
+            [1., 1., 1.]])
+
+    .. automethod:: __call__
     """
     def __call__(self, x, y):
         """
-        Method __call__ for the Lukasiewicz fuzzy disjunction operator.
+        It applies the Lukasiewicz fuzzy disjunction operator to the given operands.
 
         Parameters
         -----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Lukasiewicz fuzzy disjunction of the two inputs.
+            The Lukasiewicz fuzzy disjunction of the two operands.
 
         Raises
         ----------
@@ -406,28 +661,55 @@ class OrLuk(BinaryConnectiveOperator):
         ones = torch.ones_like(x)
         return torch.minimum(x + y, ones)
 
-# IMPLICATION (differences between strong and residuated implications can be found in the Appendix of the LTN paper)
-
 
 class ImpliesKleeneDienes(BinaryConnectiveOperator):
     """
-    Implementation of the Kleene Dienes fuzzy implication.
+    Kleene Dienes fuzzy implication operator.
+
+    :math:`\\rightarrow_{KleeneDienes}(x, y) = \operatorname{max}(1 - x, y)`
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesKleeneDienes())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Implies(p(x), p(y)).value)
+    tensor([[0.6682, 0.5498, 0.5250],
+            [0.6682, 0.5498, 0.5250]])
+
+    .. automethod:: __call__
     """
     def __call__(self, x, y):
         """
-        Method __call__ for the Kleene Dienes implication operator.
+        It applies the Kleene Dienes fuzzy implication operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Kleene Dienes implication of the two inputs.
+            The Kleene Dienes fuzzy implication of the two operands.
 
         Raises
         ----------
@@ -440,23 +722,52 @@ class ImpliesKleeneDienes(BinaryConnectiveOperator):
 
 class ImpliesGodel(BinaryConnectiveOperator):
     """
-    Implementation of the Godel fuzzy implication.
+    Godel fuzzy implication operand.
+
+    :math:`\\rightarrow_{Godel}(x, y) = \\left\\{\\begin{array}{ c l }1 & \\quad \\textrm{if } x \le y \\\ y & \\quad \\textrm{otherwise} \\end{array} \\right.`
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesGodel())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Implies(p(x), p(y)).value)
+    tensor([[1.0000, 0.5498, 0.5250],
+            [0.6682, 0.5498, 0.5250]])
+
+    .. automethod:: __call__
     """
     def __call__(self, x, y):
         """
-        Method __call__ for the Godel implication operator.
+        It applies the Godel fuzzy implication operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Godel implication of the two inputs.
+            The Godel fuzzy implication of the two operands.
 
         Raises
         ----------
@@ -469,7 +780,50 @@ class ImpliesGodel(BinaryConnectiveOperator):
 
 class ImpliesReichenbach(BinaryConnectiveOperator):
     """
-    Implementation of the Reichenbach fuzzy implication.
+    Reichenbach fuzzy implication operator.
+
+    :math:`\\rightarrow_{Reichenbach}(x, y) = 1 - x + xy`
+
+    Parameters
+    ----------
+    stable : :obj:`bool`, default=True
+        Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
+
+    Attributes
+    ----------
+    stable : :obj:`bool`
+        See `stable` parameter.
+
+    Notes
+    -----
+    The Reichenbach fuzzy implication could have vanishing gradients if not used in its :ref:`stable <stable>` version.
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesReichenbach())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Implies(p(x), p(y)).value)
+    tensor([[0.7888, 0.7134, 0.6976],
+            [0.7640, 0.6799, 0.6622]])
+
+    .. automethod:: __call__
     """
     def __init__(self, stable=True):
         """
@@ -485,21 +839,21 @@ class ImpliesReichenbach(BinaryConnectiveOperator):
 
     def __call__(self, x, y, stable=None):
         """
-        Method __call__ for the Reichenbach implication operator.
+        It applies the Reichenbach fuzzy implication operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
-        stable: :obj:`bool`
-            A boolean flag indicating whether it has to be used the stable version of the operator or not.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
+        stable: :obj:`bool`, default=None
+            Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Reichenbach implication of the two inputs.
+            The Reichenbach fuzzy implication of the two operands.
 
         Raises
         ----------
@@ -515,7 +869,50 @@ class ImpliesReichenbach(BinaryConnectiveOperator):
 
 class ImpliesGoguen(BinaryConnectiveOperator):
     """
-    Implementation of the Goguen fuzzy implication.
+    Goguen fuzzy implication operator.
+
+    :math:`\\rightarrow_{Goguen}(x, y) = \\left\\{\\begin{array}{ c l }1 & \\quad \\textrm{if } x \le y \\\ \\frac{y}{x} & \\quad \\textrm{otherwise} \\end{array} \\right.`
+
+    Parameters
+    ----------
+    stable : :obj:`bool`, default=True
+        Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
+
+    Attributes
+    ----------
+    stable : :obj:`bool`
+        See `stable` parameter.
+
+    Notes
+    -----
+    The Goguen fuzzy implication could have vanishing gradients if not used in its :ref:`stable <stable>` version.
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesGoguen())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Implies(p(x), p(y)).value)
+    tensor([[1.0000, 0.8639, 0.8248],
+            [0.9398, 0.7733, 0.7384]])
+
+    .. automethod:: __call__
     """
     def __init__(self, stable=True):
         """
@@ -524,28 +921,28 @@ class ImpliesGoguen(BinaryConnectiveOperator):
 
         Parameters
         -----------
-        stable: :obj:`bool`
+        stable: :obj:`bool`, default=True
             A boolean flag indicating whether it has to be used the stable version of the operator or not.
         """
         self.stable = stable
 
     def __call__(self, x, y, stable=None):
         """
-        Method __call__ for the Goguen implication operator.
+        It applies the Goguen fuzzy implication operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
-        stable: :obj:`bool`
-            A boolean flag indicating whether it has to be used the stable version of the operator or not.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
+        stable : :obj:`bool`, default=None
+            Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Goguen implication of the two inputs.
+            The Goguen fuzzy implication of the two operands.
 
         Raises
         ----------
@@ -561,23 +958,52 @@ class ImpliesGoguen(BinaryConnectiveOperator):
 
 class ImpliesLuk(BinaryConnectiveOperator):
     """
-    Implementation of the Lukasiewicz fuzzy implication.
+    Lukasiewicz fuzzy implication operator.
+
+    :math:`\\rightarrow_{Lukasiewicz}(x, y) = \operatorname{min}(1 - x + y, 1)`
+
+    Examples
+    --------
+    Note that:
+
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesLuk())
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Implies(p(x), p(y)).value)
+    tensor([[1.0000, 0.9134, 0.8885],
+            [0.9572, 0.8389, 0.8140]])
+
+    .. automethod:: __call__
     """
     def __call__(self, x, y):
         """
-        Method __call__ for the Lukasiewicz implication operator.
+        It applies the Lukasiewicz fuzzy implication operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The Lukasiewicz implication of the two inputs.
+            The Lukasiewicz fuzzy implication of the two operands.
 
         Raises
         ----------
@@ -593,7 +1019,60 @@ class ImpliesLuk(BinaryConnectiveOperator):
 
 class Equiv(BinaryConnectiveOperator):
     """
-    Returns an operator that computes: And(Implies(x,y),Implies(y,x)). In other words, it computes: x -> y AND y -> x.
+    Equivalence (:math:`\leftrightarrow`) fuzzy operator.
+
+    :math:`x \leftrightarrow y \equiv x \\rightarrow y \land y \\rightarrow x`
+
+    Parameters
+    ----------
+    and_op : :class:`ltn.fuzzy_ops.BinaryConnectiveOperator`
+        Fuzzy conjunction operator to use for the equivalence operator.
+    implies_op : :class:`ltn.fuzzy_ops.BinaryConnectiveOperator`
+        Fuzzy implication operator to use for the implication operator.
+
+    Attributes
+    ----------
+    and_op: :class:`ltn.fuzzy_ops.BinaryConnectiveOperator`
+        See `and_op` parameter.
+    implies_op: :class:`ltn.fuzzy_ops.BinaryConnectiveOperator`
+        See `implies_op` parameter.
+
+    Notes
+    -----
+    - the equivalence operator (:math:`\leftrightarrow`) is implemented in LTNtorch as an operator which computes: :math:`x \\rightarrow y \land y \\rightarrow x`;
+    - the `and_op` parameter defines the operator for :math:`\land`;
+    - the `implies_op` parameter defines the operator for :math:`\\rightarrow`.
+
+    Examples
+    --------
+    Note that:
+
+    - we have selected :class:`ltn.fuzzy_ops.AndProd()` as an operator for the conjunction of the equivalence, and :class:`ltn.fuzzy_ops.ImpliesReichenbach` as an operator for the implication;
+    - variable `x` has two individuals;
+    - variable `y` has three individuals;
+    - the shape of the result of the conjunction is `(2, 3)` due to the :ref:`LTN broadcasting <broadcasting>`. The first dimension is dedicated two variable `x`, while the second dimension to variable `y`;
+    - at index `(0, 0)` there is the evaluation of the formula on first individual of `x` and first individual of `y`, at index `(0, 1)` there is the evaluation of the formula on first individual of `x` and second individual of `y`, and so forth.
+
+    >>> import ltn
+    >>> import torch
+    >>> Equiv = ltn.Connective(ltn.fuzzy_ops.Equiv(
+    ...                             and_op=ltn.fuzzy_ops.AndProd(),
+    ...                             implies_op=ltn.fuzzy_ops.ImpliesReichenbach()
+    ...                         ))
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9]]))
+    >>> y = ltn.Variable('y', torch.tensor([[0.7], [0.2], [0.1]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109])
+    >>> print(p(y).value)
+    tensor([0.6682, 0.5498, 0.5250])
+    >>> print(Equiv(p(x), p(y)).value)
+    tensor([[0.5972, 0.5708, 0.5645],
+            [0.6165, 0.5718, 0.5617]])
+
+    .. automethod:: __call__
     """
     def __init__(self, and_op, implies_op):
         """
@@ -612,19 +1091,19 @@ class Equiv(BinaryConnectiveOperator):
 
     def __call__(self, x, y):
         """
-        Method __call__ for the equivalence operator.
+        It applies the fuzzy equivalence operator to the given operands.
 
         Parameters
         ----------
-        x: :class:`torch.Tensor`
-            The truth value of the first input.
-        y: :class:`torch.Tensor`
-            The truth value of the second input.
+        x : :class:`torch.Tensor`
+            First operand on which the operator has to be applied.
+        y : :class:`torch.Tensor`
+            Second operand on which the operator has to be applied.
 
         Returns
         -----------
         :class:`torch.Tensor`
-            The fuzzy equivalence of the two inputs.
+            The fuzzy equivalence of the two operands.
 
         Raises
         ----------
@@ -641,56 +1120,79 @@ class AggregationOperator:
     """
     Abstract class for aggregation operators.
 
-    Every aggregation operator implemented in LTN must inherit from this class and implement the __call__ method.
+    Every aggregation operator implemented in LTNtorch must inherit from this class
+    and implement the `__call__()` method.
 
     Raises
     -----------
     :class:`NotImplementedError`
-        Raised when __call__ is not implemented in the sub-class.
+        Raised when `__call__()` is not implemented in the sub-class.
     """
     def __call__(self, *args, **kwargs):
         """
-        Call method for the aggregation operator.
+        Implements the behavior of the aggregation operator.
 
-        This method implements the behavior of the aggregation operator, which is usually an aggregation operation, for
-        example the mean.
+        Parameters
+        ----------
+        args: :class:`torch.Tensor`
+            :ref:`Grounding <notegrounding>` of formula on which the aggregation operator has to be applied.
         """
         raise NotImplementedError()
 
 
 class AggregMin(AggregationOperator):
     """
-    Implementation of the min aggregator operator.
+    Min fuzzy aggregation operator.
+
+    :math:`A_{T_{M}}(x_1, \\dots, x_n) = \\operatorname{min}(x_1, \\dots, x_n)`
+
+    Examples
+    --------
+    >>> import ltn
+    >>> import torch
+    >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregMin(), quantifier='f')
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9], [0.7]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109, 0.6682])
+    >>> print(Forall(x, p(x)).value)
+    tensor(0.6365)
+
+    .. automethod:: __call__
     """
     def __call__(self, xs, dim=None, keepdim=False):
         """
-        Method __call__ for the min aggregator operator. Notice the use of torch.where(). This has to be used
-        because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-        formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-        highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-        not have to consider the NaN values contained in the input tensor.
+        It applies the min fuzzy aggregation operator to the given formula's :ref:`grounding <notegrounding>` on
+        the selected dimensions.
 
         Parameters
         ----------
-        xs: :class:`torch.Tensor`
-            The truth values (grounding of formula) for which the aggregation has to be computed.
-        dim: :obj:`tuple`
-            Tuple containing the dimensions on which the aggregation has to be performed.
-        keepdim: :obj:`bool`
-            Boolean flag indicating whether the output has to keep the same dimensions as the input after
+        xs : :class:`torch.Tensor`
+            :ref:`Grounding <notegrounding>` of formula on which the aggregation has to be performed.
+        dim : :obj:`tuple` of :obj:`int`, default=None
+            Tuple containing the indexes of dimensions on which the aggregation has to be performed.
+        keepdim : :obj:`bool`, default=False
+            Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
 
         Returns
         ----------
         :class:`torch.Tensor`
-            The result of the min aggregation. The shape of the result depends on the variables that are used
-            in the quantification (namely, the dimensions across which the aggregation has been computed).
+            Min fuzzy aggregation of the formula.
 
         Raises
         ----------
         :class:`ValueError`
-            Raises when the truth values given in input are not in the range [0., 1.].
+            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
+            the range [0., 1.].
         """
+        # Notice the use of torch.where(). This has to be used
+        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
+        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
+        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
+        #         not have to consider the NaN values contained in the input tensor.
         # we have to put 1 where there are NaN values, since 1 is the maximum value for a truth value. By doing so,
         # this modification will not affect the minimum computation
         check_values(xs)
@@ -701,37 +1203,57 @@ class AggregMin(AggregationOperator):
 
 class AggregMean(AggregationOperator):
     """
-    Implementation of the mean aggregator operator. Notice the use of torch.where(). This has to be used
-    because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-    formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-    highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-    not have to consider the NaN values contained in the input tensor.
+    Mean fuzzy aggregation operator.
+
+    :math:`A_{M}(x_1, \\dots, x_n) = \\frac{1}{n} \\sum_{i = 1}^n x_i`
+
+    Examples
+    --------
+    >>> import ltn
+    >>> import torch
+    >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregMean(), quantifier='f')
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9], [0.7]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109, 0.6682])
+    >>> print(Forall(x, p(x)).value)
+    tensor(0.6719)
+
+    .. automethod:: __call__
     """
     def __call__(self, xs, dim=None, keepdim=False):
         """
-        Method __call__ for the mean aggregator operator.
+        It applies the mean fuzzy aggregation operator to the given formula's :ref:`grounding <notegrounding>` on
+        the selected dimensions.
 
         Parameters
         ----------
-        xs: :class:`torch.Tensor`
-            The truth values (grounding of formula) for which the aggregation has to be computed.
-        dim: :obj:`tuple`
-            Tuple containing the dimensions on which the aggregation has to be performed.
-        keepdim: :obj:`bool`
-            Boolean flag indicating whether the output has to keep the same dimensions as the input after
+        xs : :class:`torch.Tensor`
+            :ref:`Grounding <notegrounding>` of formula on which the aggregation has to be performed.
+        dim : :obj:`tuple` of :obj:`int`, default=None
+            Tuple containing the indexes of dimensions on which the aggregation has to be performed.
+        keepdim : :obj:`bool`, default=False
+            Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
 
         Returns
         ----------
         :class:`torch.Tensor`
-            The result of the mean aggregation. The shape of the result depends on the variables that are used
-            in the quantification (namely, the dimensions across which the aggregation has been computed).
+            Mean fuzzy aggregation of the formula.
 
         Raises
         ----------
         :class:`ValueError`
-            Raises when the truth values given in input are not in the range [0., 1.].
+            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
+            the range [0., 1.].
         """
+        # Notice the use of torch.where(). This has to be used
+        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
+        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
+        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
+        # not have to consider the NaN values contained in the input tensor.
         check_values(xs)
         numerator = torch.sum(torch.where(torch.isnan(xs), torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
         denominator = torch.sum(~torch.isnan(xs), dim=dim, keepdim=keepdim)
@@ -740,9 +1262,46 @@ class AggregMean(AggregationOperator):
 
 class AggregPMean(AggregationOperator):
     """
-    Implementation of the p-mean aggregator operator. This has been selected as an approximation of the existential
-    quantifier with parameter p equal to or greater than 1. If p tends to infinity, the p-mean aggregator tends to the
-    maximum of the input values (approximation of fuzzy existential quantification).
+    `pMean` fuzzy aggregation operator.
+
+    :math:`A_{pM}(x_1, \\dots, x_n) = (\\frac{1}{n} \\sum_{i = 1}^n x_i^p)^{\\frac{1}{p}}`
+
+    Parameters
+    ----------
+    p : :obj:`int`, default=2
+        Value of hyper-parameter `p` of the `pMean` fuzzy aggregation operator.
+    stable : :obj:`bool`, default=True
+        Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
+
+    Attributes
+    ----------
+    p : :obj:`int`
+        See `p` parameter.
+    stable : :obj:`bool`
+        See `stable` parameter.
+
+    Notes
+    -----
+    The `pMean` aggregation operator has been selected as an approximation of
+    :math:`\exists` with :math:`p \geq 1`.
+    If :math:`p \\to \infty`, then the `pMean` operator tends to the
+    maximum of the input values (classical behavior of :math:`\exists`).
+
+    Examples
+    --------
+    >>> import ltn
+    >>> import torch
+    >>> Exists = ltn.Quantifier(ltn.fuzzy_ops.AggregPMean(), quantifier='e')
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9], [0.7]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109, 0.6682])
+    >>> print(Exists(x, p(x)).value)
+    tensor(0.6726)
+
+    .. automethod:: __call__
     """
     def __init__(self, p=2, stable=True):
         """
@@ -761,35 +1320,39 @@ class AggregPMean(AggregationOperator):
 
     def __call__(self, xs, dim=None, keepdim=False, p=None, stable=None):
         """
-        Method __call__ for the p-mean aggregator operator. Notice the use of torch.where(). This has to be used
-        because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-        formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-        highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-        not have to consider the NaN values contained in the input tensor.
+        It applies the `pMean` aggregation operator to the given formula's :ref:`grounding <notegrounding>`
+        on the selected dimensions.
 
         Parameters
         ----------
-        xs: :class:`torch.Tensor`
-            The truth values (grounding of formula) for which the aggregation has to be computed.
-        dim: :obj:`tuple`
-            Tuple containing the dimensions on which the aggregation has to be performed.
-        keepdim: :obj:`bool`
-            Boolean flag indicating whether the output has to keep the same dimensions as the input after
+        xs : :class:`torch.Tensor`
+            :ref:`Grounding <notegrounding>` of formula on which the aggregation has to be performed.
+        dim : :obj:`tuple` of :obj:`int`, default=None
+            Tuple containing the indexes of dimensions on which the aggregation has to be performed.
+        keepdim : :obj:`bool`, default=False
+            Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
-        stable: :obj:`bool`
-            A boolean flag indicating whether it has to be used the stable version of the aggregator or not.
+        p : :obj:`int`, default=None
+            Value of hyper-parameter `p` of the `pMean` fuzzy aggregation operator.
+        stable : :obj:`bool`, default=None
+            Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
 
         Returns
         ----------
         :class:`torch.Tensor`
-            The result of the p-mean aggregation. The shape of the result depends on the variables that are used
-            in the quantification (namely, the dimensions across which the aggregation has been computed).
+            `pMean` fuzzy aggregation of the formula.
 
         Raises
         ----------
         :class:`ValueError`
-            Raises when the truth values given in input are not in the range [0., 1.].
+            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
+            the range [0., 1.].
         """
+        # Notice the use of torch.where(). This has to be used
+        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
+        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
+        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
+        # not have to consider the NaN values contained in the input tensor.
         check_values(xs)
         p = self.p if p is None else p
         stable = self.stable if stable is None else stable
@@ -803,9 +1366,45 @@ class AggregPMean(AggregationOperator):
 
 class AggregPMeanError(AggregationOperator):
     """
-    Implementation of the p-mean error aggregator operator. This has been selected as an approximation of the universal
-    quantifier with parameter p equal to or greater than 1. If p tends to infinity, the p-mean error aggregator tends
-    to the minimum of the input values (approximation of fuzzy universal quantification).
+    `pMeanError` fuzzy aggregation operator.
+
+    :math:`A_{pME}(x_1, \\dots, x_n) = 1 - (\\frac{1}{n} \\sum_{i = 1}^n (1 - x_i)^p)^{\\frac{1}{p}}`
+
+    Parameters
+    ----------
+    p : :obj:`int`, default=2
+        Value of hyper-parameter `p` of the `pMeanError` fuzzy aggregation operator.
+    stable : :obj:`bool`, default=True
+        Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
+
+    Attributes
+    ----------
+    p : :obj:`int`
+        See `p` parameter.
+    stable : :obj:`bool`
+        See `stable` parameter.
+
+    Notes
+    -----
+    The `pMeanError` aggregation operator has been selected as an approximation of
+    :math:`\\forall` with :math:`p \geq 1`. If :math:`p \\to \infty`, then the `pMeanError` operator tends to the
+    minimum of the input values (classical behavior of :math:`\\forall`).
+
+    Examples
+    --------
+    >>> import ltn
+    >>> import torch
+    >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregPMeanError(), quantifier='f')
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [0.9], [0.7]]))
+    >>> print(p(x).value)
+    tensor([0.6365, 0.7109, 0.6682])
+    >>> print(Forall(x, p(x)).value)
+    tensor(0.6704)
+
+    .. automethod:: __call__
     """
     def __init__(self, p=2, stable=True):
         """
@@ -824,35 +1423,39 @@ class AggregPMeanError(AggregationOperator):
 
     def __call__(self, xs, dim=None, keepdim=False, p=None, stable=None):
         """
-        Method __call__ for the p-mean error aggregator operator. Notice the use of torch.where(). This has to be used
-        because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-        formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-        highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-        not have to consider the NaN values contained in the input tensor.
+        It applies the `pMeanError` aggregation operator to the given formula's :ref:`grounding <notegrounding>`
+        on the selected dimensions.
 
         Parameters
         ----------
-        xs: :class:`torch.Tensor`
-            The truth values (grounding of formula) for which the aggregation has to be computed.
-        dim: :obj:`tuple`
-            Tuple containing the dimensions on which the aggregation has to be performed.
-        keepdim: :obj:`bool`
-            Boolean flag indicating whether the output has to keep the same dimensions as the input after
+        xs : :class:`torch.Tensor`
+            :ref:`Grounding <notegrounding>` of formula on which the aggregation has to be performed.
+        dim : :obj:`tuple` of :obj:`int`, default=None
+            Tuple containing the indexes of dimensions on which the aggregation has to be performed.
+        keepdim : :obj:`bool`, default=False
+            Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
-        stable: :obj:`bool`
-            A boolean flag indicating whether it has to be used the stable version of the aggregator or not.
+        p : :obj:`int`, default=None
+            Value of hyper-parameter `p` of the `pMeanError` fuzzy aggregation operator.
+        stable: :obj:`bool`, default=None
+            Flag indicating whether to use the :ref:`stable version <stable>` of the operator or not.
 
         Returns
         ----------
         :class:`torch.Tensor`
-            The result of the p-mean error aggregation. The shape of the result depends on the variables that are used
-            in the quantification (namely, the dimensions across which the aggregation has been computed).
+            `pMeanError` fuzzy aggregation of the formula.
 
         Raises
         ----------
         :class:`ValueError`
-            Raises when the truth values given in input are not in the range [0., 1.].
+            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
+            the range [0., 1.].
         """
+        # Notice the use of torch.where(). This has to be used
+        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
+        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
+        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
+        # not have to consider the NaN values contained in the input tensor.
         check_values(xs)
         p = self.p if p is None else p
         stable = self.stable if stable is None else stable
@@ -866,11 +1469,67 @@ class AggregPMeanError(AggregationOperator):
 
 class SatAgg:
     """
-    Implementation of the SatAgg aggregator operator.
+    `SatAgg` aggregation operator.
 
-    This operator takes as input the truth values of some closed formulas and returns the aggregation of those values
-    using the selected aggregation operator. Specifically, it takes care of aggregating the truth values
-    of the formulas contained in a knowledge base.
+    :math:`\operatorname{SatAgg}_{\phi \in \mathcal{K}} \mathcal{G}_{\\theta} (\phi)`
+
+    It aggregates the truth values of the closed formulas given in input, namely the formulas
+    :math:`\phi_1, \dots, \phi_n` contained in the knowledge base :math:`\mathcal{K}`. In the notation,
+    :math:`\mathcal{G}_{\\theta}` is the :ref:`grounding <notegrounding>` function, parametrized by :math:`\\theta`.
+
+    Parameters
+    ----------
+    agg_op : :class:`ltn.fuzzy_ops.AggregationOperator`, default=AggregPMeanError(p=2)
+        Fuzzy aggregation operator used by the `SatAgg` operator to perform the aggregation.
+
+    Attributes
+    ----------
+    agg_op : :class:`ltn.fuzzy_ops.AggregationOperator`, default=AggregPMeanError(p=2)
+        See `agg_op` parameter.
+
+    Raises
+    ----------
+    :class:`TypeError`
+        Raises when the type of the input parameter is not correct.
+
+    Notes
+    -----
+    - `SatAgg` is particularly useful for computing the overall satisfaction level of a knowledge base when :ref:`learning <notelearning>` a Logic Tensor Network;
+    - the result of the `SatAgg` aggregation is a scalar. It is the satisfaction level of the knowledge based composed of the closed formulas given in input.
+
+    Examples
+    --------
+    `SatAgg` can be used to aggregate the truth values of formulas contained in a knowledge base. Note that:
+
+    - in this scenario, our knowledge base is composed of closed formulas `f1`, `f2`, and `f3`;
+    - `SatAgg` applies the `pMeanError` aggregation operator to the truth values of these formulas. The result is a new truth value which can be interpreted as a satisfaction level of the entire knowledge base;
+    - the result of `SatAgg` is a :class:`torch.Tensor` since it has been designed for learning. The idea is to put the result of the operator directly inside the loss function of the LTN. See this `tutorial <https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb>`_ for a detailed example.
+
+    >>> import ltn
+    >>> import torch
+    >>> x = ltn.Variable('x', torch.tensor([[0.1, 0.03],
+    ...                                     [2.3, 4.3]]))
+    >>> y = ltn.Variable('y', torch.tensor([[3.4, 2.3],
+    ...                                     [5.4, 0.43]]))
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> q = ltn.Predicate(func=lambda x, y: torch.nn.Sigmoid()(
+    ...                                         torch.sum(torch.cat([x, y], dim=1),
+    ...                                     dim=1)))
+    >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregPMeanError(), quantifier='f')
+    >>> And = ltn.Connective(ltn.fuzzy_ops.AndProd())
+    >>> f1 = Forall(x, p(x))
+    >>> f2 = Forall([x, y], q(x, y))
+    >>> f3 = And(Forall([x, y], q(x, y)), Forall(x, p(x)))
+    >>> sat_agg = ltn.fuzzy_ops.SatAgg(ltn.fuzzy_ops.AggregPMeanError())
+    >>> out = sat_agg(f1, f2, f3)
+    >>> print(type(out))
+    <class 'torch.Tensor'>
+    >>> print(out)
+    tensor(0.7294)
+
+    .. automethod:: __call__
     """
     def __init__(self, agg_op=AggregPMeanError(p=2)):
         """
@@ -889,25 +1548,23 @@ class SatAgg:
             Raises when the type of the input parameter is not correct.
         """
         if not isinstance(agg_op, AggregationOperator):
-            raise TypeError("An AggregationOperator is expected in input.")
+            raise TypeError("SatAgg() : argument 'agg_op' (position 1) must be an AggregationOperator, not " +
+                            str(type(agg_op)))
         self.agg_op = agg_op
 
-    def __call__(self, *truth_values):
+    def __call__(self, *closed_formulas):
         """
-        Method __call__ for the SatAgg aggregator operator.
-
-        It simply applies the selected aggregator (`agg_op` attribute) to the truth values given in input.
+        It applies the `SatAgg` aggregation operator to the given closed formula's :ref:`groundings <notegrounding>`.
 
         Parameters
         ----------
-        truth_values: :obj:`list` or :obj:`tuple`
-            List or tuple of truth values (LTNObject) of closed formulas for which the aggregation has to be computed.
+        closed_formulas : :obj:`tuple` of :class:`ltn.core.LTNObject`
+            Tuple of closed formulas (`LTNObject`) for which the aggregation has to be computed.
 
         Returns
         ----------
         :class:`torch.Tensor`
-            The result of the SatAgg aggregation. Note that the result is a scalar. It is the satisfaction level of
-            the knowledge based composed of the closed formulas given in input.
+            The result of the `SatAgg` aggregation.
 
         Raises
         ----------
@@ -915,17 +1572,20 @@ class SatAgg:
             Raises when the type of the input parameter is not correct.
 
         :class:`ValueError`
-            Raises when the truth values given in input are not in the range [0., 1.].
-            Raises when the truth values given in input are not scalars, namely some formulas given in input are not
-            closed formulas. The closed formulas are identifiable since they are just scalar because all the variables
-            have been quantified (i.e., all dimensions have been aggregated).
+            Raises when the truth values of the formulas given in input are not in the range [0., 1.].
+            Raises when the truth values of the formulas given in input are not scalars, namely some formulas are not
+            closed formulas.
         """
-        truth_values = list(truth_values)
+        # The closed formulas are identifiable since they are just scalar because all the variables
+        # have been quantified (i.e., all dimensions have been aggregated).
+        truth_values = list(closed_formulas)
         if not all(isinstance(x, LTNObject) for x in truth_values):
-            raise TypeError("The input must be a list of LTNObject.")
+            raise TypeError("Expected parameter 'closed_formulas' to be a tuple of LTNObject, but got " +
+                            str([type(f) for f in closed_formulas]))
         truth_values = [o.value for o in truth_values]
         if not all([f.shape == torch.Size([]) for f in truth_values]):
-            raise ValueError("Each element in truth_values should be a scalar. Only closed formulas are accepted.")
+            raise ValueError("Expected parameter 'closed_formulas' to be a tuple of LTNObject containing scalars, "
+                             "but got the following shapes: " + str([f.shape() for f in closed_formulas]))
         truth_values = torch.stack(truth_values, dim=0)
 
         return self.agg_op(truth_values, dim=0)

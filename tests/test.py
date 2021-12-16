@@ -1223,7 +1223,7 @@ def test_Connective():
 
     # not godel
 
-    toy_out = torch.eq(op1.value, 0.)
+    toy_out = torch.eq(op1.value, 0.).float()
     out = not_godel(op1)
 
     assert torch.equal(out.value, toy_out), "The output should be the same."
@@ -1905,17 +1905,17 @@ def test_Quantifier():
     out_1_2 = p_mean_agg(truth_values, dim=(1, 2))
 
     assert torch.equal(out_0, torch.pow(torch.mean(torch.pow(
-        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=0), 1/2)), "The mean should implement this behavior."
+        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=0), 1 / 2)), "The mean should implement this behavior."
     assert torch.equal(out_1, torch.pow(torch.mean(torch.pow(
-        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=1), 1/2)), "The mean should implement this behavior."
+        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=1), 1 / 2)), "The mean should implement this behavior."
     assert torch.equal(out_2, torch.pow(torch.mean(torch.pow(
-        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=2), 1/2)), "The mean should implement this behavior."
+        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=2), 1 / 2)), "The mean should implement this behavior."
     assert torch.equal(out_0_1, torch.pow(torch.mean(torch.pow(
-        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(0, 1)), 1/2)), "The mean should implement this behavior."
+        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(0, 1)), 1 / 2)), "The mean should implement this behavior."
     assert torch.equal(out_0_2, torch.pow(torch.mean(torch.pow(
-        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(0, 2)), 1/2)), "The mean should implement this behavior."
+        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(0, 2)), 1 / 2)), "The mean should implement this behavior."
     assert torch.equal(out_1_2, torch.pow(torch.mean(torch.pow(
-        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(1, 2)), 1/2)), "The mean should implement this behavior."
+        ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(1, 2)), 1 / 2)), "The mean should implement this behavior."
 
     # check with NaN values
 
@@ -1937,7 +1937,7 @@ def test_Quantifier():
 
     out_p = p_mean_agg(truth_values, dim=0, p=3)
     assert torch.equal(out_p, torch.pow(torch.mean(torch.pow(ltn.fuzzy_ops.pi_0(truth_values), 3),
-                                                     dim=0), 1 / 3)), "With the keepdim this should " \
+                                                   dim=0), 1 / 3)), "With the keepdim this should " \
                                                                                     "be the behavior."
 
     # not stable
@@ -1981,14 +1981,14 @@ def test_Quantifier():
 
     out_k_d = p_mean_error_agg(truth_values, dim=0, keepdim=True)
     assert torch.equal(out_k_d, 1. - torch.pow(torch.mean(torch.pow(1. - ltn.fuzzy_ops.pi_1(truth_values), 2),
-                                                     dim=0, keepdim=True), 1 / 2)), "With the keepdim this should " \
+                                                          dim=0, keepdim=True), 1 / 2)), "With the keepdim this should " \
                                                                                     "be the behavior."
 
     # different value of p
 
     out_p = p_mean_error_agg(truth_values, dim=0, p=3)
     assert torch.equal(out_p, 1. - torch.pow(torch.mean(torch.pow(1. - ltn.fuzzy_ops.pi_1(truth_values), 3),
-                                                   dim=0), 1 / 3)), "With the keepdim this should " \
+                                                        dim=0), 1 / 3)), "With the keepdim this should " \
                                                                     "be the behavior."
 
     # not stable
