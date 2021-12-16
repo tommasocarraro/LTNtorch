@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stable Fuzzy Semantics &mdash; LTNtorch 0.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ltn.core" href="core.html" />
+    <link rel="prev" title="Quantification in Logic Tensor Networks" href="quantification.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> LTNtorch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="grounding.html">Grounding in Logic Tensor Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learningltn.html">Introduction to Learning in Logic Tensor Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ltnobjects.html">LTN objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="broadcasting.html">LTN broadcasting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-predicate-case">LTN predicate case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-function-case">LTN function case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-connective-case">LTN connective case</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quantification.html">Quantification in Logic Tensor Networks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#base-quantification">Base quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#diagonal-quantification">Diagonal quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#guarded-quantification">Guarded quantification</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Stable Fuzzy Semantics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">ltn.core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#members">Members</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fuzzy_ops.html">ltn.fuzzy_ops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fuzzy_ops.html#members">Members</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LTNtorch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Stable Fuzzy Semantics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/stableconf.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="stable-fuzzy-semantics">
+<h1>Stable Fuzzy Semantics<a class="headerlink" href="#stable-fuzzy-semantics" title="Permalink to this headline"></a></h1>
+<p>In LTNtorch, connectives and quantifiers are <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounded</span></a> using fuzzy semantics.
+Despite fuzzy logic enables the incorporation of logic and learning, not all fuzzy semantics are equally
+suited for gradient-descent optimization. Many fuzzy logic operators can lead to vanishing or exploding gradients.
+Some operators are also <em>single-passing</em>, in that they propagate gradients to only one input at a time.</p>
+<p>If you are
+interested in an analysis of differentiable fuzzy semantics and gradient problems in LTN, see this
+<a class="reference external" href="https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/2b-operators-and-gradients.ipynb">tutorial</a>.</p>
+<p>In the following, there are some examples of gradient problems in LTN:</p>
+<ul class="simple">
+<li><p>the Gougen fuzzy conjunction (<a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndProd" title="ltn.fuzzy_ops.AndProd"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.fuzzy_ops.AndProd</span></code></a>) has vanishing gradients on the edge case <span class="math notranslate nohighlight">\(x = y = 0\)</span>;</p></li>
+<li><p>the Gougen fuzzy disjunction (<a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.OrProbSum" title="ltn.fuzzy_ops.OrProbSum"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.fuzzy_ops.OrProbSum</span></code></a>) has vanishing gradients on the edge case <span class="math notranslate nohighlight">\(x = y = 1\)</span>;</p></li>
+<li><p>the Gougen fuzzy implication (<a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesGoguen" title="ltn.fuzzy_ops.ImpliesGoguen"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.fuzzy_ops.ImpliesGoguen</span></code></a>) has vanishing gradients on the edge case <span class="math notranslate nohighlight">\(x = 0, y = 1\)</span>;</p></li>
+<li><p>for other examples, refer to the appendix of the <a class="reference external" href="https://arxiv.org/abs/2012.13635">LTN paper</a>.</p></li>
+</ul>
+<p>To address these problems, LTNtorch provides additional stable versions for the fuzzy operators and aggregators with
+gradient problems (unstable operators). In particular, the stable version can be accessed by setting the boolean
+parameter <cite>stable</cite> of the constructor method of the operator to <cite>True</cite>. If the parameter <cite>stable</cite> does not appear in the
+signature of the constructor, it means that the selected operator does not have gradient problems, so a stable version
+for that specific operator is not required. See <a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndProd" title="ltn.fuzzy_ops.AndProd"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.fuzzy_ops.AndProd</span></code></a> for an example of
+unstable operator. Notice the parameter <cite>stable</cite> appears in the signature of the constructor.</p>
+<p>The stable versions are obtained in LTNtorch by applying the following projection functions to the inputs of the operators:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\pi_0:[0,1] \rightarrow\right] 0,1\right]: x \rightarrow(1-\epsilon) x+\epsilon\)</span>, to avoid having zeros in input to the operator;</p></li>
+<li><p><span class="math notranslate nohighlight">\(\pi_{1}:[0,1] \rightarrow[0,1[: x \rightarrow(1-\epsilon) x\)</span>, to avoid having ones in input to the operator.</p></li>
+</ul>
+<p>In LTNtorch, <span class="math notranslate nohighlight">\(\epsilon\)</span> is set to 0.0001.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quantification.html" class="btn btn-neutral float-left" title="Quantification in Logic Tensor Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="core.html" class="btn btn-neutral float-right" title="ltn.core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Tommaso Carraro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

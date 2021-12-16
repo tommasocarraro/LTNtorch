@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LTN broadcasting &mdash; LTNtorch 0.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quantification in Logic Tensor Networks" href="quantification.html" />
+    <link rel="prev" title="LTN objects" href="ltnobjects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> LTNtorch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="grounding.html">Grounding in Logic Tensor Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learningltn.html">Introduction to Learning in Logic Tensor Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ltnobjects.html">LTN objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">LTN broadcasting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ltn-predicate-case">LTN predicate case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ltn-function-case">LTN function case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ltn-connective-case">LTN connective case</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quantification.html">Quantification in Logic Tensor Networks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#base-quantification">Base quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#diagonal-quantification">Diagonal quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#guarded-quantification">Guarded quantification</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stableconf.html">Stable Fuzzy Semantics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">ltn.core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#members">Members</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fuzzy_ops.html">ltn.fuzzy_ops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fuzzy_ops.html#members">Members</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LTNtorch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>LTN broadcasting</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/broadcasting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ltn-broadcasting">
+<h1>LTN broadcasting<a class="headerlink" href="#ltn-broadcasting" title="Permalink to this headline"></a></h1>
+<section id="ltn-predicate-case">
+<span id="broadcasting"></span><h2>LTN predicate case<a class="headerlink" href="#ltn-predicate-case" title="Permalink to this headline"></a></h2>
+<p>In LTNtorch, when a predicate (<a class="reference internal" href="core.html#ltn.core.Predicate" title="ltn.core.Predicate"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Predicate</span></code></a>), function (<a class="reference internal" href="core.html#ltn.core.Function" title="ltn.core.Function"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Function</span></code></a>), or connective (<a class="reference internal" href="core.html#ltn.core.Connective" title="ltn.core.Connective"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Connective</span></code></a>) is
+called, the framework automatically performs the broadcasting of the inputs.</p>
+<p>To make a simple example, assume that we have two variables, <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, with the following <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">groundings</span></a>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{G}(x)=[[1.6, 1.8, 2.3], [9.3, 4.5, 3.4]] \in \mathbb{R}^{2 \times 3}\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{G}(y)=[[1.2, 1.3, 2.7, 10.4], [4.3, 5.6, 9.5, 1.3], [5.4, 1.5, 9.5, 8.4]] \in \mathbb{R}^{3 \times 4}\)</span>.</p></li>
+</ul>
+<p>Variable <span class="math notranslate nohighlight">\(x\)</span> has two individuals with three features each, while variable <span class="math notranslate nohighlight">\(y\)</span> has three individuals with four
+features each.</p>
+<p>Now, let us assume that we have a binary predicate <span class="math notranslate nohighlight">\(P(a, b)\)</span>, <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounded</span></a> as
+<span class="math notranslate nohighlight">\(\mathcal{G}P(a, b | \theta) = a, b \mapsto \sigma(MLP_{\theta}(a, b))\)</span>. <span class="math notranslate nohighlight">\(P(a, b)\)</span> is a learnable
+predicate which maps from <span class="math notranslate nohighlight">\(\mathbb{R}^7\)</span> to <span class="math notranslate nohighlight">\([0., 1.]\)</span>. In the notation, <span class="math notranslate nohighlight">\(MLP_{\theta}\)</span> is a neural network,
+parametrized by <span class="math notranslate nohighlight">\(\theta\)</span>, with 7 input neurons, some hidden layers, and 1 output neuron. At the last layer has been applied
+a logistic function to assure the output to be in the range <span class="math notranslate nohighlight">\([0., 1.]\)</span>. By doing so, the output of <span class="math notranslate nohighlight">\(P(a, b)\)</span>
+can be interpreted as fuzzy truth value.</p>
+<p>Now, suppose that we want to compute <span class="math notranslate nohighlight">\(P(x, y)\)</span>. LTNtorch automatically broadcasts the two variables before
+computing the predicate. After the broadcasting, we will have the following inputs for our predicate:</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix} 1.6 &amp; 1.8 &amp; 2.3\\ 1.6 &amp; 1.8 &amp; 2.3\\ 1.6 &amp; 1.8 &amp; 2.3\\ 9.3 &amp; 4.5 &amp; 3.4\\ 9.3 &amp; 4.5 &amp; 3.4\\ 9.3 &amp; 4.5 &amp; 3.4 \end{bmatrix} \in \mathbb{R}^{6 \times 3}\)</span>
+for <span class="math notranslate nohighlight">\(x\)</span>, and <span class="math notranslate nohighlight">\(\begin{bmatrix} 1.2 &amp; 1.3 &amp; 2.7 &amp; 10.4\\ 4.3 &amp; 5.6 &amp; 9.5 &amp; 1.3\\ 5.4 &amp; 1.5 &amp; 9.5 &amp; 8.4\\ 1.2 &amp; 1.3 &amp; 2.7 &amp; 10.4\\ 4.3 &amp; 5.6 &amp; 9.5 &amp; 1.3\\ 5.4 &amp; 1.5 &amp; 9.5 &amp; 8.4 \end{bmatrix} \in \mathbb{R}^{6 \times 4}\)</span> for <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>Now, it is possible to observe that if we concatenate these two tensors on the first dimension (<cite>torch.cat([x, y], dim=1)</cite>), we obtain the following input for our predicate:</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix} 1.6 &amp; 1.8 &amp; 2.3 &amp; 1.2 &amp; 1.3 &amp; 2.7 &amp; 10.4\\ 1.6 &amp; 1.8 &amp; 2.3 &amp; 4.3 &amp; 5.6 &amp; 9.5 &amp; 1.3\\ 1.6 &amp; 1.8 &amp; 2.3 &amp; 5.4 &amp; 1.5 &amp; 9.5 &amp; 8.4\\ 9.3 &amp; 4.5 &amp; 3.4 &amp; 1.2 &amp; 1.3 &amp; 2.7 &amp; 10.4\\ 9.3 &amp; 4.5 &amp; 3.4 &amp; 4.3 &amp; 5.6 &amp; 9.5 &amp; 1.3\\ 9.3 &amp; 4.5 &amp; 3.4 &amp; 5.4 &amp; 1.5 &amp; 9.5 &amp; 8.4 \end{bmatrix} \in \mathbb{R}^{6 \times 7}\)</span>.</p>
+<p>This tensor contains all the possible combinations of the individuals of
+the two variables, that are 6. After the computation of the predicate, LTNtorch organizes the output in a tensor <span class="math notranslate nohighlight">\(\mathbf{out} \in [0., 1.]^{2 \times 3}\)</span>, where
+the first dimension is related with variable <span class="math notranslate nohighlight">\(x\)</span>, while the second dimension with variable <span class="math notranslate nohighlight">\(y\)</span>.
+In <span class="math notranslate nohighlight">\(\mathbf{out}[0, 0]\)</span> there will be the result of the evaluation of <span class="math notranslate nohighlight">\(P(x, y)\)</span> on the first individual of
+<span class="math notranslate nohighlight">\(x\)</span>, namely <span class="math notranslate nohighlight">\([1.6, 1.8, 2.3]\)</span>, and first individual of <span class="math notranslate nohighlight">\(y\)</span>, namely <span class="math notranslate nohighlight">\([1.2, 1.3, 2.7, 10.4]\)</span>, in <span class="math notranslate nohighlight">\(\mathbf{out}[0, 1]\)</span> there will be the result of the evaluation of <span class="math notranslate nohighlight">\(P(x, y)\)</span> on the first individual of
+<span class="math notranslate nohighlight">\(x\)</span>, namely <span class="math notranslate nohighlight">\([1.6, 1.8, 2.3]\)</span>, and second individual of <span class="math notranslate nohighlight">\(y\)</span>, namely <span class="math notranslate nohighlight">\([4.3, 5.6, 9.5, 1.3]\)</span>, and so forth.</p>
+<p>To conclude this note, in LTNtorch, the output of predicates, functions, connectives, and quantifiers are
+<a class="reference internal" href="ltnobjects.html#noteltnobject"><span class="std std-ref">LTNObject</span></a> instances. In the case of our example, the output of predicate <span class="math notranslate nohighlight">\(P\)</span> is
+an <cite>LTNObject</cite> with the following attributes:</p>
+<ul class="simple">
+<li><p><cite>value</cite> <span class="math notranslate nohighlight">\(\in [0., 1.]^{2 \times 3}\)</span>;</p></li>
+<li><p><cite>free_vars</cite> = <cite>[‘x’, ‘y’]</cite>.</p></li>
+</ul>
+<p>Note that we have analyzed just an atomic formula (predicate) in this scenario. Since the variables appearing in the formula are not quantified, the
+free variables in the output are both <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>. If instead of <span class="math notranslate nohighlight">\(P(x, y)\)</span> we had to compute <span class="math notranslate nohighlight">\(\forall x P(x, y)\)</span>,
+the <cite>free_vars</cite> attribute would have been equal to <cite>[‘y’]</cite>. Finally, if we had to compute <span class="math notranslate nohighlight">\(\forall x \forall y P(x, y)\)</span>,
+the <cite>free_vars</cite> attribute would have been an empty list.</p>
+</section>
+<section id="ltn-function-case">
+<h2>LTN function case<a class="headerlink" href="#ltn-function-case" title="Permalink to this headline"></a></h2>
+<p>The same scenario explained above can be applied to an LTN function (<a class="reference internal" href="core.html#ltn.core.Function" title="ltn.core.Function"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Function</span></code></a>) instead of an LTN predicate (<a class="reference internal" href="core.html#ltn.core.Predicate" title="ltn.core.Predicate"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Predicate</span></code></a>). Suppose we have the same
+variables, <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>, with the same <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">groundings</span></a>, <span class="math notranslate nohighlight">\(\mathcal{G}(x)\)</span> and <span class="math notranslate nohighlight">\(\mathcal{G}(y)\)</span>.
+Then, suppose we have a 2-ary (2 inputs) logical function <span class="math notranslate nohighlight">\(f\)</span>, <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounded</span></a> as
+<span class="math notranslate nohighlight">\(\mathcal{G}f(a, b | \theta) = a, b \mapsto MLP_{\theta}(a, b)\)</span>.</p>
+<p>In this case, <span class="math notranslate nohighlight">\(MLP_{\theta}\)</span> is a neural network, parametrized by <span class="math notranslate nohighlight">\(\theta\)</span>, with 7 input neurons, some hidden layers, and
+five output neurons. In other words, <span class="math notranslate nohighlight">\(f\)</span> is a learnable function which maps from individuals in <span class="math notranslate nohighlight">\(\mathbb{R}^7\)</span> to individuals in <span class="math notranslate nohighlight">\(\mathbb{R}^5\)</span>.
+Note that, in this case, we do not have applied a logistic function to the output. In fact, logical functions do not have
+the constraint of having outputs in the range <span class="math notranslate nohighlight">\([0., 1.]\)</span>.</p>
+<p>LTNtorch applies the same broadcasting that we have seen above to the inputs of function <span class="math notranslate nohighlight">\(f\)</span>. The only difference is
+on how the output is organized. In the case of an LTN function, the output is organized in a tensor where the first <span class="math notranslate nohighlight">\(k\)</span>
+dimensions are related with the variables given in input, while the remaining dimensions are related with the features of the individuals in output.</p>
+<p>In our scenario, the output of <span class="math notranslate nohighlight">\(f(x, y)\)</span> is a tensor <span class="math notranslate nohighlight">\(\mathbf{out} \in \mathbb{R}^{2 \times 3 \times 5}\)</span>. The first
+dimension is related with variable <span class="math notranslate nohighlight">\(x\)</span>, the second dimension with variable <span class="math notranslate nohighlight">\(y\)</span>, while the third dimension with the
+features of the individuals in output. In <span class="math notranslate nohighlight">\(\mathbf{out}[0, 0]\)</span> there will be the result of the evaluation of <span class="math notranslate nohighlight">\(f(x, y)\)</span> on the first individual of
+<span class="math notranslate nohighlight">\(x\)</span>, namely <span class="math notranslate nohighlight">\([1.6, 1.8, 2.3]\)</span>, and first individual of <span class="math notranslate nohighlight">\(y\)</span>, namely <span class="math notranslate nohighlight">\([1.2, 1.3, 2.7, 10.4]\)</span>, in <span class="math notranslate nohighlight">\(\mathbf{out}[0, 1]\)</span> there will be the result of the evaluation of <span class="math notranslate nohighlight">\(f(x, y)\)</span> on the first individual of
+<span class="math notranslate nohighlight">\(x\)</span>, namely <span class="math notranslate nohighlight">\([1.6, 1.8, 2.3]\)</span>, and second individual of <span class="math notranslate nohighlight">\(y\)</span>, namely <span class="math notranslate nohighlight">\([4.3, 5.6, 9.5, 1.3]\)</span>, and so forth.</p>
+</section>
+<section id="ltn-connective-case">
+<h2>LTN connective case<a class="headerlink" href="#ltn-connective-case" title="Permalink to this headline"></a></h2>
+<p>LTNtorch applies the LTN broadcasting also before computing a logical connective. To make the concept clear, let us make
+a simple example.</p>
+<p>Suppose that we have variables <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>, <span class="math notranslate nohighlight">\(z\)</span>, and <span class="math notranslate nohighlight">\(u\)</span>, with <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">groundings</span></a>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(mathcal{G}(x) \in \mathbb{R}^{2 \times 3}\)</span>, namely <span class="math notranslate nohighlight">\(x\)</span> contains two individuals in <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(mathcal{G}(y) \in \mathbb{R}^{4 \times 3 \times 5}\)</span>, namely <span class="math notranslate nohighlight">\(y\)</span> contains four individuals in <span class="math notranslate nohighlight">\(\mathbb{R}^{3 \times 5}\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(mathcal{G}(z) \in \mathbb{R}^{3 \times 5}\)</span>, namely <span class="math notranslate nohighlight">\(z\)</span> contains three individuals in <span class="math notranslate nohighlight">\(\mathbb{R}^5\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(mathcal{G}(u) \in \mathbb{R}^{6 \times 2}\)</span>, namely <span class="math notranslate nohighlight">\(u\)</span> contains six individuals in <span class="math notranslate nohighlight">\(\mathbb{R}^2\)</span>.</p></li>
+</ul>
+<p>Then, suppose that we have two binary predicates, <span class="math notranslate nohighlight">\(P(a, b)\)</span> and <span class="math notranslate nohighlight">\(Q(a, b)\)</span>. <span class="math notranslate nohighlight">\(P\)</span> maps from <span class="math notranslate nohighlight">\(\mathbb{R}^18\)</span> to
+<span class="math notranslate nohighlight">\([0., 1.]\)</span>, while <span class="math notranslate nohighlight">\(Q\)</span> maps from <span class="math notranslate nohighlight">\(\mathbb{R}^7\)</span> to <span class="math notranslate nohighlight">\([0., 1.]\)</span>.</p>
+<p>Suppose now that we want to compute the formula: <span class="math notranslate nohighlight">\(P(x, y) \land Q(z, u)\)</span>. In order to evaluate this formula, LTNtorch
+follows the following procedure:</p>
+<ol class="arabic simple">
+<li><p>it computes the result of the atomic formula <span class="math notranslate nohighlight">\(P(x, y)\)</span>, which is a tensor <span class="math notranslate nohighlight">\(\mathbf{out_1} \in [0., 1.]^{2 \times 4}\)</span>. Note that before the computation of <span class="math notranslate nohighlight">\(P(x, y)\)</span>, LTNtorch performed the LTN broadcasting of variables <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>;</p></li>
+<li><p>it computes the result of the atomic formula <span class="math notranslate nohighlight">\(Q(z, u)\)</span>, which is a tensor <span class="math notranslate nohighlight">\(\mathbf{out_2} \in [0., 1.]^{3 \times 6}\)</span>. Note that before the computation of <span class="math notranslate nohighlight">\(P(z, u)\)</span>, LTNtorch performed the LTN broadcasting of variables <span class="math notranslate nohighlight">\(z\)</span> and <span class="math notranslate nohighlight">\(u\)</span>;</p></li>
+<li><p>it performs the LTN broadcasting of <span class="math notranslate nohighlight">\(\mathbf{out_1}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{out_2}\)</span>;</p></li>
+<li><p>it applies the fuzzy conjunction <span class="math notranslate nohighlight">\(\mathbf{out_1} \land_{fuzzy} \mathbf{out_2}\)</span>. The result is a tensor <span class="math notranslate nohighlight">\(\mathbf{out} \in [0., 1.]^{2 \times 4 \times 3 \times 6}\)</span>.</p></li>
+</ol>
+<p>Notice that the output of a logical connective is always wrapped into an <a class="reference internal" href="ltnobjects.html#noteltnobject"><span class="std std-ref">LTN object</span></a>, like it happens for predicates and functions.
+In this simple example, the <cite>LTNObject</cite> produced by the fuzzy conjunction has the following attributes:</p>
+<ul class="simple">
+<li><p><cite>value</cite> = <span class="math notranslate nohighlight">\(\mathbf{out}\)</span>;</p></li>
+<li><p><cite>free_vars = [‘x’, ‘y’, ‘z’, ‘u’]</cite>.</p></li>
+</ul>
+<p>Notice that <cite>free_vars</cite> contains the labels of all the variables appearing in <span class="math notranslate nohighlight">\(P(x, y) \land Q(z, u)\)</span>. This is due
+to the fact that all the variables are free in the formula since are not quantified by any logical quantifier. Notice also
+that <span class="math notranslate nohighlight">\(\mathbf{out}\)</span> has four dimensions, one for each variable appearing in the formula. These dimensions can be
+indexed to retrieve the evaluation of <span class="math notranslate nohighlight">\(P(x, y) \land Q(z, u)\)</span> on a specific combination of individuals of <span class="math notranslate nohighlight">\(x,y,z,u\)</span>.
+For example, <span class="math notranslate nohighlight">\(\mathbf{out}[0, 0, 0, 0]\)</span> contains the evaluation of <span class="math notranslate nohighlight">\(P(x, y) \land Q(z, u)\)</span> on the first individuals
+of all the variables, while <span class="math notranslate nohighlight">\(\mathbf{out}[0, 1, 0, 0]\)</span> contains the evaluation of <span class="math notranslate nohighlight">\(P(x, y) \land Q(z, u)\)</span> on the first individuals
+of <span class="math notranslate nohighlight">\(x,z,u\)</span> and second individual of <span class="math notranslate nohighlight">\(y\)</span>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ltnobjects.html" class="btn btn-neutral float-left" title="LTN objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quantification.html" class="btn btn-neutral float-right" title="Quantification in Logic Tensor Networks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Tommaso Carraro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
