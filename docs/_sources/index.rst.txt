@@ -32,9 +32,3 @@ The documentation is organized as follows:
 
     core
     fuzzy_ops
-
-Indices
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
