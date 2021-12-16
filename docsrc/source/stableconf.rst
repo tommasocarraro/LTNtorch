@@ -26,7 +26,7 @@ unstable operator. Notice the parameter `stable` appears in the signature of the
 
 The stable versions are obtained in LTNtorch by applying the following projection functions to the inputs of the operators:
 
-- :math:`\pi_0:[0,1] \rightarrow\right] 0,1\right]: x \rightarrow(1-\epsilon) x+\epsilon`, to avoid having zeros in input to the operator;
-- :math:`\pi_{1}:[0,1] \rightarrow[0,1[: x \rightarrow(1-\epsilon) x`, to avoid having ones in input to the operator.
+- :math:`\pi_0:[0,1] \rightarrow ]0,1]: x \rightarrow(1-\epsilon) x+\epsilon`, to avoid having zeros in input to the operator;
+- :math:`\pi_1:[0,1] \rightarrow [0,1[: x \rightarrow(1-\epsilon) x`, to avoid having ones in input to the operator.
 
 In LTNtorch, :math:`\epsilon` is set to 0.0001.
