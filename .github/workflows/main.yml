@@ -28,4 +28,4 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest tests/tests.py --junitxml=junit/test-results.xml --cov=ltn --cov-report=xml --cov-report=html
+        pytest tests.py --junitxml=junit/test-results.xml --cov=ltn --cov-report=xml --cov-report=html
