@@ -1,3 +1,5 @@
+![example workflow](https://github.com/bmxitalia/LTNtorch/actions/workflows/LTNtorch_tests.yml/badge.svg)
+
 # PyTorch's implementation of Logic Tensor Networks (LTN)
 
 Welcome to the PyTorch's implementation of [Logic Tensor Networks](https://arxiv.org/abs/2012.13635)!
