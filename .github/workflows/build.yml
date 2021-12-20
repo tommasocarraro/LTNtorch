@@ -23,13 +23,14 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install pytest pytest-cov
+        python -m pip install pytest pytest-cov coverage-lcov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        python -m pytest tests/tests.py --cov=ltn --cov-report xml
+        python -m pytest tests/tests.py --cov=ltn
+        pythom -m coverage-lcov
     - name: Generate coverage badge with Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coverage.xml
+        path-to-lcov: lcov.info
