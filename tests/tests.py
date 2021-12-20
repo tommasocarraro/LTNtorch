@@ -2139,3 +2139,8 @@ def test_Quantifier():
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(torch.stack([o.value for o in l], dim=0), dim=0)
 
     assert torch.equal(out, toy_out), "The output should be the same."
+
+
+def wrong_test():
+    o = ltn.LTNObject(torch.tensor([1, 2, 3]), [])
+    assert o.free_vars == [1, 2, 3], "errore"
