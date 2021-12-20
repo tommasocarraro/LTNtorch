@@ -63,7 +63,7 @@ class LTNObject:
         :class:`torch.Size`
             The shape of the :ref:`grounding <notegrounding>` of the LTN object.
         """
-        return self.value.shape
+        return self.value
 
 
 class Constant(LTNObject):
