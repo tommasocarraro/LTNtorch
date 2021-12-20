@@ -1,4 +1,4 @@
-![example workflow](https://github.com/bmxitalia/LTNtorch/actions/workflows/LTNtorch_tests.yml/badge.svg)
+![example workflow](https://github.com/bmxitalia/LTNtorch/actions/workflows/build.yml/badge.svg)
 
 # PyTorch's implementation of Logic Tensor Networks (LTN)
 
