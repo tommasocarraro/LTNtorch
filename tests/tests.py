@@ -2141,6 +2141,6 @@ def test_Quantifier():
     assert torch.equal(out, toy_out), "The output should be the same."
 
 
-def wrong_test():
+def test_wrong():
     o = ltn.LTNObject(torch.tensor([1, 2, 3]), [])
     assert o.free_vars == [1, 2, 3], "errore"
