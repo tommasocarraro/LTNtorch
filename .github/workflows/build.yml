@@ -28,7 +28,7 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest tests/tests.py --cov=ltn
-        python -m coverage-lcov
+        coverage-lcov
     - name: Generate coverage badge with Coveralls
       uses: coverallsapp/github-action@master
       with:
