@@ -14,11 +14,13 @@ help:
 
 # command to create a 'docs/' folder containing the documentation for GitHub pages
 # docs are created with sphinx and moved to the new folder 'docs/', which is the root folder for GitHub pages
+# the command also add the documentation to git
 # usage example: make clean html docs
 docs:
+	@rm -rf ../docs/
 	@mkdir -p ../docs/
-	@rm -rf ../docs/*
-	@cp -r build/html/* ../docs/
+	@cp -r build/html/. ../docs/
+	@git add ../docs/.
 
 .PHONY: help Makefile
 
