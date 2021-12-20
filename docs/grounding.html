@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grounding in Logic Tensor Networks &mdash; LTNtorch 0.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction to Learning in Logic Tensor Networks" href="learningltn.html" />
+    <link rel="prev" title="LTNtorch’s documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> LTNtorch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Grounding in Logic Tensor Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learningltn.html">Introduction to Learning in Logic Tensor Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ltnobjects.html">LTN objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="broadcasting.html">LTN broadcasting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-predicate-case">LTN predicate case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-function-case">LTN function case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-connective-case">LTN connective case</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quantification.html">Quantification in Logic Tensor Networks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#base-quantification">Base quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#diagonal-quantification">Diagonal quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#guarded-quantification">Guarded quantification</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stableconf.html">Stable Fuzzy Semantics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">ltn.core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#members">Members</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fuzzy_ops.html">ltn.fuzzy_ops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fuzzy_ops.html#members">Members</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LTNtorch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Grounding in Logic Tensor Networks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/grounding.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="grounding-in-logic-tensor-networks">
+<h1>Grounding in Logic Tensor Networks<a class="headerlink" href="#grounding-in-logic-tensor-networks" title="Permalink to this headline"></a></h1>
+<p id="notegrounding">To make learning possible, LTN uses a differentiable first-order logic language, called Real Logic, which enables
+the incorporation of data and logic.</p>
+<p>Real Logic defines the concept of <cite>grounding</cite> (different from the grounding of logic), which is a mapping from the
+logical domain (i.e., constants, variables, and logical symbols) to tensors in the Real field or operations based on
+tensors. These operations could be, for instance, mathematical functions or learnable neural networks. In other words,
+a <cite>grounding</cite>, denoted as <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, is a function which maps a logical symbol into a real tensor or an
+operation on tensors.</p>
+<p>In particular, the grounding is defined as follows. Let us assume that <span class="math notranslate nohighlight">\(c\)</span> is a constant, <span class="math notranslate nohighlight">\(x\)</span> is a logical
+variable, <span class="math notranslate nohighlight">\(P\)</span> is a predicate, and <span class="math notranslate nohighlight">\(f\)</span> is a logical function:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{G}(c) = \mathbb{R}^{d_1 \times \dots \times d_n}\)</span>: a logical constant is grounded as a tensor (individual) of <strong>any order</strong> (e.g., <span class="math notranslate nohighlight">\(\mathbb{R}^4$ or $\mathbb{R}^{5 \times 4 \times 4}\)</span>);</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{G}(x) = \mathbb{R}^{m \times d}\)</span>: a logical variable is grounded as a <strong>sequence</strong> of <span class="math notranslate nohighlight">\(m\)</span> tensors (individuals) of the same shape <span class="math notranslate nohighlight">\(d\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{G}(f \mid \theta) = x \mapsto MLP_{\theta}(x)\)</span>: a logical function is grounded as a (learnable) <strong>mathematical function</strong> which takes as input some tensors (individuals) and returns a tensor. In this definition, <span class="math notranslate nohighlight">\(\theta\)</span> are the learnable parameters of the function, while <span class="math notranslate nohighlight">\(MLP_{\theta}\)</span> is the neural network representing the function, parametrized by <span class="math notranslate nohighlight">\(\theta\)</span>. Note that the given definition has one input <span class="math notranslate nohighlight">\(x\)</span>, however, an LTN function can take multiple inputs;</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{G}(P \mid \theta) = x \mapsto \sigma (MLP_{\theta}(x))\)</span>: a logical formula (atomic or not) is grounded as a mathematical function which takes as input some tensors (individuals) and returns a value in <strong>[0., 1.]</strong>. In this case, the logistic function <span class="math notranslate nohighlight">\(\sigma\)</span> assures the output to be in the range [0., 1.], resulting in a value which can be interpreted as a fuzzy truth value. Note that the given definition has one input <span class="math notranslate nohighlight">\(x\)</span>, however, an LTN predicate (or formula) can take multiple inputs.</p></li>
+</ul>
+<p>The <cite>grounding</cite> defines also how the logical connectives (<span class="math notranslate nohighlight">\(\land, \lor, \lnot, \implies, \leftrightarrow\)</span>) and quantifiers
+(<span class="math notranslate nohighlight">\(\forall, \exists\)</span>) are mapped in the Real domain. In particular, logical connectives are grounded using fuzzy logic semantics, while
+quantifiers are grounded using fuzzy aggregators. Please, <strong>carefully</strong> read the <a class="reference external" href="https://arxiv.org/abs/2012.13635">paper</a> if you have some doubts on these notions.</p>
+<p>Examples of possible groundings are showed in the figure below. In particular, <span class="math notranslate nohighlight">\(friend(Mary, John)\)</span> is an
+atomic formula (predicate), while <span class="math notranslate nohighlight">\(\forall x (friend(John, x) \implies friend(Mary, x))\)</span> is a closed formula (all the variables are
+quantified). The letter <span class="math notranslate nohighlight">\(\mathcal{G}\)</span>, again, is the grounding, the function which maps the logical domain into the Real domain.</p>
+<img alt="_images/framework_grounding.png" src="_images/framework_grounding.png" />
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="LTNtorch’s documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="learningltn.html" class="btn btn-neutral float-right" title="Introduction to Learning in Logic Tensor Networks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Tommaso Carraro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

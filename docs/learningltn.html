@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction to Learning in Logic Tensor Networks &mdash; LTNtorch 0.9 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="LTN objects" href="ltnobjects.html" />
+    <link rel="prev" title="Grounding in Logic Tensor Networks" href="grounding.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> LTNtorch
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notes</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="grounding.html">Grounding in Logic Tensor Networks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction to Learning in Logic Tensor Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ltnobjects.html">LTN objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="broadcasting.html">LTN broadcasting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-predicate-case">LTN predicate case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-function-case">LTN function case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="broadcasting.html#ltn-connective-case">LTN connective case</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quantification.html">Quantification in Logic Tensor Networks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#base-quantification">Base quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#diagonal-quantification">Diagonal quantification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantification.html#guarded-quantification">Guarded quantification</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stableconf.html">Stable Fuzzy Semantics</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">ltn.core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#members">Members</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fuzzy_ops.html">ltn.fuzzy_ops</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fuzzy_ops.html#members">Members</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">LTNtorch</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Introduction to Learning in Logic Tensor Networks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/learningltn.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction-to-learning-in-logic-tensor-networks">
+<h1>Introduction to Learning in Logic Tensor Networks<a class="headerlink" href="#introduction-to-learning-in-logic-tensor-networks" title="Permalink to this headline"></a></h1>
+<p id="notelearning">In order to train a Logic Tensor Network, one has to define:</p>
+<ol class="arabic simple">
+<li><p>a First-Order Logic knowledge base containing some logical axioms;</p></li>
+<li><p>some learnable predicates, functions, and/or logical constants appearing in the axioms;</p></li>
+<li><p>some data.</p></li>
+</ol>
+<p>Given these three components, the LTN workflow is the following:</p>
+<ol class="arabic simple">
+<li><p><strong>grounding phase</strong>: data is used to ground (instantiate) the logical axioms included in the knowledge base;</p></li>
+<li><p><strong>forward phase</strong>: the truth values of the logical axioms are computed based on the given grounding (instantiation);</p></li>
+<li><p><strong>aggregation phase</strong>: the truth values of the axioms are aggregated to compute the overall satisfaction level of the knowledge base;</p></li>
+<li><p><strong>loss function computation</strong>: the gap between the overall satisfaction level and the truth (1) has to be minimized;</p></li>
+<li><p><strong>backward phase</strong>: the parameters of the learnable predicates, functions, and/or constants are changed in such a way to maximize the overall satisfaction level.</p></li>
+</ol>
+<p>The training ends up with a solution which maximally satisfies all the logical axioms in the knowledge base. This
+<a class="reference external" href="https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb">tutorial</a>
+shows how to use the satisfaction of a First-Order Logic knowledge base as an objective to learn a Logic Tensor Network.</p>
+<p>In this documentation, you will find how to create a First-Order Logic knowledge base containing learnable predicates (<a class="reference internal" href="core.html#ltn.core.Predicate" title="ltn.core.Predicate"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Predicate</span></code></a>),
+functions (<a class="reference internal" href="core.html#ltn.core.Function" title="ltn.core.Function"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Function</span></code></a>), and/or constants (<a class="reference internal" href="core.html#ltn.core.Constant" title="ltn.core.Constant"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.Constant</span></code></a>) using LTNtorch.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="grounding.html" class="btn btn-neutral float-left" title="Grounding in Logic Tensor Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ltnobjects.html" class="btn btn-neutral float-right" title="LTN objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Tommaso Carraro.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
