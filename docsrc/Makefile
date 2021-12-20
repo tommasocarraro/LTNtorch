@@ -12,6 +12,14 @@ BUILDDIR      = build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
+# command to create a 'docs/' folder containing the documentation for GitHub pages
+# docs are created with sphinx and moved to the new folder 'docs/', which is the root folder for GitHub pages
+# usage example: make clean html docs
+docs:
+	@mkdir -p ../docs/
+	@rm -rf ../docs/*
+	@cp -r build/html/* ../docs/
+
 .PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new

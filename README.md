@@ -1,5 +1,8 @@
-![example workflow](https://github.com/bmxitalia/LTNtorch/actions/workflows/build.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/bmxitalia/LTNtorch/badge.svg?branch=main)](https://coveralls.io/github/bmxitalia/LTNtorch?branch=main)
+![build status](https://github.com/bmxitalia/LTNtorch/actions/workflows/build.yml/badge.svg)
+[![coverage status](https://coveralls.io/repos/github/bmxitalia/LTNtorch/badge.svg?branch=main)](https://coveralls.io/github/bmxitalia/LTNtorch?branch=main)
+[![docs link](https://img.shields.io/badge/docs-github.io-blue)](https://bmxitalia.github.io/LTNtorch/)
+[![MIT license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+![python version](https://img.shields.io/badge/python-3.7|3.8|3.9-blue)
 
 # PyTorch's implementation of Logic Tensor Networks (LTN)
 
@@ -94,7 +97,7 @@ However, we suggest to carefully read the [paper](https://arxiv.org/pdf/2012.136
 
 # Installation
 
-If you install LTNtorch by cloning this repository make sure to install all the requirements.
+If you install LTNtorch by cloning this repository, make sure to install all the requirements.
 
 `pip3 install -r requirements.txt`
 
@@ -115,8 +118,9 @@ The `core` and `fuzzy_ops` modules of this repository have been entirely tested 
 
 # Documentation
 
-The documentation for this project is still under development, and it will be release soon. However, the majority of functionalities
-are already well documented. In the future, a GitHub documentation will be released.
+The [documentation](https://bmxitalia.github.io/LTNtorch/) has been created with 
+[Sphinx](https://www.sphinx-doc.org/en/master/index.html), using the 
+[Read the Docs Sphinx Theme](https://sphinx-rtd-theme.readthedocs.io/en/stable/).
 
 # Getting Started
 
