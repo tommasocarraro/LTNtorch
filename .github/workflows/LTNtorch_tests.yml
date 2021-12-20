@@ -27,6 +27,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        python -m pytest tests/tests.py --cov=ltn --cov-report=html
+        python -m pytest tests/tests.py --cov=ltn
     - name: Generate coverage badge
-      uses: tj-actions/coverage-badge-py@v1.2
+      uses: tj-actions/coverage-badge-py@v1.6
