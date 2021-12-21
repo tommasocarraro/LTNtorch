@@ -115,6 +115,7 @@ is 100%.
 # Tests
 
 The `core` and `fuzzy_ops` modules of this repository have been entirely tested using `pytest`, with a coverage of 100%.
+The examples included in the documentation have also been tested, using `doctest`.
 
 # Documentation
 
