@@ -95,7 +95,7 @@ class Constant(LTNObject):
     >>> import torch
     >>> c = ltn.Constant(torch.tensor([3.4, 5.4, 4.3]))
     >>> print(c.value)
-    tensor([3.4, 5.4, 4.3])
+    tensor([3.4000, 5.4000, 4.3000])
     >>> print(c.free_vars)
     []
     >>> print(c.shape())
@@ -104,10 +104,10 @@ class Constant(LTNObject):
     Trainable constant
 
     >>> t_c = ltn.Constant(torch.tensor([[3.4, 2.3, 5.6],
-    ...                                  [6.7, 5.6, 4.3]], trainable=True))
+    ...                                  [6.7, 5.6, 4.3]]), trainable=True)
     >>> print(t_c.value)
-    tensor([[3.4, 2.3, 5.6],
-            [6.7, 5.6, 4.3]], requires_grad=True)
+    tensor([[3.4000, 2.3000, 5.6000],
+            [6.7000, 5.6000, 4.3000]], requires_grad=True)
     >>> print(t_c.free_vars)
     []
     >>> print(t_c.shape())
@@ -167,23 +167,23 @@ class Variable(LTNObject):
     >>> x = ltn.Variable('x', torch.tensor([[3.4, 4.5],
     ...                                     [6.7, 9.6]]), add_batch_dim=True)
     >>> print(x.value)
-    tensor([[3.4, 4.5],
-            [6.7, 9.6]])
+    tensor([[3.4000, 4.5000],
+            [6.7000, 9.6000]])
     >>> print(x.free_vars)
     ['x']
-    >>> print(x.shape)
+    >>> print(x.shape())
     torch.Size([2, 2])
 
     `add_bath_dim=True` adds a batch dimension to the `value` of the variable since it has only one dimension.
 
     >>> y = ltn.Variable('y', torch.tensor([3.4, 4.5, 8.9]), add_batch_dim=True)
     >>> print(y.value)
-    tensor([[3.4],
-            [4.5],
-            [8.9]])
+    tensor([[3.4000],
+            [4.5000],
+            [8.9000]])
     >>> print(y.free_vars)
     ['y']
-    >>> print(y.shape)
+    >>> print(y.shape())
     torch.Size([3, 1])
 
     `add_batch_dim=False` tells to LTNtorch to not add a batch dimension to the `value` of the variable. This is useful
@@ -194,7 +194,7 @@ class Variable(LTNObject):
     tensor([1, 2, 3])
     >>> print(z.free_vars)
     ['z']
-    >>> print(z.shape)
+    >>> print(z.shape())
     torch.Size([3])
     """
     def __init__(self, var_label, individuals, add_batch_dim=True):
@@ -401,7 +401,7 @@ class Predicate(nn.Module):
     the two inputs of the binary predicate.
 
     >>> class PredicateModel(torch.nn.Module):
-    ...     def __init__(self, layers_size):
+    ...     def __init__(self):
     ...         super(PredicateModel, self).__init__()
     ...         elu = torch.nn.ELU()
     ...         sigmoid = torch.nn.Sigmoid()
@@ -641,7 +641,7 @@ class Function(nn.Module):
     the two inputs of the binary function.
 
     >>> class FunctionModel(torch.nn.Module):
-    ...     def __init__(self, layers_size):
+    ...     def __init__(self):
     ...         super(FunctionModel, self).__init__()
     ...         elu = torch.nn.ELU()
     ...         self.dense1 = torch.nn.Linear(4, 5)
@@ -732,6 +732,7 @@ class Function(nn.Module):
     tensor([[[1.3700, 1.3700],
              [1.2600, 1.2600],
              [1.1400, 1.1400]],
+    <BLANKLINE>
             [[1.0330, 1.0330],
              [0.9230, 0.9230],
              [0.8030, 0.8030]]])
@@ -1062,6 +1063,7 @@ class Connective:
     tensor([[[0.5971, 0.6900, 0.6899, 0.6391],
              [0.6900, 0.6900, 0.6900, 0.6900],
              [0.6878, 0.6900, 0.6900, 0.6889]],
+    <BLANKLINE>
             [[0.5325, 0.6154, 0.6153, 0.5700],
              [0.6154, 0.6154, 0.6154, 0.6154],
              [0.6135, 0.6154, 0.6154, 0.6144]]])
@@ -1258,7 +1260,7 @@ class Quantifier:
     ...             cond_vars=[x],
     ...             cond_fn=lambda x: torch.less(torch.sum(x.value, dim=1), 1.))
     >>> print(out.value)
-    tensor(0.9844)
+    tensor(0.9844, dtype=torch.float64)
     >>> print(out.free_vars)
     []
     >>> print(out.shape())
