@@ -107,7 +107,7 @@ class Constant(LTNObject):
     ...                                  [6.7, 5.6, 4.3]]), trainable=True)
     >>> print(t_c.value)
     tensor([[3.4000, 2.3000, 5.6000],
-            [6.7000, 5.6000, 4.3000]], requires_grad=True)
+            [6.7000, 5.6000, 4.3]], requires_grad=True)
     >>> print(t_c.free_vars)
     []
     >>> print(t_c.shape())
