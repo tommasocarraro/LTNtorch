@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use LTNtorch in your work, please cite it as below."
+authors:
+- family-names: "Carraro"
+  given-names: "Tommaso"
+  orcid: "https://orcid.org/0000-0002-3043-1456"
+title: "LTNtorch: PyTorch implementation of Logic Tensor Networks"
+version: 0.9
+doi: 10.5281/zenodo.5795951
+date-released: 2020-12-21
+url: "https://github.com/bmxitalia/LTNtorch"
