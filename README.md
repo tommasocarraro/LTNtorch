@@ -174,3 +174,20 @@ LTN has been developed thanks to active contributions and discussions with the f
 - Michelangelo Diligenti (UniSiena)
 - Samy Badreddine (Sony AI)
 - Tommaso Carraro (FBK)
+
+# Citing this repo
+
+If you are using **LTNtorch** in your work, please consider citing this repository.
+
+```
+@software{LTNtorch,
+  author = {Tommaso Carraro},
+  title = {{LTNtorch: PyTorch implementation of Logic Tensor Networks}},
+  month = {dec},
+  year = {2021},
+  publisher = {Zenodo},
+  version = {0.9},
+  doi = {10.5281/zenodo.5795951},
+  url = {https://doi.org/10.5281/zenodo.5795951}
+}
+```
