@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setup(
     name='LTNtorch',
     version='0.9',
-    packages=find_packages(where='ltn'),
+    packages=find_packages(include=['ltn']),
     install_requires=[
         "numpy",
         "torch"
@@ -23,6 +23,8 @@ setup(
     keywords=['pytorch', 'machine-learning', 'framework', 'neural-symbolic-computing', 'fuzzy-logic'],
     classifiers=[
             'Development Status :: 5 - Production/Stable',
+            'Programming Language :: Python :: 3.7',
+            'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
             'Topic :: Scientific/Engineering :: Artificial Intelligence',
             'License :: OSI Approved :: MIT License',

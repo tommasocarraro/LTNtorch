@@ -1,5 +1,6 @@
 ![build status](https://github.com/bmxitalia/LTNtorch/actions/workflows/build.yml/badge.svg)
 [![coverage status](https://coveralls.io/repos/github/bmxitalia/LTNtorch/badge.svg?branch=main)](https://coveralls.io/github/bmxitalia/LTNtorch?branch=main)
+[![PyPi](https://img.shields.io/pypi/v/LTNtorch.svg)](https://pypi.python.org/pypi/LTNtorch)
 [![docs link](https://img.shields.io/badge/docs-github.io-blue)](https://bmxitalia.github.io/LTNtorch/)
 [![MIT license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 ![python version](https://img.shields.io/badge/python-3.7|3.8|3.9-blue)
@@ -60,7 +61,7 @@ a `grounding`, denoted as 𝒢, is a function which maps a logical symbol into a
 
 In particular, the grounding is defined as follows. Let us assume that *c* is a constant, *x* is a logical 
 variable, *P* is a predicate, and *f* is a logical function:
-![Grounding_in LTN](./images/grounding.png)
+![Grounding_in LTN](https://github.com/bmxitalia/LTNtorch/blob/main/images/grounding.png?raw=true)
 
 The `grounding` defines also how the logical connectives (∧, ∨, ¬, ⇒, ↔) and quantifiers
 (∀, ∃) are mapped in the Real domain. In particular, logical connectives are grounded using fuzzy logic semantics, while
@@ -70,7 +71,7 @@ Examples of possible groundings are showed in the following figure. In the figur
 atomic formula (predicate), while `∀x(friend(John, x) ⇒ friend(Mary, x))` is a closed formula (all the variables are
 quantified). The letter 𝒢, again, is the grounding, the function which maps the logical domain into the Real domain.
 
-![Grounding_illustration](./images/framework_grounding.png)
+![Grounding_illustration](https://github.com/bmxitalia/LTNtorch/blob/main/images/framework_grounding.png?raw=true)
 
 ### LTN as PyTorch computational graphs
 
@@ -79,11 +80,11 @@ computational graphs. Such formulas can express complex queries about the data, 
 learning, statements to prove, etc. The following figure shows an example of how LTN converts such formulas into PyTorch 
 computational graphs.
 
-![Computational_graph_illustration](./images/framework_computational_graph.png)
+![Computational_graph_illustration](https://github.com/bmxitalia/LTNtorch/blob/main/images/framework_computational_graph.png?raw=true)
 
 Let us assume we have 6 people which are denoted using 4 real-valued features.
 The previous figure illustrates the following:
-![Computational_graph_explanation](./images/computational_graph_explanation.png)
+![Computational_graph_explanation](https://github.com/bmxitalia/LTNtorch/blob/main/images/computational_graph_explanation.png?raw=true)
 
 ### Conclusion
 
@@ -98,7 +99,12 @@ However, we suggest to carefully read the [paper](https://arxiv.org/pdf/2012.136
 
 # Installation
 
-If you install LTNtorch by cloning this repository, make sure to install all the requirements.
+It is possible to install LTNtorch using `pip`.
+
+`pip install LTNtorch`
+
+Alternatively, it is possible to install LTNtorch by cloning this repository. In this case, make sure to install all the 
+requirements.
 
 `pip3 install -r requirements.txt`
 
@@ -148,14 +154,14 @@ The examples covered are the following:
 3. [Multi-class multi-label classification](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/examples/3-multi_class_multi_label_classification.ipynb): illustrate how to ground predicates that can classify samples in several classes which are not mutually-exclusive;
 4. [Semi-supervised pattern recognition](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/examples/4-semi-supervised_pattern_recognition.ipynb): showcases the power of LTN in dealing with semi-supervised learning tasks;
 5. [Regression](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/examples/5-regression.ipynb): illustrates how to ground a regressor as a function symbol in LTN;
-6. [Clustering](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/examples/5-clustering.ipynb): illustrates how LTN can solve a unsupervised tasks using first-order logical constraints;
+6. [Clustering](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/examples/6-clustering.ipynb): illustrates how LTN can solve a unsupervised tasks using first-order logical constraints;
 7. [Learning embeddings with LTN](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/examples/7-learning_embeddings_with_LTN.ipynb): illustrates how LTN can learn embeddings using learnable logical constants.
 
 The examples are presented using jupyter notebooks.
 
 # License
 
-This project is licensed under the MIT License - see the [LICENSE](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/original-implementation/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/LICENSE) file for details.
 
 # Acknowledgements
 
