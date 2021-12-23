@@ -6,7 +6,7 @@
 ![python version](https://img.shields.io/badge/python-3.7|3.8|3.9-blue)
 [![DOI badge](https://zenodo.org/badge/432178023.svg)](https://zenodo.org/badge/latestdoi/432178023)
 
-# PyTorch's implementation of Logic Tensor Networks (LTN)
+# LTNtorch: PyTorch implementation of Logic Tensor Networks
 
 Welcome to the PyTorch's implementation of [Logic Tensor Networks](https://arxiv.org/abs/2012.13635)!
 
