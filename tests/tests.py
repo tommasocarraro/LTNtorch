@@ -164,7 +164,7 @@ def test_process_ltn_objects():
     assert proc_objs[0].free_vars == proc_objs[1].free_vars == ['x'], "The two LTN objects should now share " \
                                                                       "the same variable."
 
-    # same test but with a constant that is now trainable -> no deep copy should be performed by the function
+    # same test but with a constant that is now trainable -> deep copy should be performed by the function
     c1_t = Constant(torch.tensor([1, 2, 3, 4]), trainable=True)
     # put a gradient into c1_t to test a functionality
     c1_t.value = torch.unsqueeze(c1_t.value, 1)
@@ -185,7 +185,7 @@ def test_process_ltn_objects():
     proc_objs, _, _ = process_ltn_objects([c1_t, v1_])
 
     assert proc_objs[0] is not c1_t, "A deep copy should be performed, since c1 is a constant with grad_fn."
-    assert proc_objs[1] is v1_, "A deep copy should not be performed since v1_ has grad_fn."
+    assert proc_objs[1] is not v1_, "A deep copy should be performed, since v1_ is a variable with grad_fn."
 
     # test of the function with two variables in input
 

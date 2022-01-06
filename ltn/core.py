@@ -266,11 +266,11 @@ def process_ltn_objects(objects):
     # we want to give the user the possibility to use the same object in different formulas
     # if we do not perform a deep copy, the object itself will be changed by this function even outside of the function
     # due to a side effect
-    # note that we copy only if the input object is a constant with grad_fn or if the object has not grad_fn attribute,
-    # namely it is a leaf tensor
+    # note that we copy only if the input object is a constant/variable with grad_fn or if the object has not
+    # grad_fn attribute, namely it is a leaf tensor
     objects_ = [LTNObject(torch.clone(o.value), copy.deepcopy(o.free_vars))
-                if (o.value.grad_fn is None or (isinstance(o, Constant) and o.value.grad_fn is not None)) else o
-                for o in objects]
+                if (o.value.grad_fn is None or (isinstance(o, (Constant, Variable)) and o.value.grad_fn is not None))
+                else o for o in objects]
     # this deep copy is necessary to avoid the function directly changes the free
     # variables and values contained in the given LTN objects. We do not want to directly change the input objects
     # Instead, we need to create new objects based on the input objects since it is possible we have to reuse the
