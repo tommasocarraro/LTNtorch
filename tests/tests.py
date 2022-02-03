@@ -2115,27 +2115,52 @@ def test_Quantifier():
 
     t = torch.tensor([1, 2, 3])
 
-    # the call accepts list of LTNObjects and a list with one tensor and one list is given
+    # the call accepts LTNObjects and/or tensors and a list with one tensor and one list is given
     with pytest.raises(TypeError):
         SatAgg(t, [1, 2, 3])
 
-    # now, only one is an LTNObject
+    # now, one is an LTNObject and the other parameter is a list
     with pytest.raises(TypeError):
         SatAgg(LTNObject(torch.tensor([1, 2, 3]), []), [1, 2, 3])
 
-    # only scalars are accepted as truth values
+    # only scalars are accepted as truth values, instead, an LTNObject containing a tensor with three elements is
+    # given
     with pytest.raises(ValueError):
         SatAgg(LTNObject(torch.tensor([1, 2, 3]), []))
 
-    # only values in [0., 1.] are allowed
+    # only values in [0., 1.] are allowed, but the second LTNObject contains a 1.4
     with pytest.raises(ValueError):
         SatAgg(LTNObject(torch.tensor(0.1), []), LTNObject(torch.tensor(1.4), []))
 
     # now, test the behavior
+
+    # only LTNObject in input
+
     l = [LTNObject(torch.tensor(0.1), []), LTNObject(torch.tensor(0.34), []), LTNObject(torch.tensor(0.90), [])]
 
     out = SatAgg(*l)
 
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(torch.stack([o.value for o in l], dim=0), dim=0)
+
+    assert torch.equal(out, toy_out), "The output should be the same."
+
+    # only tensors containing values in [0., 1.] in input
+
+    l = [torch.tensor(0.1), torch.tensor(0.34), torch.tensor(0.90)]
+
+    out = SatAgg(*l)
+
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(torch.stack(l, dim=0), dim=0)
+
+    assert torch.equal(out, toy_out), "The output should be the same."
+
+    # both LTNObject and tensors in input
+
+    l = [LTNObject(torch.tensor(0.1), []), torch.tensor(0.34), LTNObject(torch.tensor(0.90), [])]
+
+    out = SatAgg(*l)
+
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(torch.stack([o.value if isinstance(o, LTNObject) else o for o in l],
+                                                              dim=0), dim=0)
 
     assert torch.equal(out, toy_out), "The output should be the same."

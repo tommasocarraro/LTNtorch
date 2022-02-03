@@ -1501,9 +1501,11 @@ class SatAgg:
     --------
     `SatAgg` can be used to aggregate the truth values of formulas contained in a knowledge base. Note that:
 
-    - in this scenario, our knowledge base is composed of closed formulas `f1`, `f2`, and `f3`;
+    - `SatAgg` takes as input a tuple of :class:`ltn.core.LTNObject` and/or :class:`torch.Tensor`;
+    - when some :class:`torch.Tensor` are given to `SatAgg`, they have to be scalars in [0., 1.] since `SatAgg` is designed to work with closed formulas;
+    - in this example, our knowledge base is composed of closed formulas `f1`, `f2`, and `f3`;
     - `SatAgg` applies the `pMeanError` aggregation operator to the truth values of these formulas. The result is a new truth value which can be interpreted as a satisfaction level of the entire knowledge base;
-    - the result of `SatAgg` is a :class:`torch.Tensor` since it has been designed for learning. The idea is to put the result of the operator directly inside the loss function of the LTN. See this `tutorial <https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb>`_ for a detailed example.
+    - the result of `SatAgg` is a :class:`torch.Tensor` since it has been designed for learning in PyTorch. The idea is to put the result of the operator directly inside the loss function of the LTN. See this `tutorial <https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb>`_ for a detailed example.
 
     >>> import ltn
     >>> import torch
@@ -1528,6 +1530,28 @@ class SatAgg:
     <class 'torch.Tensor'>
     >>> print(out)
     tensor(0.7294)
+
+    In the previous example, some closed formulas (:class:`ltn.core.LTNObject`) have been given to the `SatAgg`
+    operator.
+    In this example, we show that `SatAgg` can take as input also :class:`torch.Tensor` containing the result of some
+    closed formulas, namely scalars in [0., 1.]. Note that:
+    - `f2` is just a :class:`torch.Tensor`;
+    - since `f2` contains a scalar in [0., 1.], its value can be interpreted as a truth value of a closed formula. For this reason, it is possible to give `f2` to the `SatAgg` operator to get the aggregation of `f1` (:class:`ltn.core.LTNObject`) and `f2` (:class:`torch.Tensor`).
+
+    >>> x = ltn.Variable('x', torch.tensor([[0.1, 0.03],
+    ...                                     [2.3, 4.3]]))
+    >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
+    ...                                     torch.sum(x, dim=1)
+    ...                                  ))
+    >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregPMeanError(), quantifier='f')
+    >>> f1 = Forall(x, p(x))
+    >>> f2 = torch.tensor(0.7)
+    >>> sat_agg = ltn.fuzzy_ops.SatAgg(ltn.fuzzy_ops.AggregPMeanError())
+    >>> out = sat_agg(f1, f2)
+    >>> print(type(out))
+    <class 'torch.Tensor'>
+    >>> print(out)
+    tensor(0.6842)
 
     .. automethod:: __call__
     """
@@ -1558,8 +1582,8 @@ class SatAgg:
 
         Parameters
         ----------
-        closed_formulas : :obj:`tuple` of :class:`ltn.core.LTNObject`
-            Tuple of closed formulas (`LTNObject`) for which the aggregation has to be computed.
+        closed_formulas : :obj:`tuple` of :class:`ltn.core.LTNObject` and/or :class:`torch.Tensor`
+            Tuple of closed formulas (`LTNObject` and/or tensors) for which the aggregation has to be computed.
 
         Returns
         ----------
@@ -1572,20 +1596,21 @@ class SatAgg:
             Raises when the type of the input parameter is not correct.
 
         :class:`ValueError`
-            Raises when the truth values of the formulas given in input are not in the range [0., 1.].
-            Raises when the truth values of the formulas given in input are not scalars, namely some formulas are not
-            closed formulas.
+            Raises when the truth values of the formulas/tensors given in input are not in the range [0., 1.].
+            Raises when the truth values of the formulas/tensors given in input are not scalars, namely some formulas
+            are not closed formulas.
         """
         # The closed formulas are identifiable since they are just scalar because all the variables
         # have been quantified (i.e., all dimensions have been aggregated).
         truth_values = list(closed_formulas)
-        if not all(isinstance(x, LTNObject) for x in truth_values):
-            raise TypeError("Expected parameter 'closed_formulas' to be a tuple of LTNObject, but got " +
-                            str([type(f) for f in closed_formulas]))
-        truth_values = [o.value for o in truth_values]
+        if not all(isinstance(x, (LTNObject, torch.Tensor)) for x in truth_values):
+            raise TypeError("Expected parameter 'closed_formulas' to be a tuple of LTNObject and/or tensors, "
+                            "but got " + str([type(f) for f in closed_formulas]))
+        truth_values = [o.value if isinstance(o, LTNObject) else o for o in truth_values]
         if not all([f.shape == torch.Size([]) for f in truth_values]):
-            raise ValueError("Expected parameter 'closed_formulas' to be a tuple of LTNObject containing scalars, "
-                             "but got the following shapes: " + str([f.shape() for f in closed_formulas]))
+            raise ValueError("Expected parameter 'closed_formulas' to be a tuple of LTNObject and/or tensors "
+                             "containing scalars, but got the following shapes: " +
+                             str([f.shape() for f in closed_formulas]))
         truth_values = torch.stack(truth_values, dim=0)
 
         return self.agg_op(truth_values, dim=0)
