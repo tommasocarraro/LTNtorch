@@ -1535,6 +1535,7 @@ class SatAgg:
     operator.
     In this example, we show that `SatAgg` can take as input also :class:`torch.Tensor` containing the result of some
     closed formulas, namely scalars in [0., 1.]. Note that:
+
     - `f2` is just a :class:`torch.Tensor`;
     - since `f2` contains a scalar in [0., 1.], its value can be interpreted as a truth value of a closed formula. For this reason, it is possible to give `f2` to the `SatAgg` operator to get the aggregation of `f1` (:class:`ltn.core.LTNObject`) and `f2` (:class:`torch.Tensor`).
 
