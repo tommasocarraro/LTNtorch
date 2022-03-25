@@ -1200,6 +1200,9 @@ def test_Connective():
     not_godel = Connective(ltn.fuzzy_ops.NotGodel())
     assert str(not_godel) == "Connective(connective_op=NotGodel())", "The __repr__ method " \
                                                                      "should return this exact value"
+    and_min = Connective(ltn.fuzzy_ops.AndMin())
+    assert str(and_min) == "Connective(connective_op=AndMin())", "The __repr__ method " \
+                                                                 "should return this exact value"
     and_prod = Connective(ltn.fuzzy_ops.AndProd())
     assert str(and_prod) == "Connective(connective_op=AndProd(stable=True))", "The __repr__ method " \
                                                                               "should return this exact value"
