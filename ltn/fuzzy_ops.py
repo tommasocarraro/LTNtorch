@@ -167,6 +167,8 @@ class NotStandard(UnaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Not = ltn.Connective(ltn.fuzzy_ops.NotStandard())
+    >>> print(Not)
+    Connective(connective_op=NotStandard())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -178,6 +180,9 @@ class NotStandard(UnaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "NotStandard()"
+
     def __call__(self, x):
         """
         It applies the standard fuzzy negation operator to the given operand.
@@ -212,6 +217,8 @@ class NotGodel(UnaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Not = ltn.Connective(ltn.fuzzy_ops.NotGodel())
+    >>> print(Not)
+    Connective(connective_op=NotGodel())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -223,6 +230,9 @@ class NotGodel(UnaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "NotGodel()"
+
     def __call__(self, x):
         """
         It applies the Godel fuzzy negation operator to the given operand.
@@ -266,6 +276,8 @@ class AndMin(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> And = ltn.Connective(ltn.fuzzy_ops.AndMin())
+    >>> print(And)
+    Connective(connective_op=AndMin())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -281,6 +293,9 @@ class AndMin(BinaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "AndMin()"
+
     def __call__(self, x, y):
         """
         It applies the Godel fuzzy conjunction operator to the given operands.
@@ -338,6 +353,8 @@ class AndProd(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> And = ltn.Connective(ltn.fuzzy_ops.AndProd())
+    >>> print(And)
+    Connective(connective_op=AndProd(stable=True))
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -364,6 +381,9 @@ class AndProd(BinaryConnectiveOperator):
             A boolean flag indicating whether it has to be used the stable version of the operator or not.
         """
         self.stable = stable
+
+    def __repr__(self):
+        return "AndProd(stable=" + str(self.stable) + ")"
 
     def __call__(self, x, y, stable=None):
         """
@@ -413,6 +433,8 @@ class AndLuk(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> And = ltn.Connective(ltn.fuzzy_ops.AndLuk())
+    >>> print(And)
+    Connective(connective_op=AndLuk())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -428,6 +450,9 @@ class AndLuk(BinaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "AndLuk()"
+
     def __call__(self, x, y):
         """
         It applies the Lukasiewicz fuzzy conjunction operator to the given operands.
@@ -474,6 +499,8 @@ class OrMax(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Or = ltn.Connective(ltn.fuzzy_ops.OrMax())
+    >>> print(Or)
+    Connective(connective_op=OrMax())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -489,6 +516,9 @@ class OrMax(BinaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "OrMax()"
+
     def __call__(self, x, y):
         """
         It applies the Godel fuzzy disjunction operator to the given operands.
@@ -546,6 +576,8 @@ class OrProbSum(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Or = ltn.Connective(ltn.fuzzy_ops.OrProbSum())
+    >>> print(Or)
+    Connective(connective_op=OrProbSum(stable=True))
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -572,6 +604,9 @@ class OrProbSum(BinaryConnectiveOperator):
             A boolean flag indicating whether it has to be used the stable version of the operator or not.
         """
         self.stable = stable
+
+    def __repr__(self):
+        return "OrProbSum(stable=" + str(self.stable) + ")"
 
     def __call__(self, x, y, stable=None):
         """
@@ -621,6 +656,8 @@ class OrLuk(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Or = ltn.Connective(ltn.fuzzy_ops.OrLuk())
+    >>> print(Or)
+    Connective(connective_op=OrLuk())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -636,6 +673,9 @@ class OrLuk(BinaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "OrLuk()"
+
     def __call__(self, x, y):
         """
         It applies the Lukasiewicz fuzzy disjunction operator to the given operands.
@@ -680,6 +720,8 @@ class ImpliesKleeneDienes(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesKleeneDienes())
+    >>> print(Implies)
+    Connective(connective_op=ImpliesKleeneDienes())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -695,6 +737,9 @@ class ImpliesKleeneDienes(BinaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "ImpliesKleeneDienes()"
+
     def __call__(self, x, y):
         """
         It applies the Kleene Dienes fuzzy implication operator to the given operands.
@@ -738,6 +783,8 @@ class ImpliesGodel(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesGodel())
+    >>> print(Implies)
+    Connective(connective_op=ImpliesGodel())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -753,6 +800,9 @@ class ImpliesGodel(BinaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "ImpliesGodel()"
+
     def __call__(self, x, y):
         """
         It applies the Godel fuzzy implication operator to the given operands.
@@ -810,6 +860,8 @@ class ImpliesReichenbach(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesReichenbach())
+    >>> print(Implies)
+    Connective(connective_op=ImpliesReichenbach(stable=True))
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -836,6 +888,9 @@ class ImpliesReichenbach(BinaryConnectiveOperator):
             A boolean flag indicating whether it has to be used the stable version of the operator or not.
         """
         self.stable = stable
+
+    def __repr__(self):
+        return "ImpliesReichenbach(stable=" + str(self.stable) + ")"
 
     def __call__(self, x, y, stable=None):
         """
@@ -899,6 +954,8 @@ class ImpliesGoguen(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesGoguen())
+    >>> print(Implies)
+    Connective(connective_op=ImpliesGoguen(stable=True))
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -925,6 +982,9 @@ class ImpliesGoguen(BinaryConnectiveOperator):
             A boolean flag indicating whether it has to be used the stable version of the operator or not.
         """
         self.stable = stable
+
+    def __repr__(self):
+        return "ImpliesGoguen(stable=" + str(self.stable) + ")"
 
     def __call__(self, x, y, stable=None):
         """
@@ -974,6 +1034,8 @@ class ImpliesLuk(BinaryConnectiveOperator):
     >>> import ltn
     >>> import torch
     >>> Implies = ltn.Connective(ltn.fuzzy_ops.ImpliesLuk())
+    >>> print(Implies)
+    Connective(connective_op=ImpliesLuk())
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -989,6 +1051,9 @@ class ImpliesLuk(BinaryConnectiveOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "ImpliesLuk()"
+
     def __call__(self, x, y):
         """
         It applies the Lukasiewicz fuzzy implication operator to the given operands.
@@ -1059,6 +1124,8 @@ class Equiv(BinaryConnectiveOperator):
     ...                             and_op=ltn.fuzzy_ops.AndProd(),
     ...                             implies_op=ltn.fuzzy_ops.ImpliesReichenbach()
     ...                         ))
+    >>> print(Equiv)
+    Connective(connective_op=Equiv(and_op=AndProd(stable=True), implies_op=ImpliesReichenbach(stable=True)))
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -1088,6 +1155,9 @@ class Equiv(BinaryConnectiveOperator):
         """
         self.and_op = and_op
         self.implies_op = implies_op
+
+    def __repr__(self):
+        return "Equiv(and_op=" + str(self.and_op) + ", implies_op=" + str(self.implies_op) + ")"
 
     def __call__(self, x, y):
         """
@@ -1151,6 +1221,8 @@ class AggregMin(AggregationOperator):
     >>> import ltn
     >>> import torch
     >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregMin(), quantifier='f')
+    >>> print(Forall)
+    Quantifier(agg_op=AggregMin(), quantifier='f')
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -1162,6 +1234,9 @@ class AggregMin(AggregationOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "AggregMin()"
+
     def __call__(self, xs, dim=None, keepdim=False):
         """
         It applies the min fuzzy aggregation operator to the given formula's :ref:`grounding <notegrounding>` on
@@ -1212,6 +1287,8 @@ class AggregMean(AggregationOperator):
     >>> import ltn
     >>> import torch
     >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregMean(), quantifier='f')
+    >>> print(Forall)
+    Quantifier(agg_op=AggregMean(), quantifier='f')
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -1223,6 +1300,9 @@ class AggregMean(AggregationOperator):
 
     .. automethod:: __call__
     """
+    def __repr__(self):
+        return "AggregMean()"
+
     def __call__(self, xs, dim=None, keepdim=False):
         """
         It applies the mean fuzzy aggregation operator to the given formula's :ref:`grounding <notegrounding>` on
@@ -1292,6 +1372,8 @@ class AggregPMean(AggregationOperator):
     >>> import ltn
     >>> import torch
     >>> Exists = ltn.Quantifier(ltn.fuzzy_ops.AggregPMean(), quantifier='e')
+    >>> print(Exists)
+    Quantifier(agg_op=AggregPMean(p=2, stable=True), quantifier='e')
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -1317,6 +1399,9 @@ class AggregPMean(AggregationOperator):
         """
         self.p = p
         self.stable = stable
+
+    def __repr__(self):
+        return "AggregPMean(p=" + str(self.p) + ", stable=" + str(self.stable) + ")"
 
     def __call__(self, xs, dim=None, keepdim=False, p=None, stable=None):
         """
@@ -1395,6 +1480,8 @@ class AggregPMeanError(AggregationOperator):
     >>> import ltn
     >>> import torch
     >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregPMeanError(), quantifier='f')
+    >>> print(Forall)
+    Quantifier(agg_op=AggregPMeanError(p=2, stable=True), quantifier='f')
     >>> p = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(
     ...                                     torch.sum(x, dim=1)
     ...                                  ))
@@ -1420,6 +1507,9 @@ class AggregPMeanError(AggregationOperator):
         """
         self.p = p
         self.stable = stable
+
+    def __repr__(self):
+        return "AggregPMeanError(p=" + str(self.p) + ", stable=" + str(self.stable) + ")"
 
     def __call__(self, xs, dim=None, keepdim=False, p=None, stable=None):
         """
@@ -1525,6 +1615,8 @@ class SatAgg:
     >>> f2 = Forall([x, y], q(x, y))
     >>> f3 = And(Forall([x, y], q(x, y)), Forall(x, p(x)))
     >>> sat_agg = ltn.fuzzy_ops.SatAgg(ltn.fuzzy_ops.AggregPMeanError())
+    >>> print(sat_agg)
+    SatAgg(agg_op=AggregPMeanError(p=2, stable=True))
     >>> out = sat_agg(f1, f2, f3)
     >>> print(type(out))
     <class 'torch.Tensor'>
@@ -1548,6 +1640,8 @@ class SatAgg:
     >>> f1 = Forall(x, p(x))
     >>> f2 = torch.tensor(0.7)
     >>> sat_agg = ltn.fuzzy_ops.SatAgg(ltn.fuzzy_ops.AggregPMeanError())
+    >>> print(sat_agg)
+    SatAgg(agg_op=AggregPMeanError(p=2, stable=True))
     >>> out = sat_agg(f1, f2)
     >>> print(type(out))
     <class 'torch.Tensor'>
@@ -1576,6 +1670,9 @@ class SatAgg:
             raise TypeError("SatAgg() : argument 'agg_op' (position 1) must be an AggregationOperator, not " +
                             str(type(agg_op)))
         self.agg_op = agg_op
+
+    def __repr__(self):
+        return "SatAgg(agg_op=" + str(self.agg_op) + ")"
 
     def __call__(self, *closed_formulas):
         """

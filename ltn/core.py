@@ -54,6 +54,9 @@ class LTNObject:
         self.value = value
         self.free_vars = var_labels
 
+    def __repr__(self):
+        return "LTNObject(value=" + str(self.value) + ", free_vars=" + str(self.free_vars) + ")"
+
     def shape(self):
         """
         Returns the shape of the :ref:`grounding <notegrounding>` of the LTN object.
@@ -94,6 +97,8 @@ class Constant(LTNObject):
     >>> import ltn
     >>> import torch
     >>> c = ltn.Constant(torch.tensor([3.4, 5.4, 4.3]))
+    >>> print(c)
+    Constant(value=tensor([3.4000, 5.4000, 4.3000]), free_vars=[])
     >>> print(c.value)
     tensor([3.4000, 5.4000, 4.3000])
     >>> print(c.free_vars)
@@ -105,6 +110,9 @@ class Constant(LTNObject):
 
     >>> t_c = ltn.Constant(torch.tensor([[3.4, 2.3, 5.6],
     ...                                  [6.7, 5.6, 4.3]]), trainable=True)
+    >>> print(t_c)
+    Constant(value=tensor([[3.4000, 2.3000, 5.6000],
+            [6.7000, 5.6000, 4.3000]], requires_grad=True), free_vars=[])
     >>> print(t_c.value)
     tensor([[3.4000, 2.3000, 5.6000],
             [6.7000, 5.6000, 4.3000]], requires_grad=True)
@@ -122,6 +130,9 @@ class Constant(LTNObject):
             # tensor in this case
             self.value = self.value.float()
             self.value.requires_grad = trainable
+
+    def __repr__(self):
+        return "Constant(value=" + str(self.value) + ", free_vars=" + str(self.free_vars) + ")"
 
 
 class Variable(LTNObject):
@@ -166,6 +177,9 @@ class Variable(LTNObject):
     >>> import torch
     >>> x = ltn.Variable('x', torch.tensor([[3.4, 4.5],
     ...                                     [6.7, 9.6]]), add_batch_dim=True)
+    >>> print(x)
+    Variable(value=tensor([[3.4000, 4.5000],
+            [6.7000, 9.6000]]), free_vars=['x'])
     >>> print(x.value)
     tensor([[3.4000, 4.5000],
             [6.7000, 9.6000]])
@@ -177,6 +191,10 @@ class Variable(LTNObject):
     `add_bath_dim=True` adds a batch dimension to the `value` of the variable since it has only one dimension.
 
     >>> y = ltn.Variable('y', torch.tensor([3.4, 4.5, 8.9]), add_batch_dim=True)
+    >>> print(y)
+    Variable(value=tensor([[3.4000],
+            [4.5000],
+            [8.9000]]), free_vars=['y'])
     >>> print(y.value)
     tensor([[3.4000],
             [4.5000],
@@ -190,6 +208,8 @@ class Variable(LTNObject):
     when a variable contains a sequence of indexes.
 
     >>> z = ltn.Variable('z', torch.tensor([1, 2, 3]), add_batch_dim=False)
+    >>> print(z)
+    Variable(value=tensor([1, 2, 3]), free_vars=['z'])
     >>> print(z.value)
     tensor([1, 2, 3])
     >>> print(z.free_vars)
@@ -223,6 +243,9 @@ class Variable(LTNObject):
 
         self.value = self.value.to(ltn.device)
         self.latent_var = var_label
+
+    def __repr__(self):
+        return "Variable(value=" + str(self.value) + ", free_vars=" + str(self.free_vars) + ")"
 
 
 def process_ltn_objects(objects):
@@ -390,12 +413,22 @@ class Predicate(nn.Module):
     ...                         torch.nn.Sigmoid()
     ...                   )
     >>> p = ltn.Predicate(model=predicate_model)
+    >>> print(p)
+    Predicate(model=Sequential(
+      (0): Linear(in_features=4, out_features=2, bias=True)
+      (1): ELU(alpha=1.0)
+      (2): Linear(in_features=2, out_features=1, bias=True)
+      (3): Sigmoid()
+    ))
 
     Unary predicate defined using a function. Note that `torch.sum` is performed on `dim=1`. This is because in LTNtorch
     the first dimension (`dim=0`) is related to the batch dimension, while other dimensions are related to the features
-    of the individuals.
+    of the individuals. Notice that the output of the print is `Predicate(model=LambdaModel())`. This indicates that the
+    LTN predicate has been defined using a function, through the `func` parameter of the constructor.
 
     >>> p_f = ltn.Predicate(func=lambda x: torch.nn.Sigmoid()(torch.sum(x, dim=1)))
+    >>> print(p_f)
+    Predicate(model=LambdaModel())
 
     Binary predicate defined using a :class:`torch.nn.Module`. Note the call to `torch.cat` to merge
     the two inputs of the binary predicate.
@@ -406,7 +439,7 @@ class Predicate(nn.Module):
     ...         elu = torch.nn.ELU()
     ...         sigmoid = torch.nn.Sigmoid()
     ...         self.dense1 = torch.nn.Linear(4, 5)
-    ...         dense2 = torch.nn.Linear(5, 1)
+    ...         self.dense2 = torch.nn.Linear(5, 1)
     ...
     ...     def forward(self, x, y):
     ...         x = torch.cat([x, y], dim=1)
@@ -416,6 +449,11 @@ class Predicate(nn.Module):
     ...
     >>> predicate_model = PredicateModel()
     >>> b_p = ltn.Predicate(model=predicate_model)
+    >>> print(b_p)
+    Predicate(model=PredicateModel(
+      (dense1): Linear(in_features=4, out_features=5, bias=True)
+      (dense2): Linear(in_features=5, out_features=1, bias=True)
+    ))
 
     Binary predicate defined using a function. Note the call to `torch.cat` to merge the two inputs of the
     binary predicate.
@@ -423,6 +461,8 @@ class Predicate(nn.Module):
     >>> b_p_f = ltn.Predicate(func=lambda x, y: torch.nn.Sigmoid()(
     ...                                             torch.sum(torch.cat([x, y], dim=1), dim=1)
     ...                                         ))
+    >>> print(b_p_f)
+    Predicate(model=LambdaModel())
 
     Evaluation of a unary predicate on a constant. Note that:
 
@@ -436,6 +476,8 @@ class Predicate(nn.Module):
     >>> out = p_f(c)
     >>> print(type(out))
     <class 'ltn.core.LTNObject'>
+    >>> print(out)
+    LTNObject(value=tensor(0.7008), free_vars=[])
     >>> print(out.value)
     tensor(0.7008)
     >>> print(out.free_vars)
@@ -451,6 +493,8 @@ class Predicate(nn.Module):
     >>> v = ltn.Variable('v', torch.tensor([[0.4, 0.3],
     ...                                     [0.32, 0.043]]))
     >>> out = p_f(v)
+    >>> print(out)
+    LTNObject(value=tensor([0.6682, 0.5898]), free_vars=['v'])
     >>> print(out.value)
     tensor([0.6682, 0.5898])
     >>> print(out.free_vars)
@@ -467,6 +511,8 @@ class Predicate(nn.Module):
     ...                                     [0.32, 0.043]]))
     >>> c = ltn.Constant(torch.tensor([0.4, 0.04, 0.23, 0.43]))
     >>> out = b_p_f(v, c)
+    >>> print(out)
+    LTNObject(value=tensor([0.8581, 0.8120]), free_vars=['v'])
     >>> print(out.value)
     tensor([0.8581, 0.8120])
     >>> print(out.free_vars)
@@ -487,6 +533,9 @@ class Predicate(nn.Module):
     ...                                     [0.2, 0.04, 0.32],
     ...                                     [0.06, 0.08, 0.3]]))
     >>> out = b_p_f(x, y)
+    >>> print(out)
+    LTNObject(value=tensor([[0.7974, 0.7790, 0.7577],
+            [0.7375, 0.7157, 0.6906]]), free_vars=['x', 'y'])
     >>> print(out.value)
     tensor([[0.7974, 0.7790, 0.7577],
             [0.7375, 0.7157, 0.6906]])
@@ -524,6 +573,9 @@ class Predicate(nn.Module):
                 raise TypeError("Predicate() : argument 'func' (position 2) must be a function, "
                                 "not " + str(type(model)))
             self.model = LambdaModel(func)
+
+    def __repr__(self):
+        return "Predicate(model=" + str(self.model) + ")"
 
     def forward(self, *inputs, **kwargs):
         """
@@ -628,14 +680,23 @@ class Function(nn.Module):
     ...                         torch.nn.Linear(3, 2)
     ...                   )
     >>> f = ltn.Function(model=function_model)
+    >>> print(f)
+    Function(model=Sequential(
+      (0): Linear(in_features=4, out_features=3, bias=True)
+      (1): ELU(alpha=1.0)
+      (2): Linear(in_features=3, out_features=2, bias=True)
+    ))
 
     Unary function defined using a function. Note that `torch.sum` is performed on `dim=1`. This is because in LTNtorch
     the first dimension (`dim=0`) is related to the batch dimension, while other dimensions are related to the features
-    of the individuals.
+    of the individuals. Notice that the output of the print is `Function(model=LambdaModel())`. This indicates that the
+    LTN function has been defined using a function, through the `func` parameter of the constructor.
 
     >>> f_f = ltn.Function(func=lambda x: torch.repeat_interleave(
     ...                                              torch.sum(x, dim=1, keepdim=True), 2, dim=1)
     ...                                         )
+    >>> print(f_f)
+    Function(model=LambdaModel())
 
     Binary function defined using a :class:`torch.nn.Module`. Note the call to `torch.cat` to merge
     the two inputs of the binary function.
@@ -655,6 +716,10 @@ class Function(nn.Module):
     ...
     >>> function_model = FunctionModel()
     >>> b_f = ltn.Function(model=function_model)
+    >>> print(b_f)
+    Function(model=FunctionModel(
+      (dense1): Linear(in_features=4, out_features=5, bias=True)
+    ))
 
     Binary function defined using a function. Note the call to `torch.cat` to merge the two inputs of the
     binary function.
@@ -663,6 +728,8 @@ class Function(nn.Module):
     ...                                 torch.repeat_interleave(
     ...                                     torch.sum(torch.cat([x, y], dim=1), dim=1, keepdim=True), 2,
     ...                                     dim=1))
+    >>> print(b_f_f)
+    Function(model=LambdaModel())
 
     Evaluation of a unary function on a constant. Note that:
 
@@ -675,6 +742,8 @@ class Function(nn.Module):
     >>> out = f_f(c)
     >>> print(type(out))
     <class 'ltn.core.LTNObject'>
+    >>> print(out)
+    LTNObject(value=tensor([0.8510, 0.8510]), free_vars=[])
     >>> print(out.value)
     tensor([0.8510, 0.8510])
     >>> print(out.free_vars)
@@ -690,6 +759,9 @@ class Function(nn.Module):
     >>> v = ltn.Variable('v', torch.tensor([[0.4, 0.3],
     ...                                     [0.32, 0.043]]))
     >>> out = f_f(v)
+    >>> print(out)
+    LTNObject(value=tensor([[0.7000, 0.7000],
+            [0.3630, 0.3630]]), free_vars=['v'])
     >>> print(out.value)
     tensor([[0.7000, 0.7000],
             [0.3630, 0.3630]])
@@ -707,6 +779,9 @@ class Function(nn.Module):
     ...                                     [0.32, 0.043]]))
     >>> c = ltn.Constant(torch.tensor([0.4, 0.04, 0.23, 0.43]))
     >>> out = b_f_f(v, c)
+    >>> print(out)
+    LTNObject(value=tensor([[1.8000, 1.8000],
+            [1.4630, 1.4630]]), free_vars=['v'])
     >>> print(out.value)
     tensor([[1.8000, 1.8000],
             [1.4630, 1.4630]])
@@ -728,6 +803,14 @@ class Function(nn.Module):
     ...                                     [0.2, 0.04, 0.32],
     ...                                     [0.06, 0.08, 0.3]]))
     >>> out = b_f_f(x, y)
+    >>> print(out)
+    LTNObject(value=tensor([[[1.3700, 1.3700],
+             [1.2600, 1.2600],
+             [1.1400, 1.1400]],
+    <BLANKLINE>
+            [[1.0330, 1.0330],
+             [0.9230, 0.9230],
+             [0.8030, 0.8030]]]), free_vars=['x', 'y'])
     >>> print(out.value)
     tensor([[[1.3700, 1.3700],
              [1.2600, 1.2600],
@@ -771,6 +854,9 @@ class Function(nn.Module):
                 raise TypeError("Function() : argument 'func' (position 2) must be a function, "
                                 "not " + str(type(model)))
             self.model = LambdaModel(func)
+
+    def __repr__(self):
+        return "Function(model=" + str(self.model) + ")"
 
     def forward(self, *inputs, **kwargs):
         """
@@ -1058,6 +1144,8 @@ class Connective:
     ...                                     [1.3, 4.3, 2.3],
     ...                                     [0.4, 0.2, 1.2]]))
     >>> And = ltn.Connective(ltn.fuzzy_ops.AndProd())
+    >>> print(And)
+    Connective(connective_op=AndProd(stable=True))
     >>> out = And(p(x), q(y, z))
     >>> print(out.value)
     tensor([[[0.5971, 0.6900, 0.6899, 0.6391],
@@ -1078,6 +1166,9 @@ class Connective:
             raise TypeError("Connective() : argument 'connective_op' (position 1) must be a "
                             "ltn.fuzzy_ops.ConnectiveOperator, not " + str(type(connective_op)))
         self.connective_op = connective_op
+
+    def __repr__(self):
+        return "Connective(connective_op=" + str(self.connective_op) + ")"
 
     def __call__(self, *operands, **kwargs):
         """
@@ -1209,6 +1300,8 @@ class Quantifier:
     - in LTNtorch, the quantification is performed by computing the value of the predicate first and then by aggregating on the selected dimensions, specified by the quantified variables.
 
     >>> Forall = ltn.Quantifier(ltn.fuzzy_ops.AggregPMeanError(), quantifier='f')
+    >>> print(Forall)
+    Quantifier(agg_op=AggregPMeanError(p=2, stable=True), quantifier='f')
     >>> out = Forall(x, p(x, y))
     >>> print(out.value)
     tensor([0.9798, 0.9988, 0.9974])
@@ -1238,6 +1331,8 @@ class Quantifier:
     - LTNtorch supports various sematics for quantifiers, here we use :class:`ltn.fuzzy_ops.AggregPMean` for :math:`\\exists`.
 
     >>> Exists = ltn.Quantifier(ltn.fuzzy_ops.AggregPMean(), quantifier='e')
+    >>> print(Exists)
+    Quantifier(agg_op=AggregPMean(p=2, stable=True), quantifier='e')
     >>> out = Forall(x, Exists(y, p(x, y)))
     >>> print(out.value)
     tensor(0.9920)
@@ -1299,6 +1394,9 @@ class Quantifier:
                              "for existential quantifier, or the string 'f', "
                              "for universal quantifier, but got " + str(quantifier))
         self.quantifier = quantifier
+
+    def __repr__(self):
+        return "Quantifier(agg_op=" + str(self.agg_op) + ", quantifier='" + self.quantifier + "')"
 
     def __call__(self, vars, formula, cond_vars=None, cond_fn=None, **kwargs):
         """

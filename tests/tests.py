@@ -31,6 +31,8 @@ def test_LTNObject():
 
     obj = LTNObject(good_value, good_var_labels)
 
+    assert obj.__repr__() == "LTNObject(value=tensor([1, 2, 3, 4]), free_vars=['x'])", "The __repr__ method " \
+                                                                                       "should return this exact value"
     assert hasattr(obj, "value"), "An LTNObject should have a value attribute"
     assert hasattr(obj, "free_vars"), "An LTNObject should have a free_vars attribute"
     assert torch.equal(obj.value, good_value), "The value should be as same as the parameter"
@@ -49,6 +51,8 @@ def test_Constant():
 
     # test with trainable False
     const = Constant(good_value)
+    assert const.__repr__() == "Constant(value=tensor([1, 2, 3, 4]), free_vars=[])", "The __repr__ method " \
+                                                                                     "should return this exact value"
     assert hasattr(const, "value"), "Constant should have a value attribute"
     assert hasattr(const, "free_vars"), "Constant should have a free_vars attribute"
     assert const.free_vars == [], "The free_vars should be an empty list"
@@ -61,6 +65,8 @@ def test_Constant():
 
     # test with trainable True
     const = Constant(good_value, trainable=True)
+    assert const.__repr__() == "Constant(value=tensor([1., 2., 3., 4.], requires_grad=True), free_vars=[])", "The " \
+                               "__repr__ method should return this exact value"
     assert isinstance(const.value, torch.FloatTensor), "If trainable is set to True, the system should convert the " \
                                                        "tensor (value of the constant) to float"
     assert const.value.requires_grad is True, "Since trainable has been set to True, required_grad should be True"
@@ -86,6 +92,9 @@ def test_Variable():
 
     # test with add_batch_dim to True
     var = Variable(good_label, good_value_one_dim)
+    assert str(Variable('x', torch.tensor([1, 2]), add_batch_dim=False)) == "Variable(value=tensor([1, 2]), " \
+                                                                            "free_vars=['x'])", "The __repr__ method " \
+                                                                                       "should return this exact value"
     assert hasattr(var, "value"), "The variable should have a value attribute"
     assert hasattr(var, "free_vars"), "The variable should have a free_vars attribute"
     assert hasattr(var, "latent_var"), "The variable should have a latent_var attribute"
@@ -296,6 +305,7 @@ def test_Predicate():
 
     m = PredicateModel()
     p1 = Predicate(m)
+    assert str(p1) == "Predicate(model=PredicateModel())", "The __repr__ method should return this exact value"
     assert p1.model == m, "The model should be as same as the parameter."
     assert isinstance(p1.model, torch.nn.Module), "The model should be of type torch.nn.Module."
     v = Variable("x", torch.randn((4, 3)))
@@ -638,6 +648,7 @@ def test_Function():
 
     m = FunctionModel()
     f1 = Function(m)
+    assert str(f1) == "Function(model=FunctionModel())", "The __repr__ method should return this exact value"
     assert f1.model == m, "The model should be as same as the parameter."
     assert isinstance(f1.model, torch.nn.Module), "The model should be of type torch.nn.Module."
     v = Variable("x", torch.randn((4, 3)))
@@ -1184,22 +1195,56 @@ def test_Connective():
 
     # definition of all other connectives and simple test of them
     not_standard = Connective(ltn.fuzzy_ops.NotStandard())
+    assert str(not_standard) == "Connective(connective_op=NotStandard())", "The __repr__ method " \
+                                                                           "should return this exact value"
     not_godel = Connective(ltn.fuzzy_ops.NotGodel())
+    assert str(not_godel) == "Connective(connective_op=NotGodel())", "The __repr__ method " \
+                                                                     "should return this exact value"
     and_prod = Connective(ltn.fuzzy_ops.AndProd())
+    assert str(and_prod) == "Connective(connective_op=AndProd(stable=True))", "The __repr__ method " \
+                                                                              "should return this exact value"
     and_prod_not_stable = Connective(ltn.fuzzy_ops.AndProd(stable=False))
+    assert str(and_prod_not_stable) == "Connective(connective_op=AndProd(stable=False))", "The __repr__ method " \
+                                                                                          "should return this " \
+                                                                                          "exact value"
     and_luk = Connective(ltn.fuzzy_ops.AndLuk())
+    assert str(and_luk) == "Connective(connective_op=AndLuk())", "The __repr__ method should return this exact value"
     or_max = Connective(ltn.fuzzy_ops.OrMax())
+    assert str(or_max) == "Connective(connective_op=OrMax())", "The __repr__ method should return this exact value"
     or_prob = Connective(ltn.fuzzy_ops.OrProbSum())
+    assert str(or_prob) == "Connective(connective_op=OrProbSum(stable=True))", "The __repr__ method " \
+                                                                               "should return this exact value"
     or_prob_not_stable = Connective(ltn.fuzzy_ops.OrProbSum(stable=False))
+    assert str(or_prob_not_stable) == "Connective(connective_op=OrProbSum(stable=False))", "The __repr__ method " \
+                                                                                           "should return this " \
+                                                                                           "exact value"
     or_luk = Connective(ltn.fuzzy_ops.OrLuk())
+    assert str(or_luk) == "Connective(connective_op=OrLuk())", "The __repr__ method should return this exact value"
     i_kd = Connective(ltn.fuzzy_ops.ImpliesKleeneDienes())
+    assert str(i_kd) == "Connective(connective_op=ImpliesKleeneDienes())", "The __repr__ method " \
+                                                                           "should return this exact value"
     i_godel = Connective(ltn.fuzzy_ops.ImpliesGodel())
+    assert str(i_godel) == "Connective(connective_op=ImpliesGodel())", "The __repr__ method " \
+                                                                       "should return this exact value"
     i_r = Connective(ltn.fuzzy_ops.ImpliesReichenbach())
+    assert str(i_r) == "Connective(connective_op=ImpliesReichenbach(stable=True))", "The __repr__ method " \
+                                                                                    "should return this exact value"
     i_r_not_stable = Connective(ltn.fuzzy_ops.ImpliesReichenbach(stable=False))
+    assert str(i_r_not_stable) == "Connective(connective_op=ImpliesReichenbach(stable=False))", "The __repr__ method " \
+                                                                                                "should return " \
+                                                                                                "this exact value"
     i_gougen = Connective(ltn.fuzzy_ops.ImpliesGoguen())
+    assert str(i_gougen) == "Connective(connective_op=ImpliesGoguen(stable=True))", "The __repr__ method " \
+                                                                                    "should return this exact value"
     i_gougen_not_stable = Connective(ltn.fuzzy_ops.ImpliesGoguen(stable=False))
+    assert str(i_gougen_not_stable) == "Connective(connective_op=ImpliesGoguen(stable=False))", "The __repr__ method " \
+                                                                                                "should return " \
+                                                                                                "this exact value"
     i_luk = Connective(ltn.fuzzy_ops.ImpliesLuk())
+    assert str(i_luk) == "Connective(connective_op=ImpliesLuk())", "The __repr__ method should return this exact value"
     equiv = Connective(ltn.fuzzy_ops.Equiv(ltn.fuzzy_ops.AndProd(), ltn.fuzzy_ops.ImpliesReichenbach()))
+    assert str(equiv) == "Connective(connective_op=Equiv(and_op=AndProd(stable=True), implies_op=" \
+                         "ImpliesReichenbach(stable=True)))", "The __repr__ method should return this exact value"
 
     # we test the connective with simple LTN objects based on the same variables, for simplicity
     # the case with different variables has already been tested above
@@ -1495,7 +1540,14 @@ def test_Quantifier():
     p = Predicate(func=lambda x, y: torch.nn.Sigmoid()(torch.sum(torch.cat([x, y], dim=1), dim=1)))
 
     exists = Quantifier(ltn.fuzzy_ops.AggregPMean(p=2), "e")
+    assert str(exists) == "Quantifier(agg_op=AggregPMean(p=2, stable=True), quantifier='e')", "The __repr__ method " \
+                                                                                              "should return this " \
+                                                                                              "exact value"
     forall = Quantifier(ltn.fuzzy_ops.AggregPMeanError(p=2), "f")
+    assert str(forall) == "Quantifier(agg_op=AggregPMeanError(p=2, stable=True), quantifier='f')", "The __repr__ " \
+                                                                                                   "method " \
+                                                                                                   "should return " \
+                                                                                                   "this exact value"
 
     # error if vars parameter do not contain only LTN variables, in this case it contains a variables plus constant
     with pytest.raises(TypeError):
@@ -1829,9 +1881,14 @@ def test_Quantifier():
     # all quantifiers with simple inputs and without condition only to check they are correct
 
     min_agg = ltn.fuzzy_ops.AggregMin()
+    assert str(min_agg) == "AggregMin()", "The __repr__ method should return this exact value"
     mean_agg = ltn.fuzzy_ops.AggregMean()
+    assert str(mean_agg) == "AggregMean()", "The __repr__ method should return this exact value"
     p_mean_agg = ltn.fuzzy_ops.AggregPMean()
+    assert str(p_mean_agg) == "AggregPMean(p=2, stable=True)", "The __repr__ method should return this exact value"
     p_mean_error_agg = ltn.fuzzy_ops.AggregPMeanError()
+    assert str(p_mean_error_agg) == "AggregPMeanError(p=2, stable=True)", "The __repr__ method should " \
+                                                                          "return this exact value"
 
     truth_values = torch.rand((3, 5, 6))
     truth_values_nan = torch.where(truth_values < 0.1, np.nan, truth_values.double())
@@ -2104,6 +2161,8 @@ def test_Quantifier():
     # test SatAgg
 
     SatAgg = ltn.fuzzy_ops.SatAgg()
+    assert str(SatAgg) == "SatAgg(agg_op=AggregPMeanError(p=2, stable=True))", "The __repr__ method hould return " \
+                                                                               "this exact value"
 
     # test exception in construction
 

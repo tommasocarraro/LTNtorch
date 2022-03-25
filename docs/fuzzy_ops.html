@@ -236,6 +236,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Not</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">NotStandard</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Not</span><span class="p">)</span>
+<span class="go">Connective(connective_op=NotStandard())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -253,13 +255,13 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The standard fuzzy negation of the given operand.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The standard fuzzy negation of the given operand.</p>
 </dd>
 </dl>
 </dd>
@@ -284,6 +286,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Not</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">NotGodel</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Not</span><span class="p">)</span>
+<span class="go">Connective(connective_op=NotGodel())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -301,13 +305,13 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy negation of the given operand.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy negation of the given operand.</p>
 </dd>
 </dl>
 </dd>
@@ -339,6 +343,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">And</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AndMin</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">And</span><span class="p">)</span>
+<span class="go">Connective(connective_op=AndMin())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -360,15 +366,15 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy conjunction of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy conjunction of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -410,6 +416,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">And</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AndProd</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">And</span><span class="p">)</span>
+<span class="go">Connective(connective_op=AndProd(stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -431,9 +439,9 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 <dt><strong>stable</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, default=None</span></dt><dd><p>Flag indicating whether to use the <a class="reference external" href="https://docs.python.org/3/c-api/stable.html#stable" title="(in Python v3.10)"><span class="xref std std-ref">stable version</span></a> of the operator or not.</p>
 </dd>
@@ -441,7 +449,7 @@ and implement the <cite>__call__()</cite> method.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Goguen fuzzy conjunction of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Goguen fuzzy conjunction of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -481,6 +489,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">And</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AndLuk</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">And</span><span class="p">)</span>
+<span class="go">Connective(connective_op=AndLuk())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -502,15 +512,15 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Lukasiewicz fuzzy conjunction of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Lukasiewicz fuzzy conjunction of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -542,6 +552,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Or</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">OrMax</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Or</span><span class="p">)</span>
+<span class="go">Connective(connective_op=OrMax())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -563,15 +575,15 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy disjunction of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy disjunction of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -613,6 +625,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Or</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">OrProbSum</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Or</span><span class="p">)</span>
+<span class="go">Connective(connective_op=OrProbSum(stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -634,9 +648,9 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 <dt><strong>stable</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, default=None</span></dt><dd><p>Flag indicating whether to use the <a class="reference external" href="https://docs.python.org/3/c-api/stable.html#stable" title="(in Python v3.10)"><span class="xref std std-ref">stable version</span></a> of the operator or not.</p>
 </dd>
@@ -644,7 +658,7 @@ and implement the <cite>__call__()</cite> method.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Goguen fuzzy disjunction of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Goguen fuzzy disjunction of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -684,6 +698,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Or</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">OrLuk</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Or</span><span class="p">)</span>
+<span class="go">Connective(connective_op=OrLuk())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -705,15 +721,15 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Lukasiewicz fuzzy disjunction of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Lukasiewicz fuzzy disjunction of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -745,6 +761,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Implies</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">ImpliesKleeneDienes</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Implies</span><span class="p">)</span>
+<span class="go">Connective(connective_op=ImpliesKleeneDienes())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -766,15 +784,15 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Kleene Dienes fuzzy implication of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Kleene Dienes fuzzy implication of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -806,6 +824,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Implies</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">ImpliesGodel</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Implies</span><span class="p">)</span>
+<span class="go">Connective(connective_op=ImpliesGodel())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -827,15 +847,15 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy implication of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Godel fuzzy implication of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -877,6 +897,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Implies</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">ImpliesReichenbach</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Implies</span><span class="p">)</span>
+<span class="go">Connective(connective_op=ImpliesReichenbach(stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -898,9 +920,9 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 <dt><strong>stable: :obj:`bool`, default=None</strong></dt><dd><p>Flag indicating whether to use the <a class="reference external" href="https://docs.python.org/3/c-api/stable.html#stable" title="(in Python v3.10)"><span class="xref std std-ref">stable version</span></a> of the operator or not.</p>
 </dd>
@@ -908,7 +930,7 @@ and implement the <cite>__call__()</cite> method.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Reichenbach fuzzy implication of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Reichenbach fuzzy implication of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -958,6 +980,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Implies</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">ImpliesGoguen</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Implies</span><span class="p">)</span>
+<span class="go">Connective(connective_op=ImpliesGoguen(stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -979,9 +1003,9 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 <dt><strong>stable</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, default=None</span></dt><dd><p>Flag indicating whether to use the <a class="reference external" href="https://docs.python.org/3/c-api/stable.html#stable" title="(in Python v3.10)"><span class="xref std std-ref">stable version</span></a> of the operator or not.</p>
 </dd>
@@ -989,7 +1013,7 @@ and implement the <cite>__call__()</cite> method.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Goguen fuzzy implication of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The Goguen fuzzy implication of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -1049,6 +1073,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <span class="gp">... </span>                            <span class="n">and_op</span><span class="o">=</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AndProd</span><span class="p">(),</span>
 <span class="gp">... </span>                            <span class="n">implies_op</span><span class="o">=</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">ImpliesReichenbach</span><span class="p">()</span>
 <span class="gp">... </span>                        <span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Equiv</span><span class="p">)</span>
+<span class="go">Connective(connective_op=Equiv(and_op=AndProd(stable=True), implies_op=ImpliesReichenbach(stable=True)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -1070,15 +1096,15 @@ and implement the <cite>__call__()</cite> method.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
+<dt><strong>x</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>First operand on which the operator has to be applied.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Second operand on which the operator has to be applied.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The fuzzy equivalence of the two operands.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The fuzzy equivalence of the two operands.</p>
 </dd>
 </dl>
 </dd>
@@ -1130,6 +1156,8 @@ and implement the <cite>__call__()</cite> method.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Forall</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Quantifier</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregMin</span><span class="p">(),</span> <span class="n">quantifier</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Forall</span><span class="p">)</span>
+<span class="go">Quantifier(agg_op=AggregMin(), quantifier=&#39;f&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -1148,7 +1176,7 @@ the selected dimensions.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
+<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default=None</span></dt><dd><p>Tuple containing the indexes of dimensions on which the aggregation has to be performed.</p>
 </dd>
@@ -1159,7 +1187,7 @@ the aggregation.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>Min fuzzy aggregation of the formula.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>Min fuzzy aggregation of the formula.</p>
 </dd>
 </dl>
 </dd>
@@ -1185,6 +1213,8 @@ the range [0., 1.].</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Forall</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Quantifier</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregMean</span><span class="p">(),</span> <span class="n">quantifier</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Forall</span><span class="p">)</span>
+<span class="go">Quantifier(agg_op=AggregMean(), quantifier=&#39;f&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -1203,7 +1233,7 @@ the selected dimensions.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
+<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default=None</span></dt><dd><p>Tuple containing the indexes of dimensions on which the aggregation has to be performed.</p>
 </dd>
@@ -1214,7 +1244,7 @@ the aggregation.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>Mean fuzzy aggregation of the formula.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>Mean fuzzy aggregation of the formula.</p>
 </dd>
 </dl>
 </dd>
@@ -1255,6 +1285,8 @@ maximum of the input values (classical behavior of <span class="math notranslate
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Exists</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Quantifier</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregPMean</span><span class="p">(),</span> <span class="n">quantifier</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Exists</span><span class="p">)</span>
+<span class="go">Quantifier(agg_op=AggregPMean(p=2, stable=True), quantifier=&#39;e&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -1273,7 +1305,7 @@ on the selected dimensions.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
+<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default=None</span></dt><dd><p>Tuple containing the indexes of dimensions on which the aggregation has to be performed.</p>
 </dd>
@@ -1288,7 +1320,7 @@ the aggregation.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p><cite>pMean</cite> fuzzy aggregation of the formula.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p><cite>pMean</cite> fuzzy aggregation of the formula.</p>
 </dd>
 </dl>
 </dd>
@@ -1338,6 +1370,8 @@ minimum of the input values (classical behavior of <span class="math notranslate
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Forall</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Quantifier</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregPMeanError</span><span class="p">(),</span> <span class="n">quantifier</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Forall</span><span class="p">)</span>
+<span class="go">Quantifier(agg_op=AggregPMeanError(p=2, stable=True), quantifier=&#39;f&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                 <span class="p">))</span>
@@ -1356,7 +1390,7 @@ on the selected dimensions.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
+<dt><strong>xs</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p><a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">Grounding</span></a> of formula on which the aggregation has to be performed.</p>
 </dd>
 <dt><strong>dim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default=None</span></dt><dd><p>Tuple containing the indexes of dimensions on which the aggregation has to be performed.</p>
 </dd>
@@ -1371,7 +1405,7 @@ the aggregation.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p><cite>pMeanError</cite> fuzzy aggregation of the formula.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p><cite>pMeanError</cite> fuzzy aggregation of the formula.</p>
 </dd>
 </dl>
 </dd>
@@ -1399,7 +1433,7 @@ the range [0., 1.].</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ltn.fuzzy_ops.SatAgg">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ltn.fuzzy_ops.</span></span><span class="sig-name descname"><span class="pre">SatAgg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agg_op=&lt;ltn.fuzzy_ops.AggregPMeanError</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ltn.fuzzy_ops.SatAgg" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ltn.fuzzy_ops.</span></span><span class="sig-name descname"><span class="pre">SatAgg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agg_op</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AggregPMeanError(p=2,</span> <span class="pre">stable=True)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ltn.fuzzy_ops.SatAgg" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p><cite>SatAgg</cite> aggregation operator.</p>
 <p><span class="math notranslate nohighlight">\(\operatorname{SatAgg}_{\phi \in \mathcal{K}} \mathcal{G}_{\theta} (\phi)\)</span></p>
@@ -1428,11 +1462,11 @@ the range [0., 1.].</p>
 <p class="rubric">Examples</p>
 <p><cite>SatAgg</cite> can be used to aggregate the truth values of formulas contained in a knowledge base. Note that:</p>
 <ul class="simple">
-<li><p><cite>SatAgg</cite> takes as input a tuple of <a class="reference internal" href="core.html#ltn.core.LTNObject" title="ltn.core.LTNObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.LTNObject</span></code></a> and/or <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>;</p></li>
-<li><p>when some <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> are given to <cite>SatAgg</cite>, they have to be scalars in [0., 1.] since <cite>SatAgg</cite> is designed to work with closed formulas;</p></li>
+<li><p><cite>SatAgg</cite> takes as input a tuple of <a class="reference internal" href="core.html#ltn.core.LTNObject" title="ltn.core.LTNObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.LTNObject</span></code></a> and/or <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>;</p></li>
+<li><p>when some <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> are given to <cite>SatAgg</cite>, they have to be scalars in [0., 1.] since <cite>SatAgg</cite> is designed to work with closed formulas;</p></li>
 <li><p>in this example, our knowledge base is composed of closed formulas <cite>f1</cite>, <cite>f2</cite>, and <cite>f3</cite>;</p></li>
 <li><p><cite>SatAgg</cite> applies the <cite>pMeanError</cite> aggregation operator to the truth values of these formulas. The result is a new truth value which can be interpreted as a satisfaction level of the entire knowledge base;</p></li>
-<li><p>the result of <cite>SatAgg</cite> is a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> since it has been designed for learning in PyTorch. The idea is to put the result of the operator directly inside the loss function of the LTN. See this <a class="reference external" href="https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb">tutorial</a> for a detailed example.</p></li>
+<li><p>the result of <cite>SatAgg</cite> is a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> since it has been designed for learning in PyTorch. The idea is to put the result of the operator directly inside the loss function of the LTN. See this <a class="reference external" href="https://nbviewer.jupyter.org/github/bmxitalia/LTNtorch/blob/main/tutorials/3-knowledgebase-and-learning.ipynb">tutorial</a> for a detailed example.</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
@@ -1452,6 +1486,8 @@ the range [0., 1.].</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f2</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f3</span> <span class="o">=</span> <span class="n">And</span><span class="p">(</span><span class="n">Forall</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)),</span> <span class="n">Forall</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sat_agg</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">SatAgg</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregPMeanError</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sat_agg</span><span class="p">)</span>
+<span class="go">SatAgg(agg_op=AggregPMeanError(p=2, stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">sat_agg</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
 <span class="go">&lt;class &#39;torch.Tensor&#39;&gt;</span>
@@ -1461,11 +1497,11 @@ the range [0., 1.].</p>
 </div>
 <p>In the previous example, some closed formulas (<a class="reference internal" href="core.html#ltn.core.LTNObject" title="ltn.core.LTNObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.LTNObject</span></code></a>) have been given to the <cite>SatAgg</cite>
 operator.
-In this example, we show that <cite>SatAgg</cite> can take as input also <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> containing the result of some
+In this example, we show that <cite>SatAgg</cite> can take as input also <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> containing the result of some
 closed formulas, namely scalars in [0., 1.]. Note that:</p>
 <ul class="simple">
-<li><p><cite>f2</cite> is just a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>;</p></li>
-<li><p>since <cite>f2</cite> contains a scalar in [0., 1.], its value can be interpreted as a truth value of a closed formula. For this reason, it is possible to give <cite>f2</cite> to the <cite>SatAgg</cite> operator to get the aggregation of <cite>f1</cite> (<a class="reference internal" href="core.html#ltn.core.LTNObject" title="ltn.core.LTNObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.LTNObject</span></code></a>) and <cite>f2</cite> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>).</p></li>
+<li><p><cite>f2</cite> is just a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>;</p></li>
+<li><p>since <cite>f2</cite> contains a scalar in [0., 1.], its value can be interpreted as a truth value of a closed formula. For this reason, it is possible to give <cite>f2</cite> to the <cite>SatAgg</cite> operator to get the aggregation of <cite>f1</cite> (<a class="reference internal" href="core.html#ltn.core.LTNObject" title="ltn.core.LTNObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.LTNObject</span></code></a>) and <cite>f2</cite> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>).</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">]]))</span>
@@ -1476,6 +1512,8 @@ closed formulas, namely scalars in [0., 1.]. Note that:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.7</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sat_agg</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">SatAgg</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregPMeanError</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sat_agg</span><span class="p">)</span>
+<span class="go">SatAgg(agg_op=AggregPMeanError(p=2, stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">sat_agg</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
 <span class="go">&lt;class &#39;torch.Tensor&#39;&gt;</span>
@@ -1490,13 +1528,13 @@ closed formulas, namely scalars in [0., 1.]. Note that:</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>closed_formulas</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference internal" href="core.html#ltn.core.LTNObject" title="ltn.core.LTNObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.LTNObject</span></code></a> and/or <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Tuple of closed formulas (<cite>LTNObject</cite> and/or tensors) for which the aggregation has to be computed.</p>
+<dt><strong>closed_formulas</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a class="reference internal" href="core.html#ltn.core.LTNObject" title="ltn.core.LTNObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.core.LTNObject</span></code></a> and/or <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Tuple of closed formulas (<cite>LTNObject</cite> and/or tensors) for which the aggregation has to be computed.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The result of the <cite>SatAgg</cite> aggregation.</p>
+<dt><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></dt><dd><p>The result of the <cite>SatAgg</cite> aggregation.</p>
 </dd>
 </dl>
 </dd>

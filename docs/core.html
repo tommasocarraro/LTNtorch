@@ -144,7 +144,7 @@ and quantifiers.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> (value) of the LTN object.</p>
+<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> (value) of the LTN object.</p>
 </dd>
 <dt><strong>var_labels</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The labels of the free variables contained in the LTN object.</p>
 </dd>
@@ -159,13 +159,13 @@ and quantifiers.</p>
 </dl>
 <p class="rubric">Notes</p>
 <ul class="simple">
-<li><p>in LTNtorch, the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">groundings</span></a> of the LTN objects (symbols) are represented using PyTorch tensors, namely <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> instances;</p></li>
+<li><p>in LTNtorch, the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">groundings</span></a> of the LTN objects (symbols) are represented using PyTorch tensors, namely <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> instances;</p></li>
 <li><p><cite>LTNObject</cite> is used by LTNtorch internally. The user should not create <cite>LTNObject</cite> instances by his/her own, unless strictly necessary.</p></li>
 </ul>
 <dl class="field-list">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
-<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>See <cite>value</cite> parameter.</p>
+<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>See <cite>value</cite> parameter.</p>
 </dd>
 <dt><strong>free_vars</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>See <cite>var_labels</cite> parameter.</p>
 </dd>
@@ -198,7 +198,7 @@ The individual can be pre-defined (fixed data point) or learnable (embedding).</
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN constant. It can be a tensor of any order.</p>
+<dt><strong>value</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN constant. It can be a tensor of any order.</p>
 </dd>
 <dt><strong>trainable</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, default=False</span></dt><dd><p>Flag indicating whether the LTN constant is trainable (embedding) or not.</p>
 </dd>
@@ -217,6 +217,8 @@ The individual can be pre-defined (fixed data point) or learnable (embedding).</
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.4</span><span class="p">,</span> <span class="mf">5.4</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="go">Constant(value=tensor([3.4000, 5.4000, 4.3000]), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([3.4000, 5.4000, 4.3000])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -228,6 +230,9 @@ The individual can be pre-defined (fixed data point) or learnable (embedding).</
 <p>Trainable constant</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t_c</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">3.4</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">5.6</span><span class="p">],</span>
 <span class="gp">... </span>                                 <span class="p">[</span><span class="mf">6.7</span><span class="p">,</span> <span class="mf">5.6</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">]]),</span> <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">t_c</span><span class="p">)</span>
+<span class="go">Constant(value=tensor([[3.4000, 2.3000, 5.6000],</span>
+<span class="go">        [6.7000, 5.6000, 4.3000]], requires_grad=True), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">t_c</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[3.4000, 2.3000, 5.6000],</span>
 <span class="go">        [6.7000, 5.6000, 4.3000]], requires_grad=True)</span>
@@ -251,7 +256,7 @@ tensors (<a class="reference internal" href="grounding.html#notegrounding"><span
 <dd class="field-odd"><dl>
 <dt><strong>var_label</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the variable.</p>
 </dd>
-<dt><strong>individuals</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Sequence of individuals (tensors) that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> the LTN variable.</p>
+<dt><strong>individuals</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a></span></dt><dd><p>Sequence of individuals (tensors) that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> the LTN variable.</p>
 </dd>
 <dt><strong>add_batch_dim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, default=True</span></dt><dd><p>Flag indicating whether a batch dimension (first dimension) has to be added to the
 <cite>vale</cite> of the variable or not. If <cite>True</cite>, a dimension will be added only if the
@@ -283,6 +288,9 @@ already a batch dimension.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">3.4</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">6.7</span><span class="p">,</span> <span class="mf">9.6</span><span class="p">]]),</span> <span class="n">add_batch_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">Variable(value=tensor([[3.4000, 4.5000],</span>
+<span class="go">        [6.7000, 9.6000]]), free_vars=[&#39;x&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[3.4000, 4.5000],</span>
 <span class="go">        [6.7000, 9.6000]])</span>
@@ -294,6 +302,10 @@ already a batch dimension.</p>
 </div>
 <p><cite>add_bath_dim=True</cite> adds a batch dimension to the <cite>value</cite> of the variable since it has only one dimension.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.4</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">8.9</span><span class="p">]),</span> <span class="n">add_batch_dim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">Variable(value=tensor([[3.4000],</span>
+<span class="go">        [4.5000],</span>
+<span class="go">        [8.9000]]), free_vars=[&#39;y&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[3.4000],</span>
 <span class="go">        [4.5000],</span>
@@ -307,6 +319,8 @@ already a batch dimension.</p>
 <p><cite>add_batch_dim=False</cite> tells to LTNtorch to not add a batch dimension to the <cite>value</cite> of the variable. This is useful
 when a variable contains a sequence of indexes.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="n">add_batch_dim</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="go">Variable(value=tensor([1, 2, 3]), free_vars=[&#39;z&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([1, 2, 3])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -331,7 +345,7 @@ one variable given in input. See <a class="reference internal" href="broadcastin
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>, default=None</span></dt><dd><p>PyTorch model that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN predicate.</p>
+<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>, default=None</span></dt><dd><p>PyTorch model that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN predicate.</p>
 </dd>
 <dt><strong>func</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code>, default=None</span></dt><dd><p>Function that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN predicate.</p>
 </dd>
@@ -359,7 +373,7 @@ one variable given in input. See <a class="reference internal" href="broadcastin
 <li><p>to disable the <a class="reference internal" href="broadcasting.html#broadcasting"><span class="std std-ref">LTN broadcasting</span></a>, see <a class="reference internal" href="#ltn.core.diag" title="ltn.core.diag"><code class="xref py py-func docutils literal notranslate"><span class="pre">ltn.core.diag()</span></code></a>.</p></li>
 </ul>
 <p class="rubric">Examples</p>
-<p>Unary predicate defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html#torch.nn.Sequential" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>.</p>
+<p>Unary predicate defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html#torch.nn.Sequential" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">predicate_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
@@ -369,15 +383,25 @@ one variable given in input. See <a class="reference internal" href="broadcastin
 <span class="gp">... </span>                        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
 <span class="gp">... </span>                  <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">predicate_model</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">Predicate(model=Sequential(</span>
+<span class="go">  (0): Linear(in_features=4, out_features=2, bias=True)</span>
+<span class="go">  (1): ELU(alpha=1.0)</span>
+<span class="go">  (2): Linear(in_features=2, out_features=1, bias=True)</span>
+<span class="go">  (3): Sigmoid()</span>
+<span class="go">))</span>
 </pre></div>
 </div>
 <p>Unary predicate defined using a function. Note that <cite>torch.sum</cite> is performed on <cite>dim=1</cite>. This is because in LTNtorch
 the first dimension (<cite>dim=0</cite>) is related to the batch dimension, while other dimensions are related to the features
-of the individuals.</p>
+of the individuals. Notice that the output of the print is <cite>Predicate(model=LambdaModel())</cite>. This indicates that the
+LTN predicate has been defined using a function, through the <cite>func</cite> parameter of the constructor.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p_f</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p_f</span><span class="p">)</span>
+<span class="go">Predicate(model=LambdaModel())</span>
 </pre></div>
 </div>
-<p>Binary predicate defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>. Note the call to <cite>torch.cat</cite> to merge
+<p>Binary predicate defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>. Note the call to <cite>torch.cat</cite> to merge
 the two inputs of the binary predicate.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">PredicateModel</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -385,7 +409,7 @@ the two inputs of the binary predicate.</p>
 <span class="gp">... </span>        <span class="n">elu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ELU</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="n">sigmoid</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">dense1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="n">dense2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">dense2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -395,6 +419,11 @@ the two inputs of the binary predicate.</p>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">predicate_model</span> <span class="o">=</span> <span class="n">PredicateModel</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b_p</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">predicate_model</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">b_p</span><span class="p">)</span>
+<span class="go">Predicate(model=PredicateModel(</span>
+<span class="go">  (dense1): Linear(in_features=4, out_features=5, bias=True)</span>
+<span class="go">  (dense2): Linear(in_features=5, out_features=1, bias=True)</span>
+<span class="go">))</span>
 </pre></div>
 </div>
 <p>Binary predicate defined using a function. Note the call to <cite>torch.cat</cite> to merge the two inputs of the
@@ -402,6 +431,8 @@ binary predicate.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b_p_f</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Predicate</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()(</span>
 <span class="gp">... </span>                                            <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                        <span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">b_p_f</span><span class="p">)</span>
+<span class="go">Predicate(model=LambdaModel())</span>
 </pre></div>
 </div>
 <p>Evaluation of a unary predicate on a constant. Note that:</p>
@@ -416,6 +447,8 @@ binary predicate.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">p_f</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
 <span class="go">&lt;class &#39;ltn.core.LTNObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor(0.7008), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor(0.7008)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -432,6 +465,8 @@ binary predicate.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.32</span><span class="p">,</span> <span class="mf">0.043</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">p_f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([0.6682, 0.5898]), free_vars=[&#39;v&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([0.6682, 0.5898])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -449,6 +484,8 @@ binary predicate.</p>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.32</span><span class="p">,</span> <span class="mf">0.043</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">,</span> <span class="mf">0.43</span><span class="p">]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">b_p_f</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([0.8581, 0.8120]), free_vars=[&#39;v&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([0.8581, 0.8120])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -470,6 +507,9 @@ binary predicate.</p>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.32</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">b_p_f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([[0.7974, 0.7790, 0.7577],</span>
+<span class="go">        [0.7375, 0.7157, 0.6906]]), free_vars=[&#39;x&#39;, &#39;y&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[0.7974, 0.7790, 0.7577],</span>
 <span class="go">        [0.7375, 0.7157, 0.6906]])</span>
@@ -484,7 +524,7 @@ binary predicate.</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
-<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN predicate.</p>
+<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN predicate.</p>
 </dd>
 </dl>
 </dd>
@@ -535,7 +575,7 @@ individual in output. See <a class="reference internal" href="broadcasting.html#
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>, default=None</span></dt><dd><p>PyTorch model that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN function.</p>
+<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>, default=None</span></dt><dd><p>PyTorch model that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN function.</p>
 </dd>
 <dt><strong>func</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code>, default=None</span></dt><dd><p>Function that becomes the <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN function.</p>
 </dd>
@@ -563,7 +603,7 @@ individual in output. See <a class="reference internal" href="broadcasting.html#
 <li><p>to disable the <a class="reference internal" href="broadcasting.html#broadcasting"><span class="std std-ref">LTN broadcasting</span></a>, see <a class="reference internal" href="#ltn.core.diag" title="ltn.core.diag"><code class="xref py py-func docutils literal notranslate"><span class="pre">ltn.core.diag()</span></code></a>.</p></li>
 </ul>
 <p class="rubric">Examples</p>
-<p>Unary function defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html#torch.nn.Sequential" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>.</p>
+<p>Unary function defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Sequential.html#torch.nn.Sequential" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ltn</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">function_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
@@ -572,17 +612,26 @@ individual in output. See <a class="reference internal" href="broadcasting.html#
 <span class="gp">... </span>                        <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="gp">... </span>                  <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">function_model</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="go">Function(model=Sequential(</span>
+<span class="go">  (0): Linear(in_features=4, out_features=3, bias=True)</span>
+<span class="go">  (1): ELU(alpha=1.0)</span>
+<span class="go">  (2): Linear(in_features=3, out_features=2, bias=True)</span>
+<span class="go">))</span>
 </pre></div>
 </div>
 <p>Unary function defined using a function. Note that <cite>torch.sum</cite> is performed on <cite>dim=1</cite>. This is because in LTNtorch
 the first dimension (<cite>dim=0</cite>) is related to the batch dimension, while other dimensions are related to the features
-of the individuals.</p>
+of the individuals. Notice that the output of the print is <cite>Function(model=LambdaModel())</cite>. This indicates that the
+LTN function has been defined using a function, through the <cite>func</cite> parameter of the constructor.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f_f</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span>
 <span class="gp">... </span>                                             <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">... </span>                                        <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f_f</span><span class="p">)</span>
+<span class="go">Function(model=LambdaModel())</span>
 </pre></div>
 </div>
-<p>Binary function defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>. Note the call to <cite>torch.cat</cite> to merge
+<p>Binary function defined using a <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a>. Note the call to <cite>torch.cat</cite> to merge
 the two inputs of the binary function.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">FunctionModel</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -599,6 +648,10 @@ the two inputs of the binary function.</p>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">function_model</span> <span class="o">=</span> <span class="n">FunctionModel</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b_f</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">function_model</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">b_f</span><span class="p">)</span>
+<span class="go">Function(model=FunctionModel(</span>
+<span class="go">  (dense1): Linear(in_features=4, out_features=5, bias=True)</span>
+<span class="go">))</span>
 </pre></div>
 </div>
 <p>Binary function defined using a function. Note the call to <cite>torch.cat</cite> to merge the two inputs of the
@@ -607,6 +660,8 @@ binary function.</p>
 <span class="gp">... </span>                                <span class="n">torch</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span>
 <span class="gp">... </span>                                    <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span>                                    <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">b_f_f</span><span class="p">)</span>
+<span class="go">Function(model=LambdaModel())</span>
 </pre></div>
 </div>
 <p>Evaluation of a unary function on a constant. Note that:</p>
@@ -620,6 +675,8 @@ binary function.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">f_f</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
 <span class="go">&lt;class &#39;ltn.core.LTNObject&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([0.8510, 0.8510]), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([0.8510, 0.8510])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -636,6 +693,9 @@ binary function.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.32</span><span class="p">,</span> <span class="mf">0.043</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">f_f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([[0.7000, 0.7000],</span>
+<span class="go">        [0.3630, 0.3630]]), free_vars=[&#39;v&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[0.7000, 0.7000],</span>
 <span class="go">        [0.3630, 0.3630]])</span>
@@ -654,6 +714,9 @@ binary function.</p>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.32</span><span class="p">,</span> <span class="mf">0.043</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">,</span> <span class="mf">0.43</span><span class="p">]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">b_f_f</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([[1.8000, 1.8000],</span>
+<span class="go">        [1.4630, 1.4630]]), free_vars=[&#39;v&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[1.8000, 1.8000],</span>
 <span class="go">        [1.4630, 1.4630]])</span>
@@ -676,6 +739,14 @@ binary function.</p>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mf">0.32</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">b_f_f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([[[1.3700, 1.3700],</span>
+<span class="go">         [1.2600, 1.2600],</span>
+<span class="go">         [1.1400, 1.1400]],</span>
+
+<span class="go">        [[1.0330, 1.0330],</span>
+<span class="go">         [0.9230, 0.9230],</span>
+<span class="go">         [0.8030, 0.8030]]]), free_vars=[&#39;x&#39;, &#39;y&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[[1.3700, 1.3700],</span>
 <span class="go">         [1.2600, 1.2600],</span>
@@ -695,7 +766,7 @@ binary function.</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
-<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN function.</p>
+<dt><strong>model</strong><span class="classifier"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v1.11.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code></span></dt><dd><p>The <a class="reference internal" href="grounding.html#notegrounding"><span class="std std-ref">grounding</span></a> of the LTN function.</p>
 </dd>
 </dl>
 </dd>
@@ -992,6 +1063,8 @@ operator has to be applied.</p>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">4.3</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">And</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Connective</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AndProd</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">And</span><span class="p">)</span>
+<span class="go">Connective(connective_op=AndProd(stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">And</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">q</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[[0.5971, 0.6900, 0.6899, 0.6391],</span>
@@ -1124,6 +1197,8 @@ parameters.</p>
 <li><p>in LTNtorch, the quantification is performed by computing the value of the predicate first and then by aggregating on the selected dimensions, specified by the quantified variables.</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Forall</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Quantifier</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregPMeanError</span><span class="p">(),</span> <span class="n">quantifier</span><span class="o">=</span><span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Forall</span><span class="p">)</span>
+<span class="go">Quantifier(agg_op=AggregPMeanError(p=2, stable=True), quantifier=&#39;f&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([0.9798, 0.9988, 0.9974])</span>
@@ -1155,6 +1230,8 @@ Note that:</p>
 <li><p>LTNtorch supports various sematics for quantifiers, here we use <a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregPMean" title="ltn.fuzzy_ops.AggregPMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">ltn.fuzzy_ops.AggregPMean</span></code></a> for <span class="math notranslate nohighlight">\(\exists\)</span>.</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Exists</span> <span class="o">=</span> <span class="n">ltn</span><span class="o">.</span><span class="n">Quantifier</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">fuzzy_ops</span><span class="o">.</span><span class="n">AggregPMean</span><span class="p">(),</span> <span class="n">quantifier</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Exists</span><span class="p">)</span>
+<span class="go">Quantifier(agg_op=AggregPMean(p=2, stable=True), quantifier=&#39;e&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Exists</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor(0.9920)</span>
