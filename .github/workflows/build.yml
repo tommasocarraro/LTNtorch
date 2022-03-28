@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ main, guarded_quantification_update ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
