@@ -2197,6 +2197,9 @@ def test_Quantifier():
     )
     toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(toy_out, dim=0)
 
+    print("%.20f" % toy_out.item())
+    print("%.20f" % out.value.item())
+
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == [], "Since the quantification is on all variables, the output should not have free vars."
