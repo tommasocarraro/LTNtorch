@@ -1624,11 +1624,10 @@ def test_Quantifier():
     # only first individual in x has a sum greater than 1 on its features
     # only first and last individuals in y have a sum greater than 0. on their features
     out = forall(x, p(x, y), x, lambda x: torch.sum(x.value, dim=1) > 1.)
-    mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]])  # the mask should be this one
-    masked_p = torch.where(mask > 0., p(x, y).value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=0)
+    mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=0, mask=mask)
 
-    assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
+    assert torch.equal(out.value, toy_out.double()), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == ["y"], "Since the quantification is on x, the output should have only y in the free vars."
     assert out.shape() == torch.Size([4]), "x has been quantified, so the output should have a shape of 4, since y" \
@@ -1638,15 +1637,14 @@ def test_Quantifier():
 
     out = forall(x, p(x, y), [x, y], lambda x, y: torch.logical_and(torch.sum(x.value, dim=1) > 1.,
                                                                     torch.sum(y.value, dim=1) > 0.))
-    mask = torch.tensor([[1, 0, 0, 1], [0, 0, 0, 0]])  # the mask should be this one
-    masked_p = torch.where(mask > 0., p(x, y).value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=0)
+    mask = torch.tensor([[1, 0, 0, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=0, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
     toy_out = torch.where(
         torch.isnan(toy_out),
         1.,
-        toy_out
+        toy_out.double()
     )
 
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
@@ -1659,15 +1657,14 @@ def test_Quantifier():
 
     out = exists(x, p(x, y), [x, y], lambda x, y: torch.logical_and(torch.sum(x.value, dim=1) > 1.,
                                                                     torch.sum(y.value, dim=1) > 0.))
-    mask = torch.tensor([[1, 0, 0, 1], [0, 0, 0, 0]])  # the mask should be this one
-    masked_p = torch.where(mask > 0., p(x, y).value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(masked_p, dim=0)
+    mask = torch.tensor([[1, 0, 0, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(p(x, y).value, dim=0, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 0.
     toy_out = torch.where(
         torch.isnan(toy_out),
         0.,
-        toy_out
+        toy_out.double()
     )
 
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
@@ -1680,15 +1677,14 @@ def test_Quantifier():
 
     out = forall([x, y], p(x, y), [x, y], lambda x, y: torch.logical_and(torch.sum(x.value, dim=1) > 1.,
                                                                     torch.sum(y.value, dim=1) > 0.))
-    mask = torch.tensor([[1, 0, 0, 1], [0, 0, 0, 0]])  # the mask should be this one
-    masked_p = torch.where(mask > 0., p(x, y).value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=(0, 1))
+    mask = torch.tensor([[1, 0, 0, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=(0, 1), mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
     toy_out = torch.where(
         torch.isnan(toy_out),
         1.,
-        toy_out
+        toy_out.double()
     )
 
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
@@ -1699,30 +1695,28 @@ def test_Quantifier():
     # guarded quantification on a single variable but both quantified
 
     out = forall([x, y], p(x, y), x, lambda x: torch.sum(x.value, dim=1) > 1.)
-    mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]])  # the mask should be this one
-    masked_p = torch.where(mask > 0., p(x, y).value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=(0, 1))
+    mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=(0, 1), mask=mask)
 
-    assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
+    assert torch.equal(out.value, toy_out.double()), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == [], "Since the quantification is on both variables, the output should not have free vars."
     assert out.shape() == torch.Size([]), "Both variables have been quantified, so the output should be a scalar."
 
-    # guarded quantification on a signle variable which is also different from the quantified variable
+    # guarded quantification on a single variable which is also different from the quantified variable
 
     out = forall(y, p(x, y), x, lambda x: torch.sum(x.value, dim=1) > 1.)
-    mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]])  # the mask should be this one
-    masked_p = torch.where(mask > 0., p(x, y).value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=1)
+    mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=1, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
     toy_out = torch.where(
         torch.isnan(toy_out),
         1.,
-        toy_out
+        toy_out.double()
     )
 
-    assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
+    assert torch.equal(out.value, toy_out.double()), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == ["x"], "Since the quantification is on y, the output should have x free var."
     assert out.shape() == torch.Size([2]), "y has been quantified, so the output should have x dimension (2)."
@@ -1769,11 +1763,10 @@ def test_Quantifier():
     assert v2.free_vars == ["v2"], "The free vars in v2 should be v2."
 
     out_p = l(v1.value, v2.value)
-    mask = torch.tensor([0, 1, 0])  # the mask should be this one
-    masked_p = torch.where(mask > 0., out_p.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=0)
+    mask = torch.tensor([0, 1, 0]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(out_p, dim=0, mask=mask)
 
-    assert torch.equal(out.value, toy_out), "The output should be the same."
+    assert torch.equal(out.value, toy_out.double()), "The output should be the same."
     assert out.free_vars == [], "We have quantified both variables, so there should not be free vars."
     assert isinstance(out, LTNObject), "The output of a quantification is always an LTNObject."
     assert out.shape() == torch.Size([]), "The output should be a scalar."
@@ -1784,11 +1777,10 @@ def test_Quantifier():
                                                                            torch.sum(y.value, dim=1)) < 2.)
     proc_objs, _, _ = process_ltn_objects([v1, v2])
     out_p = l(proc_objs[0].value, proc_objs[1].value).view(3, 3)
-    mask = torch.tensor([[0, 0, 0], [0, 1, 1], [0, 0, 1]])  # the mask should be this one
-    masked_p = torch.where(mask > 0., out_p.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=(0, 1))
+    mask = torch.tensor([[0, 0, 0], [0, 1, 1], [0, 0, 1]]).bool()  # the mask should be this one
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(out_p, dim=(0, 1), mask=mask)
 
-    assert torch.equal(out.value, toy_out), "The output should be the same."
+    assert torch.equal(out.value, toy_out.double()), "The output should be the same."
     assert out.free_vars == [], "We have quantified both variables, so there should not be free vars."
     assert isinstance(out, LTNObject), "The output of a quantification is always an LTNObject."
     assert out.shape() == torch.Size([]), "The output should be a scalar."
@@ -1894,9 +1886,29 @@ def test_Quantifier():
                                                                           "return this exact value"
 
     truth_values = torch.rand((3, 5, 6))
-    truth_values_nan = torch.where(truth_values < 0.1, np.nan, truth_values.double())
+    truth_values_2 = torch.tensor([0.3, 0.2, 0.4])
+    m = torch.tensor([0, 1, 0]).bool()
 
     # min
+
+    # test with and without mask
+
+    assert torch.equal(min_agg(truth_values_2, dim=0),
+                       torch.amin(truth_values_2, dim=0)), "Without mask the output should be the same."
+
+    assert torch.equal(min_agg(truth_values_2, dim=0, mask=m),
+                       torch.amin(torch.where(~m, 1., truth_values_2.double()), dim=0)), "With the mask the " \
+                                                                                         "output should be the same."
+
+    # test exceptions of the input
+
+    # different shape between grounding of formula and mask
+    with pytest.raises(ValueError):
+        min_agg(truth_values, dim=0, mask=torch.zeros((2, 2)).bool())
+
+    # mask has the right shape but it is not boolean
+    with pytest.raises(ValueError):
+        min_agg(truth_values, dim=0, mask=torch.zeros_like(truth_values))
 
     out_0 = min_agg(truth_values, dim=0)
     out_1 = min_agg(truth_values, dim=1)
@@ -1912,14 +1924,6 @@ def test_Quantifier():
     assert torch.equal(out_0_2, torch.amin(truth_values, dim=(0, 2))), "The min should implement this behavior."
     assert torch.equal(out_1_2, torch.amin(truth_values, dim=(1, 2))), "The min should implement this behavior."
 
-    # check with NaN values
-    out_nan = min_agg(truth_values_nan, dim=0)
-    assert torch.equal(out_nan, torch.amin(torch.where(torch.isnan(truth_values_nan), 1.,
-                                                       truth_values_nan.double()).float(), dim=0)), "The min should " \
-                                                                                                    "implement this " \
-                                                                                                    "behavior with " \
-                                                                                                    "NaN values."
-
     # check keepdim parameter
 
     out_k_d = min_agg(truth_values, dim=0, keepdim=True)
@@ -1927,6 +1931,26 @@ def test_Quantifier():
                                                                                 "be the behavior."
 
     # mean
+
+    # test with and without mask
+
+    assert torch.equal(mean_agg(truth_values_2, dim=0),
+                       torch.mean(truth_values_2, dim=0)), "Without mask the output should be the same."
+
+    assert torch.equal(mean_agg(truth_values_2, dim=0, mask=m),
+                       torch.div(torch.sum(torch.where(~m, torch.zeros_like(truth_values_2),
+                                                       truth_values_2), dim=0),
+                                 torch.sum(m, dim=0))), "With the mask the output should be the same."
+
+    # test exceptions of the input
+
+    # different shape between grounding of formula and mask
+    with pytest.raises(ValueError):
+        mean_agg(truth_values, dim=0, mask=torch.zeros((2, 2)).bool())
+
+    # mask has the right shape but it is not boolean
+    with pytest.raises(ValueError):
+        mean_agg(truth_values, dim=0, mask=torch.zeros_like(truth_values))
 
     out_0 = mean_agg(truth_values, dim=0)
     out_1 = mean_agg(truth_values, dim=1)
@@ -1942,13 +1966,6 @@ def test_Quantifier():
     assert torch.equal(out_0_2, torch.mean(truth_values, dim=(0, 2))), "The mean should implement this behavior."
     assert torch.equal(out_1_2, torch.mean(truth_values, dim=(1, 2))), "The mean should implement this behavior."
 
-    # check with NaN values
-    out_nan = mean_agg(truth_values_nan, dim=0)
-    numerator = torch.sum(torch.where(torch.isnan(truth_values_nan), torch.zeros_like(truth_values_nan),
-                                      truth_values_nan), dim=0)
-    denominator = torch.sum(~torch.isnan(truth_values_nan), dim=0)
-    assert torch.equal(out_nan, torch.div(numerator, denominator)), "The mean should implement this behavior."
-
     # check keepdim parameter
 
     out_k_d = mean_agg(truth_values, dim=0, keepdim=True)
@@ -1956,6 +1973,28 @@ def test_Quantifier():
                                                                                 "be the behavior."
 
     # p mean
+
+    # test with and without mask
+
+    assert torch.equal(p_mean_agg(truth_values_2, dim=0),
+                       torch.pow(torch.mean(torch.pow(
+                           ltn.fuzzy_ops.pi_0(truth_values_2), 2), dim=0), 1/2)), "Without mask the " \
+                                                                                  "output should be the same."
+
+    assert torch.equal(p_mean_agg(truth_values_2, dim=0, mask=m),
+                       torch.pow(torch.div(torch.sum(torch.where(~m, torch.zeros_like(truth_values_2),
+                                                       torch.pow(ltn.fuzzy_ops.pi_0(truth_values_2), 2)), dim=0),
+                                 torch.sum(m, dim=0)), 1 / 2)), "With the mask the output should be the same."
+
+    # test exceptions of the input
+
+    # different shape between grounding of formula and mask
+    with pytest.raises(ValueError):
+        p_mean_agg(truth_values, dim=0, mask=torch.zeros((2, 2)).bool())
+
+    # mask has the right shape but it is not boolean
+    with pytest.raises(ValueError):
+        p_mean_agg(truth_values, dim=0, mask=torch.zeros_like(truth_values))
 
     out_0 = p_mean_agg(truth_values, dim=0)
     out_1 = p_mean_agg(truth_values, dim=1)
@@ -1976,15 +2015,6 @@ def test_Quantifier():
         ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(0, 2)), 1 / 2)), "The mean should implement this behavior."
     assert torch.equal(out_1_2, torch.pow(torch.mean(torch.pow(
         ltn.fuzzy_ops.pi_0(truth_values), 2), dim=(1, 2)), 1 / 2)), "The mean should implement this behavior."
-
-    # check with NaN values
-
-    out_nan = p_mean_agg(truth_values_nan, dim=0)
-    numerator = torch.sum(torch.where(torch.isnan(truth_values_nan), torch.zeros_like(truth_values_nan),
-                                      torch.pow(ltn.fuzzy_ops.pi_0(truth_values_nan), 2)), dim=0)
-    denominator = torch.sum(~torch.isnan(truth_values_nan), dim=0)
-    assert torch.equal(out_nan, torch.pow(torch.div(numerator, denominator), 1/2)), "The mean should implement " \
-                                                                                    "this behavior."
 
     # check keepdim parameter
 
@@ -2008,6 +2038,28 @@ def test_Quantifier():
 
     # p mean error
 
+    # test with and without mask
+
+    assert torch.equal(p_mean_error_agg(truth_values_2, dim=0),
+                       1 - torch.pow(torch.mean(torch.pow(
+                           1 - ltn.fuzzy_ops.pi_1(truth_values_2), 2), dim=0), 1/2)), "Without mask the " \
+                                                                                      "output should be the same."
+
+    assert torch.equal(p_mean_error_agg(truth_values_2, dim=0, mask=m),
+                       1 - torch.pow(torch.div(torch.sum(torch.where(~m, torch.zeros_like(truth_values_2),
+                                                         torch.pow(1 - ltn.fuzzy_ops.pi_1(truth_values_2), 2)), dim=0),
+                                     torch.sum(m, dim=0)), 1 / 2)), "With the mask the output should be the same."
+
+    # test exceptions of the input
+
+    # different shape between grounding of formula and mask
+    with pytest.raises(ValueError):
+        p_mean_error_agg(truth_values, dim=0, mask=torch.zeros((2, 2)).bool())
+
+    # mask has the right shape but it is not boolean
+    with pytest.raises(ValueError):
+        p_mean_error_agg(truth_values, dim=0, mask=torch.zeros_like(truth_values))
+
     out_0 = p_mean_error_agg(truth_values, dim=0)
     out_1 = p_mean_error_agg(truth_values, dim=1)
     out_2 = p_mean_error_agg(truth_values, dim=2)
@@ -2027,15 +2079,6 @@ def test_Quantifier():
         1. - ltn.fuzzy_ops.pi_1(truth_values), 2), dim=(0, 2)), 1 / 2)), "The mean should implement this behavior."
     assert torch.equal(out_1_2, 1. - torch.pow(torch.mean(torch.pow(
         1. - ltn.fuzzy_ops.pi_1(truth_values), 2), dim=(1, 2)), 1 / 2)), "The mean should implement this behavior."
-
-    # check with NaN values
-
-    out_nan = p_mean_error_agg(truth_values_nan, dim=0)
-    numerator = torch.sum(torch.where(torch.isnan(truth_values_nan), torch.zeros_like(truth_values_nan),
-                                      torch.pow(1. - ltn.fuzzy_ops.pi_1(truth_values_nan), 2)), dim=0)
-    denominator = torch.sum(~torch.isnan(truth_values_nan), dim=0)
-    assert torch.equal(out_nan, 1. - torch.pow(torch.div(numerator, denominator), 1 / 2)), "The mean should implement " \
-                                                                                      "this behavior."
 
     # check keepdim parameter
 
@@ -2084,14 +2127,14 @@ def test_Quantifier():
     toy_out = Eq(x_, y_)
     toy_out.value = toy_out.value.view(50, 50, 1)
     toy_out.value = toy_out.value.expand(50, 50, 9)
-    masked_p = torch.where(mask > 0., toy_out.value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p.permute((2, 0, 1)), dim=(1, 2))
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(toy_out.value.permute((2, 0, 1)),
+                                                  dim=(1, 2), mask=mask.permute((2, 0, 1)))
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
     toy_out = torch.where(
         torch.isnan(toy_out),
         1.,
-        toy_out
+        toy_out.double()
     )
     toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(toy_out, dim=0)
 
@@ -2144,18 +2187,16 @@ def test_Quantifier():
     toy_out = Eq(x_, y_)
     toy_out.value = toy_out.value.view(20, 1)
     toy_out.value = toy_out.value.expand(20, 9)
-    masked_p = torch.where(mask > 0., toy_out.value.double(), np.nan)
-    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(masked_p, dim=0)
+    toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(toy_out.value, dim=0, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
     toy_out = torch.where(
         torch.isnan(toy_out),
         1.,
-        toy_out
+        toy_out.double()
     )
     toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(toy_out, dim=0)
 
-    # here, there is a floating point problem, so we see if the difference between the two in under a very low threshold
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == [], "Since the quantification is on all variables, the output should not have free vars."

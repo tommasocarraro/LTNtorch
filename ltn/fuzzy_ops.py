@@ -75,9 +75,9 @@ def check_values(*values):
     """
     values = list(values)
     for v in values:
-        if not torch.all(torch.where(torch.logical_or(torch.logical_and(v >= 0., v <= 1.), torch.isnan(v)), 1., 0.)):
-            raise ValueError("Expected attribute 'value' of the given LTNObject(s) to contain truth values "
-                             "in the range [0., 1.]`, but got some values outside of this range.")
+        if not torch.all(torch.where(torch.logical_and(v >= 0., v <= 1.), 1., 0.)):
+            raise ValueError("Expected inputs of connectives and quantifiers to be tensors of truth values in the range"
+                             " [0., 1.], but got some values outside this range.")
 
 
 # here, it begins the implementation of fuzzy operators in PyTorch
@@ -196,13 +196,7 @@ class NotStandard(UnaryConnectiveOperator):
         ----------
         :class:`torch.Tensor`
             The standard fuzzy negation of the given operand.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operand are not in [0., 1.].
         """
-        check_values(x)
         return 1. - x
 
 
@@ -246,13 +240,7 @@ class NotGodel(UnaryConnectiveOperator):
         -------
         :class:`torch.Tensor`
             The Godel fuzzy negation of the given operand.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operand are not in [0., 1.].
         """
-        check_values(x)
         return torch.eq(x, 0.).float()
 
 # CONJUNCTION
@@ -311,13 +299,7 @@ class AndMin(BinaryConnectiveOperator):
         ----------
         :class:`torch.Tensor`
             The Godel fuzzy conjunction of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         return torch.minimum(x, y)
 
 
@@ -402,13 +384,7 @@ class AndProd(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Goguen fuzzy conjunction of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         stable = self.stable if stable is None else stable
         if stable:
             x, y = pi_0(x), pi_0(y)
@@ -468,13 +444,7 @@ class AndLuk(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Lukasiewicz fuzzy conjunction of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         zeros = torch.zeros_like(x)
         return torch.maximum(x + y - 1., zeros)
 
@@ -534,13 +504,7 @@ class OrMax(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Godel fuzzy disjunction of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         return torch.maximum(x, y)
 
 
@@ -625,13 +589,7 @@ class OrProbSum(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Goguen fuzzy disjunction of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         stable = self.stable if stable is None else stable
         if stable:
             x, y = pi_1(x), pi_1(y)
@@ -691,13 +649,7 @@ class OrLuk(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Lukasiewicz fuzzy disjunction of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         ones = torch.ones_like(x)
         return torch.minimum(x + y, ones)
 
@@ -755,13 +707,7 @@ class ImpliesKleeneDienes(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Kleene Dienes fuzzy implication of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         return torch.maximum(1. - x, y)
 
 
@@ -818,13 +764,7 @@ class ImpliesGodel(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Godel fuzzy implication of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         return torch.where(torch.le(x, y), torch.ones_like(x), y)
 
 
@@ -909,13 +849,7 @@ class ImpliesReichenbach(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Reichenbach fuzzy implication of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         stable = self.stable if stable is None else stable
         if stable:
             x, y = pi_0(x), pi_1(y)
@@ -1003,13 +937,7 @@ class ImpliesGoguen(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Goguen fuzzy implication of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         stable = self.stable if stable is None else stable
         if stable:
             x = pi_0(x)
@@ -1069,13 +997,7 @@ class ImpliesLuk(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The Lukasiewicz fuzzy implication of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         ones = torch.ones_like(x)
         return torch.minimum(1. - x + y, ones)
 
@@ -1174,13 +1096,7 @@ class Equiv(BinaryConnectiveOperator):
         -----------
         :class:`torch.Tensor`
             The fuzzy equivalence of the two operands.
-
-        Raises
-        ----------
-        :class:`ValueError`
-            Raises when the values of the operands are not in [0., 1.].
         """
-        check_values(x, y)
         return self.and_op(self.implies_op(x, y), self.implies_op(y, x))
 
 # AGGREGATORS FOR QUANTIFIERS - only the aggregators introduced in the LTN paper are implemented
@@ -1237,7 +1153,7 @@ class AggregMin(AggregationOperator):
     def __repr__(self):
         return "AggregMin()"
 
-    def __call__(self, xs, dim=None, keepdim=False):
+    def __call__(self, xs, dim=None, keepdim=False, mask=None):
         """
         It applies the min fuzzy aggregation operator to the given formula's :ref:`grounding <notegrounding>` on
         the selected dimensions.
@@ -1251,6 +1167,9 @@ class AggregMin(AggregationOperator):
         keepdim : :obj:`bool`, default=False
             Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
+        mask : :class:`torch.Tensor`, default=None
+            Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
+            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
 
         Returns
         ----------
@@ -1258,21 +1177,21 @@ class AggregMin(AggregationOperator):
             Min fuzzy aggregation of the formula.
 
         Raises
-        ----------
+        ------
         :class:`ValueError`
-            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
-            the range [0., 1.].
+            Raises when the :ref:`grounding <notegrounding>` of the formula ('xs') and the mask do not have the same
+            shape.
+            Raises when the 'mask' is not boolean.
         """
-        # Notice the use of torch.where(). This has to be used
-        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-        #         not have to consider the NaN values contained in the input tensor.
-        # we have to put 1 where there are NaN values, since 1 is the maximum value for a truth value. By doing so,
-        # this modification will not affect the minimum computation
-        check_values(xs)
-        xs = torch.where(torch.isnan(xs), 1., xs.double())
-        out = torch.amin(xs.float(), dim=dim, keepdim=keepdim)
+        if mask is not None:
+            if mask.shape != xs.shape:
+                raise ValueError("'xs' and 'mask' must have the same shape.")
+            if not isinstance(mask, torch.BoolTensor):
+                raise ValueError("'mask' must be a torch.BoolTensor.")
+            # here, we put 1 where the mask is not satisfied, since 1 is the maximum value for a truth value.
+            # this is a way to exclude values from the minimum computation
+            xs = torch.where(~mask, 1., xs.double())
+        out = torch.amin(xs, dim=dim, keepdim=keepdim)
         return out
 
 
@@ -1303,7 +1222,7 @@ class AggregMean(AggregationOperator):
     def __repr__(self):
         return "AggregMean()"
 
-    def __call__(self, xs, dim=None, keepdim=False):
+    def __call__(self, xs, dim=None, keepdim=False, mask=None):
         """
         It applies the mean fuzzy aggregation operator to the given formula's :ref:`grounding <notegrounding>` on
         the selected dimensions.
@@ -1317,6 +1236,9 @@ class AggregMean(AggregationOperator):
         keepdim : :obj:`bool`, default=False
             Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
+        mask : :class:`torch.Tensor`, default=None
+            Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
+            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
 
         Returns
         ----------
@@ -1324,20 +1246,24 @@ class AggregMean(AggregationOperator):
             Mean fuzzy aggregation of the formula.
 
         Raises
-        ----------
+        ------
         :class:`ValueError`
-            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
-            the range [0., 1.].
+            Raises when the :ref:`grounding <notegrounding>` of the formula ('xs') and the mask do not have the same
+            shape.
+            Raises when the 'mask' is not boolean.
         """
-        # Notice the use of torch.where(). This has to be used
-        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-        # not have to consider the NaN values contained in the input tensor.
-        check_values(xs)
-        numerator = torch.sum(torch.where(torch.isnan(xs), torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
-        denominator = torch.sum(~torch.isnan(xs), dim=dim, keepdim=keepdim)
-        return torch.div(numerator, denominator)
+        if mask is not None:
+            if mask.shape != xs.shape:
+                raise ValueError("'xs' and 'mask' must have the same shape.")
+            if not isinstance(mask, torch.BoolTensor):
+                raise ValueError("'mask' must be a torch.BoolTensor.")
+            # we sum the values of xs which are not filtered out by the mask
+            numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
+            # we count the number of 1 in the mask
+            denominator = torch.sum(mask, dim=dim, keepdim=keepdim)
+            return torch.div(numerator, denominator)
+        else:
+            return torch.mean(xs, dim=dim, keepdim=keepdim)
 
 
 class AggregPMean(AggregationOperator):
@@ -1403,7 +1329,7 @@ class AggregPMean(AggregationOperator):
     def __repr__(self):
         return "AggregPMean(p=" + str(self.p) + ", stable=" + str(self.stable) + ")"
 
-    def __call__(self, xs, dim=None, keepdim=False, p=None, stable=None):
+    def __call__(self, xs, dim=None, keepdim=False, mask=None, p=None, stable=None):
         """
         It applies the `pMean` aggregation operator to the given formula's :ref:`grounding <notegrounding>`
         on the selected dimensions.
@@ -1417,6 +1343,9 @@ class AggregPMean(AggregationOperator):
         keepdim : :obj:`bool`, default=False
             Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
+        mask : :class:`torch.Tensor`, default=None
+            Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
+            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
         p : :obj:`int`, default=None
             Value of hyper-parameter `p` of the `pMean` fuzzy aggregation operator.
         stable : :obj:`bool`, default=None
@@ -1428,25 +1357,29 @@ class AggregPMean(AggregationOperator):
             `pMean` fuzzy aggregation of the formula.
 
         Raises
-        ----------
+        ------
         :class:`ValueError`
-            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
-            the range [0., 1.].
+            Raises when the :ref:`grounding <notegrounding>` of the formula ('xs') and the mask do not have the same
+            shape.
+            Raises when the 'mask' is not boolean.
         """
-        # Notice the use of torch.where(). This has to be used
-        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-        # not have to consider the NaN values contained in the input tensor.
-        check_values(xs)
         p = self.p if p is None else p
         stable = self.stable if stable is None else stable
         if stable:
             xs = pi_0(xs)
         xs = torch.pow(xs, p)
-        numerator = torch.sum(torch.where(torch.isnan(xs), torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
-        denominator = torch.sum(~torch.isnan(xs), dim=dim, keepdim=keepdim)
-        return torch.pow(torch.div(numerator, denominator), 1 / p)
+        if mask is not None:
+            if mask.shape != xs.shape:
+                raise ValueError("'xs' and 'mask' must have the same shape.")
+            if not isinstance(mask, torch.BoolTensor):
+                raise ValueError("'mask' must be a torch.BoolTensor.")
+            # we sum the values of xs which are not filtered out by the mask
+            numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
+            # we count the number of 1 in the mask
+            denominator = torch.sum(mask, dim=dim, keepdim=keepdim)
+            return torch.pow(torch.div(numerator, denominator), 1 / p)
+        else:
+            return torch.pow(torch.mean(xs, dim=dim, keepdim=keepdim), 1 / p)
 
 
 class AggregPMeanError(AggregationOperator):
@@ -1511,7 +1444,7 @@ class AggregPMeanError(AggregationOperator):
     def __repr__(self):
         return "AggregPMeanError(p=" + str(self.p) + ", stable=" + str(self.stable) + ")"
 
-    def __call__(self, xs, dim=None, keepdim=False, p=None, stable=None):
+    def __call__(self, xs, dim=None, keepdim=False, mask=None, p=None, stable=None):
         """
         It applies the `pMeanError` aggregation operator to the given formula's :ref:`grounding <notegrounding>`
         on the selected dimensions.
@@ -1525,6 +1458,9 @@ class AggregPMeanError(AggregationOperator):
         keepdim : :obj:`bool`, default=False
             Flag indicating whether the output has to keep the same dimensions as the input after
             the aggregation.
+        mask : :class:`torch.Tensor`, default=None
+            Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
+            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
         p : :obj:`int`, default=None
             Value of hyper-parameter `p` of the `pMeanError` fuzzy aggregation operator.
         stable: :obj:`bool`, default=None
@@ -1536,25 +1472,29 @@ class AggregPMeanError(AggregationOperator):
             `pMeanError` fuzzy aggregation of the formula.
 
         Raises
-        ----------
+        ------
         :class:`ValueError`
-            Raises when the truth values contained in the :ref:`grounding <notegrounding>` of the formula are not in
-            the range [0., 1.].
+            Raises when the :ref:`grounding <notegrounding>` of the formula ('xs') and the mask do not have the same
+            shape.
+            Raises when the 'mask' is not boolean.
         """
-        # Notice the use of torch.where(). This has to be used
-        # because the guarded quantification is implemented in PyTorch by putting NaN values where the grounding of the
-        # formula does not satisfy the guarded condition. Therefore, if we aggregate on a tensor with NaN values, it is
-        # highly probable that we will obtain NaN as the output of the aggregation. For this reason, the aggregation do
-        # not have to consider the NaN values contained in the input tensor.
-        check_values(xs)
         p = self.p if p is None else p
         stable = self.stable if stable is None else stable
         if stable:
             xs = pi_1(xs)
         xs = torch.pow(1. - xs, p)
-        numerator = torch.sum(torch.where(torch.isnan(xs), torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
-        denominator = torch.sum(~torch.isnan(xs), dim=dim, keepdim=keepdim)
-        return 1. - torch.pow(torch.div(numerator, denominator), 1 / p)
+        if mask is not None:
+            if mask.shape != xs.shape:
+                raise ValueError("'xs' and 'mask' must have the same shape.")
+            if not isinstance(mask, torch.BoolTensor):
+                raise ValueError("'mask' must be a torch.BoolTensor.")
+            # we sum the values of xs which are not filtered out by the mask
+            numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
+            # we count the number of 1 in the mask
+            denominator = torch.sum(mask, dim=dim, keepdim=keepdim)
+            return 1. - torch.pow(torch.div(numerator, denominator), 1 / p)
+        else:
+            return 1. - torch.pow(torch.mean(xs, dim=dim, keepdim=keepdim), 1 / p)
 
 
 class SatAgg:
@@ -1710,5 +1650,7 @@ class SatAgg:
                              "containing scalars, but got the following shapes: " +
                              str([f.shape() for f in closed_formulas]))
         truth_values = torch.stack(truth_values, dim=0)
+        # check truth values of operands are in [0., 1.] before computing the SatAgg aggregation
+        check_values(truth_values)
 
         return self.agg_op(truth_values, dim=0)

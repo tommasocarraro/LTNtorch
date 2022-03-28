@@ -1025,7 +1025,8 @@ operator has to be applied.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeError</span></code></a></dt><dd><p>Raises when the types of the input parameters are incorrect.</p>
 </dd>
-<dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></dt><dd><p>Raises when the values of the input parameters are incorrect.</p>
+<dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></dt><dd><p>Raises when the values of the input parameters are incorrect.
+Raises when the truth values of the operands given in input are not in the range [0., 1.].</p>
 </dd>
 </dl>
 </dd>
@@ -1066,6 +1067,14 @@ operator has to be applied.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">And</span><span class="p">)</span>
 <span class="go">Connective(connective_op=AndProd(stable=True))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">And</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">q</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([[[0.5971, 0.6900, 0.6899, 0.6391],</span>
+<span class="go">         [0.6900, 0.6900, 0.6900, 0.6900],</span>
+<span class="go">         [0.6878, 0.6900, 0.6900, 0.6889]],</span>
+
+<span class="go">        [[0.5325, 0.6154, 0.6153, 0.5700],</span>
+<span class="go">         [0.6154, 0.6154, 0.6154, 0.6154],</span>
+<span class="go">         [0.6135, 0.6154, 0.6154, 0.6144]]]), free_vars=[&#39;x&#39;, &#39;y&#39;, &#39;z&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[[0.5971, 0.6900, 0.6899, 0.6391],</span>
 <span class="go">         [0.6900, 0.6900, 0.6900, 0.6900],</span>
@@ -1154,7 +1163,8 @@ parameters.</p>
 <dd class="field-even"><dl class="simple">
 <dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeError</span></code></a></dt><dd><p>Raises when the types of the input parameters are incorrect.</p>
 </dd>
-<dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></dt><dd><p>Raises when the values of the input parameters are incorrect.</p>
+<dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></dt><dd><p>Raises when the values of the input parameters are incorrect.
+Raises when the truth values of the formula given in input are not in the range [0., 1.].</p>
 </dd>
 </dl>
 </dd>
@@ -1178,6 +1188,9 @@ parameters.</p>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">],</span>
 <span class="gp">... </span>                                    <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.4</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([[0.9900, 0.9994, 0.9988],</span>
+<span class="go">        [0.9734, 0.9985, 0.9967]]), free_vars=[&#39;x&#39;, &#39;y&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([[0.9900, 0.9994, 0.9988],</span>
 <span class="go">        [0.9734, 0.9985, 0.9967]])</span>
@@ -1200,6 +1213,8 @@ parameters.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Forall</span><span class="p">)</span>
 <span class="go">Quantifier(agg_op=AggregPMeanError(p=2, stable=True), quantifier=&#39;f&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor([0.9798, 0.9988, 0.9974]), free_vars=[&#39;y&#39;])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor([0.9798, 0.9988, 0.9974])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -1214,6 +1229,8 @@ parameters.</p>
 <li><p>the attribute <cite>free_vars</cite> of the <cite>LTNObject</cite> in output contains no labels of variables. This is because both variables have been quantified, namely they are not free variables anymore.</p></li>
 </ul>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor(0.9882), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor(0.9882)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -1233,6 +1250,8 @@ Note that:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Exists</span><span class="p">)</span>
 <span class="go">Quantifier(agg_op=AggregPMean(p=2, stable=True), quantifier=&#39;e&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Exists</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor(0.9920), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor(0.9920)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -1254,6 +1273,8 @@ only the individuals of variable <cite>x</cite> whose sum of features is lower t
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
 <span class="gp">... </span>            <span class="n">cond_vars</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">],</span>
 <span class="gp">... </span>            <span class="n">cond_fn</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">less</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mf">1.</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor(0.9844, dtype=torch.float64), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor(0.9844, dtype=torch.float64)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>
@@ -1276,8 +1297,12 @@ only the individuals of variable <cite>x</cite> whose sum of features is lower t
 <span class="gp">... </span>                                   <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">]]))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">ltn</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span> <span class="c1"># with diagonal quantification</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">out_without_diag</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span> <span class="c1"># without diagonal quantification</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out_without_diag</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor(0.9788), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out_without_diag</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor(0.9788)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="go">LTNObject(value=tensor(0.9888), free_vars=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">tensor(0.9888)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">free_vars</span><span class="p">)</span>

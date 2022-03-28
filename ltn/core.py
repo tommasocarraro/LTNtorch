@@ -1147,6 +1147,14 @@ class Connective:
     >>> print(And)
     Connective(connective_op=AndProd(stable=True))
     >>> out = And(p(x), q(y, z))
+    >>> print(out)
+    LTNObject(value=tensor([[[0.5971, 0.6900, 0.6899, 0.6391],
+             [0.6900, 0.6900, 0.6900, 0.6900],
+             [0.6878, 0.6900, 0.6900, 0.6889]],
+    <BLANKLINE>
+            [[0.5325, 0.6154, 0.6153, 0.5700],
+             [0.6154, 0.6154, 0.6154, 0.6154],
+             [0.6135, 0.6154, 0.6154, 0.6144]]]), free_vars=['x', 'y', 'z'])
     >>> print(out.value)
     tensor([[[0.5971, 0.6900, 0.6899, 0.6391],
              [0.6900, 0.6900, 0.6900, 0.6900],
@@ -1194,6 +1202,7 @@ class Connective:
 
         :class:`ValueError`
             Raises when the values of the input parameters are incorrect.
+            Raises when the truth values of the operands given in input are not in the range [0., 1.].
         """
         operands = list(operands)
 
@@ -1282,6 +1291,9 @@ class Quantifier:
     ...                                     [1.2, 3.4, 1.3],
     ...                                     [2.3, 1.4, 1.4]]))
     >>> out = p(x, y)
+    >>> print(out)
+    LTNObject(value=tensor([[0.9900, 0.9994, 0.9988],
+            [0.9734, 0.9985, 0.9967]]), free_vars=['x', 'y'])
     >>> print(out.value)
     tensor([[0.9900, 0.9994, 0.9988],
             [0.9734, 0.9985, 0.9967]])
@@ -1303,6 +1315,8 @@ class Quantifier:
     >>> print(Forall)
     Quantifier(agg_op=AggregPMeanError(p=2, stable=True), quantifier='f')
     >>> out = Forall(x, p(x, y))
+    >>> print(out)
+    LTNObject(value=tensor([0.9798, 0.9988, 0.9974]), free_vars=['y'])
     >>> print(out.value)
     tensor([0.9798, 0.9988, 0.9974])
     >>> print(out.free_vars)
@@ -1316,6 +1330,8 @@ class Quantifier:
     - the attribute `free_vars` of the `LTNObject` in output contains no labels of variables. This is because both variables have been quantified, namely they are not free variables anymore.
 
     >>> out = Forall([x, y], p(x, y))
+    >>> print(out)
+    LTNObject(value=tensor(0.9882), free_vars=[])
     >>> print(out.value)
     tensor(0.9882)
     >>> print(out.free_vars)
@@ -1334,6 +1350,8 @@ class Quantifier:
     >>> print(Exists)
     Quantifier(agg_op=AggregPMean(p=2, stable=True), quantifier='e')
     >>> out = Forall(x, Exists(y, p(x, y)))
+    >>> print(out)
+    LTNObject(value=tensor(0.9920), free_vars=[])
     >>> print(out.value)
     tensor(0.9920)
     >>> print(out.free_vars)
@@ -1354,6 +1372,8 @@ class Quantifier:
     >>> out = Forall([x, y], p(x, y),
     ...             cond_vars=[x],
     ...             cond_fn=lambda x: torch.less(torch.sum(x.value, dim=1), 1.))
+    >>> print(out)
+    LTNObject(value=tensor(0.9844, dtype=torch.float64), free_vars=[])
     >>> print(out.value)
     tensor(0.9844, dtype=torch.float64)
     >>> print(out.free_vars)
@@ -1375,8 +1395,12 @@ class Quantifier:
     ...                                    [1.2, 3.4]]))
     >>> out = Forall(ltn.diag(x, y), p(x, y)) # with diagonal quantification
     >>> out_without_diag = Forall([x, y], p(x, y)) # without diagonal quantification
+    >>> print(out_without_diag)
+    LTNObject(value=tensor(0.9788), free_vars=[])
     >>> print(out_without_diag.value)
     tensor(0.9788)
+    >>> print(out)
+    LTNObject(value=tensor(0.9888), free_vars=[])
     >>> print(out.value)
     tensor(0.9888)
     >>> print(out.free_vars)
@@ -1424,6 +1448,7 @@ class Quantifier:
 
         :class:`ValueError`
             Raises when the values of the input parameters are incorrect.
+            Raises when the truth values of the formula given in input are not in the range [0., 1.].
         """
         # first of all, check if user has correctly set the condition vars and the condition function
         if cond_vars is not None and cond_fn is None:
@@ -1469,18 +1494,10 @@ class Quantifier:
             # create the mask for applying the guarded quantification
             formula, mask = self.compute_mask(formula, cond_vars, cond_fn, list(aggregation_vars))
 
-            # we apply the mask to the truth values of the formula
-            # the idea is to put NaN values where the mask is False (condition unsatisfied), while the rest of the
-            # truth values are kept untouched
-            masked_formula = torch.where(
-                ~mask.value,
-                np.nan,
-                formula.value.double()  # necessary for type incompatibilities
-            )
-
-            # we perform the desired quantification after the mask has been applied
+            # we perform the desired quantification
+            # we give the mask to the aggregator for performing the guarded quantification
             aggregation_dims = [formula.free_vars.index(var) for var in aggregation_vars]
-            output = self.agg_op(masked_formula, aggregation_dims, **kwargs)
+            output = self.agg_op(formula.value, aggregation_dims, mask=mask.value, **kwargs)
 
             # For some values in the formula, the mask can result in aggregating with empty variables.
             #    e.g. forall X ( exists Y:condition(X,Y) ( p(X,Y) ) )
@@ -1492,7 +1509,7 @@ class Quantifier:
             output = torch.where(
                 torch.isnan(output),
                 rep_value,
-                output
+                output.double()
             )
         else:  # in this case, the guarded quantification has not to be performed
             # aggregation_dims are the dimensions on which the aggregation has to be performed
