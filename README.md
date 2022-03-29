@@ -4,7 +4,7 @@
 [![docs link](https://img.shields.io/badge/docs-github.io-blue)](https://bmxitalia.github.io/LTNtorch/)
 [![MIT license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 ![python version](https://img.shields.io/badge/python-3.7|3.8|3.9-blue)
-[![DOI badge](https://zenodo.org/badge/432178023.svg)](https://zenodo.org/badge/latestdoi/432178023)
+[![DOI BADGE](https://zenodo.org/badge/DOI/10.5281/zenodo.6394282.svg)](https://doi.org/10.5281/zenodo.6394282)
 
 # LTNtorch: PyTorch implementation of Logic Tensor Networks
 
