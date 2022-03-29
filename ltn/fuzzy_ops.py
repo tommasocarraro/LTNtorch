@@ -1169,7 +1169,7 @@ class AggregMin(AggregationOperator):
             the aggregation.
         mask : :class:`torch.Tensor`, default=None
             Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
-            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
+            quantification. The mask must have the same shape of 'xs'. `False` means exclusion, `True` means inclusion.
 
         Returns
         ----------
@@ -1238,7 +1238,7 @@ class AggregMean(AggregationOperator):
             the aggregation.
         mask : :class:`torch.Tensor`, default=None
             Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
-            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
+            quantification. The mask must have the same shape of 'xs'. `False` means exclusion, `True` means inclusion.
 
         Returns
         ----------
@@ -1345,7 +1345,7 @@ class AggregPMean(AggregationOperator):
             the aggregation.
         mask : :class:`torch.Tensor`, default=None
             Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
-            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
+            quantification. The mask must have the same shape of 'xs'. `False` means exclusion, `True` means inclusion.
         p : :obj:`int`, default=None
             Value of hyper-parameter `p` of the `pMean` fuzzy aggregation operator.
         stable : :obj:`bool`, default=None
@@ -1460,7 +1460,7 @@ class AggregPMeanError(AggregationOperator):
             the aggregation.
         mask : :class:`torch.Tensor`, default=None
             Boolean mask for excluding values of 'xs' from the aggregation. It is internally used for guarded
-            quantification. The mask must have the same shape of 'xs'. False means exclusion, True means inclusion.
+            quantification. The mask must have the same shape of 'xs'. `False` means exclusion, `True` means inclusion.
         p : :obj:`int`, default=None
             Value of hyper-parameter `p` of the `pMeanError` fuzzy aggregation operator.
         stable: :obj:`bool`, default=None
