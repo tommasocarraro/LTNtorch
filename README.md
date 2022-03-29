@@ -189,11 +189,11 @@ If you are using **LTNtorch** in your work, please consider citing this reposito
 @software{LTNtorch,
   author = {Tommaso Carraro},
   title = {{LTNtorch: PyTorch implementation of Logic Tensor Networks}},
-  month = {dec},
-  year = {2021},
+  month = {mar},
+  year = {2022},
   publisher = {Zenodo},
-  version = {0.9},
-  doi = {10.5281/zenodo.5795951},
-  url = {https://doi.org/10.5281/zenodo.5795951}
+  version = {1.0.0},
+  doi = {10.5281/zenodo.6394282},
+  url = {https://doi.org/10.5281/zenodo.6394282}
 }
 ```
