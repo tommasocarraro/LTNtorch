@@ -3,7 +3,7 @@ message: "If you use LTNtorch in your work, please cite it as below."
 authors:
 - name: "Tommaso Carraro"
 title: "LTNtorch: PyTorch implementation of Logic Tensor Networks"
-version: "0.9"
+version: "1.0.0"
 doi: 10.5281/zenodo.5795951
 date-released: "2020-12-21"
 url: "https://doi.org/10.5281/zenodo.5795951"
