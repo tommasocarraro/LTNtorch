@@ -13,3 +13,5 @@ jobs:
         with:
           target_repo_url:
             git@github.com:logictensornetworks/LTNtorch.git
+          ssh_private_key:
+            ${{ secrets.MIRRORING_SECRET }}
