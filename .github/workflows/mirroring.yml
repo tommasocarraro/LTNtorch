@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: pixta-dev/repository-mirroring-action@v1.1
+      - uses: pixta-dev/repository-mirroring-action@v1.1.0
         with:
           target_repo_url:
             git@github.com:logictensornetworks/LTNtorch.git
