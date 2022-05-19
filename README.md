@@ -1,5 +1,5 @@
 ![build status](https://github.com/tommasocarraro/LTNtorch/actions/workflows/build.yml/badge.svg)
-[![coverage status](https://coveralls.io/repos/github/tommasocarraro/LTNtorch/badge.svg?branch=main)](https://coveralls.io/github/bmxitalia/LTNtorch?branch=main)
+[![coverage status](https://coveralls.io/repos/github/tommasocarraro/LTNtorch/badge.svg?branch=main)](https://coveralls.io/github/tommasocarraro/LTNtorch?branch=main)
 [![PyPi](https://img.shields.io/pypi/v/LTNtorch.svg)](https://pypi.python.org/pypi/LTNtorch)
 [![docs link](https://img.shields.io/badge/docs-github.io-blue)](https://tommasocarraro.github.io/LTNtorch/)
 [![MIT license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
