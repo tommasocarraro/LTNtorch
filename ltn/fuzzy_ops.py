@@ -80,6 +80,32 @@ def check_values(*values):
                              " [0., 1.], but got some values outside this range.")
 
 
+# utility function to check the integrity of the mask when guarded quantification is used
+def check_mask(mask, xs):
+    """
+    This function is used when guarded quantification is used in a quantifier aggregator.
+
+    It checks that the grounding of the formula in input (`xs`) is of the same shape of the `mask` used for masking it.
+    Then, it checks that the mask is of boolean type.
+
+    Parameters
+    -----------
+    mask : :class:`torch.Tensor`
+            Boolean mask used for filtering values of `xs` during guarded quantification.
+    xs : :class:`torch.Tensor`
+            :ref:`Grounding <notegrounding>` of formula on which the guarded quantification has to be performed.
+
+    Raises
+    -----------
+    :class:`ValueError`
+        Raises when the shapes of the inputs differ or `mask` is not of the correct type.
+    """
+    if mask.shape != xs.shape:
+        raise ValueError("'xs' and 'mask' must have the same shape.")
+    if not isinstance(mask, (torch.BoolTensor, torch.cuda.BoolTensor)):
+        raise ValueError("'mask' must be a torch.BoolTensor or torch.cuda.BoolTensor.")
+
+
 # here, it begins the implementation of fuzzy operators in PyTorch
 
 class ConnectiveOperator:
@@ -1184,10 +1210,7 @@ class AggregMin(AggregationOperator):
             Raises when the 'mask' is not boolean.
         """
         if mask is not None:
-            if mask.shape != xs.shape:
-                raise ValueError("'xs' and 'mask' must have the same shape.")
-            if not isinstance(mask, torch.BoolTensor):
-                raise ValueError("'mask' must be a torch.BoolTensor.")
+            check_mask(mask, xs)
             # here, we put 1 where the mask is not satisfied, since 1 is the maximum value for a truth value.
             # this is a way to exclude values from the minimum computation
             xs = torch.where(~mask, 1., xs.double())
@@ -1253,10 +1276,7 @@ class AggregMean(AggregationOperator):
             Raises when the 'mask' is not boolean.
         """
         if mask is not None:
-            if mask.shape != xs.shape:
-                raise ValueError("'xs' and 'mask' must have the same shape.")
-            if not isinstance(mask, torch.BoolTensor):
-                raise ValueError("'mask' must be a torch.BoolTensor.")
+            check_mask(mask, xs)
             # we sum the values of xs which are not filtered out by the mask
             numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
             # we count the number of 1 in the mask
@@ -1369,10 +1389,7 @@ class AggregPMean(AggregationOperator):
             xs = pi_0(xs)
         xs = torch.pow(xs, p)
         if mask is not None:
-            if mask.shape != xs.shape:
-                raise ValueError("'xs' and 'mask' must have the same shape.")
-            if not isinstance(mask, torch.BoolTensor):
-                raise ValueError("'mask' must be a torch.BoolTensor.")
+            check_mask(mask, xs)
             # we sum the values of xs which are not filtered out by the mask
             numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
             # we count the number of 1 in the mask
@@ -1484,10 +1501,7 @@ class AggregPMeanError(AggregationOperator):
             xs = pi_1(xs)
         xs = torch.pow(1. - xs, p)
         if mask is not None:
-            if mask.shape != xs.shape:
-                raise ValueError("'xs' and 'mask' must have the same shape.")
-            if not isinstance(mask, torch.BoolTensor):
-                raise ValueError("'mask' must be a torch.BoolTensor.")
+            check_mask(mask, xs)
             # we sum the values of xs which are not filtered out by the mask
             numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
             # we count the number of 1 in the mask
