@@ -1,3 +1,6 @@
+# Copyright (c) 2021-2024 Tommaso Carraro
+# Licensed under the MIT License. See LICENSE file in the project root for details.
+
 from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:

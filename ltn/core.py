@@ -1,3 +1,6 @@
+# Copyright (c) 2021-2024 Tommaso Carraro
+# Licensed under the MIT License. See LICENSE file in the project root for details.
+
 """
 The `ltn.core` module contains the main functionalities of LTNtorch. In particular, it contains the definitions of
 constants, variables, predicates, functions, connectives, and quantifiers.
