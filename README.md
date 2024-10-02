@@ -4,7 +4,7 @@
 [![docs link](https://img.shields.io/badge/docs-github.io-blue)](https://tommasocarraro.github.io/LTNtorch/)
 [![MIT license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 ![python version](https://img.shields.io/badge/python-3.7|3.8|3.9-blue)
-[![DOI BADGE](https://zenodo.org/badge/DOI/10.5281/zenodo.6394282.svg)](https://doi.org/10.5281/zenodo.6394282)
+[![DOI BADGE](https://zenodo.org/badge/DOI/10.5281/zenodo.7778157.svg)](https://doi.org/10.5281/zenodo.7778157)
 
 # LTNtorch: PyTorch implementation of Logic Tensor Networks
 
@@ -183,17 +183,17 @@ LTN has been developed thanks to active contributions and discussions with the f
 
 # Citing this repo
 
-If you are using **LTNtorch** in your work, please consider citing this repository.
+If you are using **LTNtorch** in your work, please consider citing this repository using the following BibTex entry.
 
 ```
-@software{LTNtorch,
-  author = {Tommaso Carraro},
-  title = {{LTNtorch: PyTorch implementation of Logic Tensor Networks}},
-  month = {mar},
-  year = {2022},
-  publisher = {Zenodo},
-  version = {1.0.0},
-  doi = {10.5281/zenodo.6394282},
-  url = {https://doi.org/10.5281/zenodo.6394282}
+@misc{LTNtorch,
+  author       = {Tommaso Carraro},
+  title        = {{LTNtorch: PyTorch implementation of Logic Tensor Networks}},
+  month        = {mar},
+  year         = {2023},
+  howpublished = {Zenodo},
+  version      = {v1.0.1},
+  doi          = {10.5281/zenodo.7778157}
+  url          = {https://doi.org/10.5281/zenodo.7778157}
 }
 ```
