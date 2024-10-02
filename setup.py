@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='LTNtorch',
-    version='1.0.1',
+    version='1.0.2',
     packages=find_packages(include=['ltn']),
     install_requires=[
         "numpy",
