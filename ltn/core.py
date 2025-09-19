@@ -1455,10 +1455,10 @@ class Quantifier:
         """
         # first of all, check if user has correctly set the condition vars and the condition function
         if cond_vars is not None and cond_fn is None:
-            raise ValueError("Since 'cond_fn' parameter has been set, 'cond_vars' parameter must be set as well, "
+            raise ValueError("Since 'cond_vars' parameter has been set, 'cond_fn' parameter must be set as well, "
                              "but got None.")
         if cond_vars is None and cond_fn is not None:
-            raise ValueError("Since 'cond_vars' parameter has been set, 'cond_fn' parameter must be set as well, "
+            raise ValueError("Since 'cond_fn' parameter has been set, 'cond_vars' parameter must be set as well, "
                              "but got None.")
         # check that vars is a list of LTN variables or a single LTN variable
         if not all(isinstance(x, Variable) for x in vars) if isinstance(vars, list) else not isinstance(vars, Variable):
