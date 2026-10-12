@@ -1573,16 +1573,18 @@ class Quantifier:
         """
         # first of all, check if user has correctly set the condition vars and the condition function
         if cond_vars is not None and cond_fn is None:
-            raise ValueError("Since 'cond_fn' parameter has been set, 'cond_vars' parameter must be set as well, "
+            raise ValueError("Since 'cond_vars' parameter has been set, 'cond_fn' parameter must be set as well, "
                              "but got None.")
         if cond_vars is None and cond_fn is not None:
-            raise ValueError("Since 'cond_vars' parameter has been set, 'cond_fn' parameter must be set as well, "
+            raise ValueError("Since 'cond_fn' parameter has been set, 'cond_vars' parameter must be set as well, "
                              "but got None.")
         # check that vars is a list of LTN variables or a single LTN variable
         if not all(isinstance(x, Variable) for x in vars) if isinstance(vars, list) else not isinstance(vars, Variable):
+            # note that the parentheses around the conditional expression are necessary. Without them, the condition
+            # is applied to the entire message, namely the first part of the message is lost when `vars` is not a list
             raise TypeError("Expected parameter 'vars' to be a list of Variable or a "
-                            "Variable, but got " + str([type(v) for v in vars])
-                            if isinstance(vars, list) else type(vars))
+                            "Variable, but got " + (str([type(v) for v in vars])
+                                                    if isinstance(vars, list) else str(type(vars))))
 
         # check that formula is an LTNObject
         if not isinstance(formula, LTNObject):
@@ -1605,9 +1607,12 @@ class Quantifier:
             # check that cond_vars are LTN variables
             if not all(isinstance(x, Variable) for x in cond_vars) if isinstance(cond_vars, list) \
                     else not isinstance(cond_vars, Variable):
+                # note that the parentheses around the conditional expression are necessary. Without them, the
+                # condition is applied to the entire message, namely the first part of the message is lost when
+                # `cond_vars` is not a list
                 raise TypeError("Expected parameter 'cond_vars' to be a list of Variable or a "
-                                "Variable, but got " + str([type(v) for v in cond_vars])
-                                if isinstance(cond_vars, list) else type(cond_vars))
+                                "Variable, but got " + (str([type(v) for v in cond_vars])
+                                                        if isinstance(cond_vars, list) else str(type(cond_vars))))
             # check that cond_fn is a function
             if not isinstance(cond_fn, types.LambdaType):
                 raise TypeError("Expected parameter 'cond_fn' to be a function, but got " + str(type(cond_fn)))
