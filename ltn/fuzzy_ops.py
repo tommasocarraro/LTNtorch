@@ -61,10 +61,71 @@ def pi_1(x):
     return (1 - eps) * x
 
 
+# this flag indicates whether LTNtorch has to check that the truth values are in the range [0., 1.] or not
+# it has not to be changed directly. Use set_validation() to change it, and validation_enabled() to read it
+_validation = True
+
+
+def set_validation(enabled):
+    """
+    This function enables or disables the checks that LTNtorch performs on the truth values.
+
+    By default, LTNtorch checks that the output of each predicate, and the inputs of connectives and quantifiers, are in
+    the range [0., 1.]. These checks are useful to find errors in the definition of the predicates, but they have a
+    cost. In particular, each check needs the result to be available on the CPU, namely it forces PyTorch to wait
+    for the GPU to complete all the pending operations. For this reason, once the knowledge base has been verified to
+    work correctly, it is possible to disable these checks to make the training faster.
+
+    Parameters
+    -----------
+    enabled: :obj:`bool`
+        Flag indicating whether the checks on the truth values have to be performed (`True`) or not (`False`).
+
+    Raises
+    -----------
+    :class:`TypeError`
+        Raises when the type of the input parameter is incorrect.
+
+    Examples
+    --------
+    >>> import ltn
+    >>> import torch
+    >>> p = ltn.Predicate(func=lambda x: torch.sum(x, dim=1))
+    >>> x = ltn.Variable('x', torch.tensor([[0.56], [1.9]]))
+    >>> ltn.set_validation(False)
+    >>> print(p(x).value)
+    tensor([0.5600, 1.9000])
+    >>> ltn.set_validation(True)
+    >>> p(x)
+    Traceback (most recent call last):
+    ...
+    ValueError: Expected the output of a predicate to be in the range [0., 1.], but got some values outside of this range. Check your predicate implementation!
+    """
+    if not isinstance(enabled, bool):
+        raise TypeError("set_validation() : argument 'enabled' (position 1) must be a bool, not " + str(type(enabled)))
+    global _validation
+    _validation = enabled
+
+
+def validation_enabled():
+    """
+    This function tells whether the checks that LTNtorch performs on the truth values are enabled or not.
+
+    Returns
+    -----------
+    :obj:`bool`
+        `True` if the checks on the truth values are enabled, `False` otherwise.
+    """
+    return _validation
+
+
 # utility function to check the input of connectives and quantifiers
 def check_values(*values):
     """
     This function checks the input values are in the range [0., 1.] and raises an exception if it is not the case.
+
+    Note that the check is not performed if the validation has been disabled using
+    :func:`ltn.fuzzy_ops.set_validation`.
 
     Parameters
     -----------
@@ -76,9 +137,14 @@ def check_values(*values):
     :class:`ValueError`
         Raises when the values of the input parameters are incorrect.
     """
+    # if the validation has been disabled by the user, there is nothing to check
+    if not _validation:
+        return
     values = list(values)
     for v in values:
-        if not torch.all(torch.where(torch.logical_and(v >= 0., v <= 1.), 1., 0.)):
+        # note that torch.all works directly on the boolean tensor, so there is no need to convert it to a float
+        # tensor first. This avoids the creation of a temporary tensor with the same size of the input
+        if not torch.all(torch.logical_and(v >= 0., v <= 1.)):
             raise ValueError("Expected inputs of connectives and quantifiers to be tensors of truth values in the range"
                              " [0., 1.], but got some values outside this range.")
 
@@ -474,8 +540,8 @@ class AndLuk(BinaryConnectiveOperator):
         :class:`torch.Tensor`
             The Lukasiewicz fuzzy conjunction of the two operands.
         """
-        zeros = torch.zeros_like(x)
-        return torch.maximum(x + y - 1., zeros)
+        # note that clamp computes the maximum with 0 without the need of allocating a tensor of zeros
+        return torch.clamp(x + y - 1., min=0.)
 
 # DISJUNCTION
 
@@ -679,8 +745,8 @@ class OrLuk(BinaryConnectiveOperator):
         :class:`torch.Tensor`
             The Lukasiewicz fuzzy disjunction of the two operands.
         """
-        ones = torch.ones_like(x)
-        return torch.minimum(x + y, ones)
+        # note that clamp computes the minimum with 1 without the need of allocating a tensor of ones
+        return torch.clamp(x + y, max=1.)
 
 
 class ImpliesKleeneDienes(BinaryConnectiveOperator):
@@ -1027,8 +1093,8 @@ class ImpliesLuk(BinaryConnectiveOperator):
         :class:`torch.Tensor`
             The Lukasiewicz fuzzy implication of the two operands.
         """
-        ones = torch.ones_like(x)
-        return torch.minimum(1. - x + y, ones)
+        # note that clamp computes the minimum with 1 without the need of allocating a tensor of ones
+        return torch.clamp(1. - x + y, max=1.)
 
 # EQUIVALENCE
 
@@ -1216,7 +1282,9 @@ class AggregMin(AggregationOperator):
             check_mask(mask, xs)
             # here, we put 1 where the mask is not satisfied, since 1 is the maximum value for a truth value.
             # this is a way to exclude values from the minimum computation
-            xs = torch.where(~mask, 1., xs.double())
+            # note that we use masked_fill instead of torch.where. In this way, there is no need to convert `xs` to
+            # double, so the output keeps the same type of the input (float32) instead of becoming a float64 tensor
+            xs = xs.masked_fill(~mask, 1.)
         out = torch.amin(xs, dim=dim, keepdim=keepdim)
         return out
 
@@ -1281,7 +1349,9 @@ class AggregMean(AggregationOperator):
         if mask is not None:
             check_mask(mask, xs)
             # we sum the values of xs which are not filtered out by the mask
-            numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
+            # note that masked_fill puts 0 where the mask is not satisfied without the need of allocating a tensor of
+            # zeros with the same size of xs, as it was necessary with torch.where
+            numerator = torch.sum(xs.masked_fill(~mask, 0.), dim=dim, keepdim=keepdim)
             # we count the number of 1 in the mask
             denominator = torch.sum(mask, dim=dim, keepdim=keepdim)
             return torch.div(numerator, denominator)
@@ -1394,7 +1464,9 @@ class AggregPMean(AggregationOperator):
         if mask is not None:
             check_mask(mask, xs)
             # we sum the values of xs which are not filtered out by the mask
-            numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
+            # note that masked_fill puts 0 where the mask is not satisfied without the need of allocating a tensor of
+            # zeros with the same size of xs, as it was necessary with torch.where
+            numerator = torch.sum(xs.masked_fill(~mask, 0.), dim=dim, keepdim=keepdim)
             # we count the number of 1 in the mask
             denominator = torch.sum(mask, dim=dim, keepdim=keepdim)
             return torch.pow(torch.div(numerator, denominator), 1 / p)
@@ -1506,7 +1578,9 @@ class AggregPMeanError(AggregationOperator):
         if mask is not None:
             check_mask(mask, xs)
             # we sum the values of xs which are not filtered out by the mask
-            numerator = torch.sum(torch.where(~mask, torch.zeros_like(xs), xs), dim=dim, keepdim=keepdim)
+            # note that masked_fill puts 0 where the mask is not satisfied without the need of allocating a tensor of
+            # zeros with the same size of xs, as it was necessary with torch.where
+            numerator = torch.sum(xs.masked_fill(~mask, 0.), dim=dim, keepdim=keepdim)
             # we count the number of 1 in the mask
             denominator = torch.sum(mask, dim=dim, keepdim=keepdim)
             return 1. - torch.pow(torch.div(numerator, denominator), 1 / p)

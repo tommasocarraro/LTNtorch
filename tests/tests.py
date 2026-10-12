@@ -1630,7 +1630,7 @@ def test_Quantifier():
     mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=0, mask=mask)
 
-    assert torch.equal(out.value, toy_out.double()), "The output should be the same if everything is correct."
+    assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == ["y"], "Since the quantification is on x, the output should have only y in the free vars."
     assert out.shape() == torch.Size([4]), "x has been quantified, so the output should have a shape of 4, since y" \
@@ -1644,11 +1644,7 @@ def test_Quantifier():
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=0, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
-    toy_out = torch.where(
-        torch.isnan(toy_out),
-        1.,
-        toy_out.double()
-    )
+    toy_out = toy_out.masked_fill(torch.isnan(toy_out), 1.)
 
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
@@ -1664,11 +1660,7 @@ def test_Quantifier():
     toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(p(x, y).value, dim=0, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 0.
-    toy_out = torch.where(
-        torch.isnan(toy_out),
-        0.,
-        toy_out.double()
-    )
+    toy_out = toy_out.masked_fill(torch.isnan(toy_out), 0.)
 
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
@@ -1684,11 +1676,7 @@ def test_Quantifier():
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=(0, 1), mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
-    toy_out = torch.where(
-        torch.isnan(toy_out),
-        1.,
-        toy_out.double()
-    )
+    toy_out = toy_out.masked_fill(torch.isnan(toy_out), 1.)
 
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
@@ -1701,7 +1689,7 @@ def test_Quantifier():
     mask = torch.tensor([[1, 1, 1, 1], [0, 0, 0, 0]]).bool()  # the mask should be this one
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=(0, 1), mask=mask)
 
-    assert torch.equal(out.value, toy_out.double()), "The output should be the same if everything is correct."
+    assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == [], "Since the quantification is on both variables, the output should not have free vars."
     assert out.shape() == torch.Size([]), "Both variables have been quantified, so the output should be a scalar."
@@ -1713,13 +1701,9 @@ def test_Quantifier():
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(p(x, y).value, dim=1, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
-    toy_out = torch.where(
-        torch.isnan(toy_out),
-        1.,
-        toy_out.double()
-    )
+    toy_out = toy_out.masked_fill(torch.isnan(toy_out), 1.)
 
-    assert torch.equal(out.value, toy_out.double()), "The output should be the same if everything is correct."
+    assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
     assert isinstance(out, LTNObject), "The output of a quantification operation is always an LTNObject."
     assert out.free_vars == ["x"], "Since the quantification is on y, the output should have x free var."
     assert out.shape() == torch.Size([2]), "y has been quantified, so the output should have x dimension (2)."
@@ -1769,7 +1753,7 @@ def test_Quantifier():
     mask = torch.tensor([0, 1, 0]).bool()  # the mask should be this one
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(out_p, dim=0, mask=mask)
 
-    assert torch.equal(out.value, toy_out.double()), "The output should be the same."
+    assert torch.equal(out.value, toy_out), "The output should be the same."
     assert out.free_vars == [], "We have quantified both variables, so there should not be free vars."
     assert isinstance(out, LTNObject), "The output of a quantification is always an LTNObject."
     assert out.shape() == torch.Size([]), "The output should be a scalar."
@@ -1783,7 +1767,7 @@ def test_Quantifier():
     mask = torch.tensor([[0, 0, 0], [0, 1, 1], [0, 0, 1]]).bool()  # the mask should be this one
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(out_p, dim=(0, 1), mask=mask)
 
-    assert torch.equal(out.value, toy_out.double()), "The output should be the same."
+    assert torch.equal(out.value, toy_out), "The output should be the same."
     assert out.free_vars == [], "We have quantified both variables, so there should not be free vars."
     assert isinstance(out, LTNObject), "The output of a quantification is always an LTNObject."
     assert out.shape() == torch.Size([]), "The output should be a scalar."
@@ -1900,8 +1884,8 @@ def test_Quantifier():
                        torch.amin(truth_values_2, dim=0)), "Without mask the output should be the same."
 
     assert torch.equal(min_agg(truth_values_2, dim=0, mask=m),
-                       torch.amin(torch.where(~m, 1., truth_values_2.double()), dim=0)), "With the mask the " \
-                                                                                         "output should be the same."
+                       torch.amin(truth_values_2.masked_fill(~m, 1.), dim=0)), "With the mask the output should " \
+                                                                           "be the same."
 
     # test exceptions of the input
 
@@ -2134,11 +2118,7 @@ def test_Quantifier():
                                                   dim=(1, 2), mask=mask.permute((2, 0, 1)))
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
-    toy_out = torch.where(
-        torch.isnan(toy_out),
-        1.,
-        toy_out.double()
-    )
+    toy_out = toy_out.masked_fill(torch.isnan(toy_out), 1.)
     toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(toy_out, dim=0)
 
     assert torch.equal(out.value, toy_out), "The output should be the same if everything is correct."
@@ -2193,11 +2173,7 @@ def test_Quantifier():
     toy_out = ltn.fuzzy_ops.AggregPMeanError(p=2)(toy_out.value, dim=0, mask=mask)
     # replace of remaining Nan values after the aggregation
     # since quantifier is forall, we replace with 1.
-    toy_out = torch.where(
-        torch.isnan(toy_out),
-        1.,
-        toy_out.double()
-    )
+    toy_out = toy_out.masked_fill(torch.isnan(toy_out), 1.)
     toy_out = ltn.fuzzy_ops.AggregPMean(p=2)(toy_out, dim=0)
 
     assert torch.abs(out.value - toy_out) < 1e-8, "The output should be the same if everything is correct."
@@ -2270,3 +2246,160 @@ def test_Quantifier():
                                                               dim=0), dim=0)
 
     assert torch.equal(out, toy_out), "The output should be the same."
+
+
+def test_efficiency_improvements():
+    torch.manual_seed(2020)
+
+    # broadcast_ltn_objects
+
+    # broadcast_ltn_objects only accepts list of LTNObject
+    with pytest.raises(TypeError):
+        ltn.broadcast_ltn_objects([Constant(torch.tensor([1, 2, 3, 4])), torch.tensor([3, 4, 5, 6])])
+
+    v1 = Variable("x", torch.tensor([[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12]]))
+    v2 = Variable("y", torch.tensor([[1, 2], [3, 4], [5, 6]]))
+    proc_objs, vars, n_individuals_per_var = ltn.broadcast_ltn_objects([v1, v2])
+
+    assert vars == ["x", "y"], "vars should contain the list ['x', 'y'] since v1 has label x and v2 label y."
+    assert n_individuals_per_var == [2, 3], "v1 has 2 individuals and v2 has 3 individuals."
+    assert proc_objs[0].free_vars == proc_objs[1].free_vars == ["x", "y"], "The two LTN object should now share " \
+                                                                           "the variables."
+    assert proc_objs[0].shape() == torch.Size([2, 3, 6]), "One dimension for each variable, then the features."
+    assert proc_objs[1].shape() == torch.Size([2, 3, 2]), "One dimension for each variable, then the features."
+    # the objects are expanded and not repeated, namely they are views that share the memory with the given objects
+    assert proc_objs[0].value.data_ptr() == v1.value.data_ptr(), "The values should not have been copied."
+    assert proc_objs[1].value.data_ptr() == v2.value.data_ptr(), "The values should not have been copied."
+    # the given objects have not to be changed
+    assert proc_objs[0] is not v1 and proc_objs[1] is not v2, "New LTN objects should have been created."
+    assert v1.free_vars == ["x"] and v1.shape() == torch.Size([2, 6]), "v1 should be untouched."
+    assert v2.free_vars == ["y"] and v2.shape() == torch.Size([3, 2]), "v2 should be untouched."
+
+    # with expand=False, the dimensions of the missing variables are left with size 1
+    proc_objs_, vars_, n_individuals_per_var_ = ltn.broadcast_ltn_objects([v1, v2], expand=False)
+    assert vars_ == vars and n_individuals_per_var_ == n_individuals_per_var, "These outputs should not change."
+    assert proc_objs_[0].shape() == torch.Size([2, 1, 6]), "The dimension of y should have size 1."
+    assert proc_objs_[1].shape() == torch.Size([1, 3, 2]), "The dimension of x should have size 1."
+    assert proc_objs_[0].free_vars == proc_objs_[1].free_vars == ["x", "y"], "The two LTN object should now share " \
+                                                                             "the variables."
+
+    # the flat version of the broadcast objects must be equal to the output of process_ltn_objects
+    flat_objs, flat_vars, flat_n = process_ltn_objects([v1, v2])
+    assert flat_vars == vars and flat_n == n_individuals_per_var, "The two functions should agree."
+    assert torch.equal(flat_objs[0].value, proc_objs[0].value.reshape(6, 6)), "The values should be the same."
+    assert torch.equal(flat_objs[1].value, proc_objs[1].value.reshape(6, 2)), "The values should be the same."
+
+    # an LTN object that has a grad_fn must not be changed when it is used in another formula
+    # this was not the case in the past, since objects with a grad_fn were not copied by process_ltn_objects
+
+    p = Predicate(torch.nn.Sequential(torch.nn.Linear(2, 1), torch.nn.Sigmoid()).to(ltn.device))
+    q = Predicate(torch.nn.Sequential(torch.nn.Linear(3, 1), torch.nn.Sigmoid()).to(ltn.device))
+    x = Variable("x", torch.rand((3, 2)))
+    y = Variable("y", torch.rand((4, 3)))
+    and_prod = Connective(ltn.fuzzy_ops.AndProd())
+    forall = Quantifier(ltn.fuzzy_ops.AggregPMeanError(), quantifier="f")
+
+    px, qy = p(x), q(y)
+    assert px.value.grad_fn is not None, "The output of a trainable predicate should have a grad_fn."
+    px_value, qy_value = px.value, qy.value
+
+    out = and_prod(px, qy)
+    assert out.free_vars == ["x", "y"] and out.shape() == torch.Size([3, 4]), "The output should be on x and y."
+    assert px.free_vars == ["x"] and px.value is px_value, "px should be untouched after it has been used."
+    assert qy.free_vars == ["y"] and qy.value is qy_value, "qy should be untouched after it has been used."
+    # since px and qy are untouched, they can be used again and the result must be the same
+    assert torch.equal(and_prod(px, qy).value, out.value), "The sub-formulas should be reusable."
+    assert torch.equal(out.value, ltn.fuzzy_ops.AndProd()(px_value.view(3, 1), qy_value.view(1, 4))), \
+        "The output should be the same as the one obtained with a manual broadcasting."
+
+    # a custom operator that uses only one of its operands must return an output with the correct shape anyway
+    class OnlyFirst(ltn.fuzzy_ops.BinaryConnectiveOperator):
+        def __call__(self, x, y):
+            return x
+
+    out_first = Connective(OnlyFirst())(px, qy)
+    assert out_first.shape() == torch.Size([3, 4]), "The output should have one dimension for each variable."
+    assert torch.equal(out_first.value, px_value.view(3, 1).expand(3, 4)), "The output should be px repeated on y."
+
+    # the operands can have the variables in different order
+    op1 = LTNObject(torch.rand((3, 4)), ["x", "y"])
+    op2 = LTNObject(torch.rand((5, 4, 3)), ["z", "y", "x"])
+    out_order = and_prod(op1, op2)
+    assert out_order.free_vars == ["x", "y", "z"] and out_order.shape() == torch.Size([3, 4, 5]), "Wrong output."
+    assert torch.equal(out_order.value, ltn.fuzzy_ops.AndProd()(op1.value.view(3, 4, 1), op2.value.permute(2, 1, 0))), \
+        "The output should be the same as the one obtained with a manual broadcasting."
+
+    # also the variables must be untouched
+    assert x.free_vars == ["x"] and x.shape() == torch.Size([3, 2]), "x should be untouched."
+    assert y.free_vars == ["y"] and y.shape() == torch.Size([4, 3]), "y should be untouched."
+
+    # the gradient has to flow through the expanded operands
+    forall([x, y], out).value.backward()
+    assert all(par.grad is not None for par in list(p.parameters()) + list(q.parameters())), \
+        "The gradient should reach the parameters of both predicates."
+
+    # guarded quantification must not change the type of the output to float64
+
+    out = forall([x, y], and_prod(p(x), q(y)), cond_vars=[x], cond_fn=lambda x: x.value[:, 0] > 0.5)
+    assert out.value.dtype == torch.float32, "The output of a guarded quantification should be float32."
+    # in this case there are no individuals that satisfy the condition, so the Nan has to be replaced
+    out = forall([x, y], and_prod(p(x), q(y)), cond_vars=[x], cond_fn=lambda x: x.value[:, 0] > 2.)
+    assert out.value.dtype == torch.float32, "The output of a guarded quantification should be float32."
+    assert out.value == 1., "Since the quantifier is forall and the condition is never satisfied, we expect 1."
+    exists = Quantifier(ltn.fuzzy_ops.AggregPMean(), quantifier="e")
+    out = exists([x, y], and_prod(p(x), q(y)), cond_vars=[x], cond_fn=lambda x: x.value[:, 0] > 2.)
+    assert out.value == 0., "Since the quantifier is exists and the condition is never satisfied, we expect 0."
+    assert ltn.fuzzy_ops.SatAgg()(out, forall(x, p(x))).dtype == torch.float32, "SatAgg should be float32."
+
+    m = torch.tensor([[1, 0, 1, 1], [0, 0, 0, 0], [1, 1, 0, 1]]).bool()
+    for agg in [ltn.fuzzy_ops.AggregMin(), ltn.fuzzy_ops.AggregMean(), ltn.fuzzy_ops.AggregPMean(),
+                ltn.fuzzy_ops.AggregPMeanError()]:
+        assert agg(torch.rand((3, 4)), dim=1, mask=m).dtype == torch.float32, "The type should not be changed."
+
+    # truth_checked flag
+
+    assert not LTNObject(torch.rand((3,)), ["x"]).truth_checked, "Objects created by the user are not checked."
+    assert not x.truth_checked, "Variables do not contain truth values, so the flag has to be False."
+    assert p(x).truth_checked, "The output of a predicate has been checked."
+    assert and_prod(p(x), q(y)).truth_checked, "The output of a connective has been checked."
+    assert forall(x, p(x)).truth_checked, "The output of a quantifier has been checked."
+
+    # objects created by the user have always to be checked by connectives and quantifiers
+    with pytest.raises(ValueError):
+        and_prod(p(x), LTNObject(torch.randn((3, 3)) + 5., ["x", "y"]))
+    with pytest.raises(ValueError):
+        forall(x, LTNObject(torch.randn((3,)) + 5., ["x"]))
+
+    # set_validation
+
+    assert ltn.validation_enabled(), "The validation should be enabled by default."
+
+    # the flag must be a boolean
+    with pytest.raises(TypeError):
+        ltn.set_validation("False")
+
+    wrong_p = Predicate(func=lambda x: torch.sum(x, dim=1) + 5.)
+    with pytest.raises(ValueError):
+        wrong_p(x)
+
+    ltn.set_validation(False)
+    try:
+        assert not ltn.validation_enabled(), "The validation should be disabled now."
+        out = wrong_p(x)  # no exception is expected since the validation is disabled
+        assert not out.truth_checked, "The values have not been checked, so the flag has to be False."
+        ltn.fuzzy_ops.check_values(torch.randn((3, 3)) + 5.)  # no exception is expected
+        and_prod(out, LTNObject(torch.randn((3,)) + 5., ["x"]))  # no exception is expected
+    finally:
+        # we enable the validation again in such a way to not interfere with the other tests
+        ltn.set_validation(True)
+
+    # since the values have not been checked when the validation was disabled, they are checked now
+    with pytest.raises(ValueError):
+        and_prod(out, p(x))
+
+    # Lukasiewicz operators, which are now implemented with clamp
+
+    a, b = torch.rand((5, 4)), torch.rand((5, 4))
+    assert torch.equal(ltn.fuzzy_ops.AndLuk()(a, b), torch.maximum(a + b - 1., torch.zeros_like(a))), "Same output."
+    assert torch.equal(ltn.fuzzy_ops.OrLuk()(a, b), torch.minimum(a + b, torch.ones_like(a))), "Same output."
+    assert torch.equal(ltn.fuzzy_ops.ImpliesLuk()(a, b), torch.minimum(1. - a + b, torch.ones_like(a))), "Same output."

@@ -6,7 +6,6 @@ The `ltn.core` module contains the main functionalities of LTNtorch. In particul
 constants, variables, predicates, functions, connectives, and quantifiers.
 """
 
-import copy
 import torch
 from torch import nn
 import numpy as np
@@ -56,6 +55,12 @@ class LTNObject:
                             + str(type(var_labels)))
         self.value = value
         self.free_vars = var_labels
+        # this flag is used by LTNtorch internally. It is set to True when the truth values contained in the LTN object
+        # have been already checked to be in the range [0., 1.], namely when the LTN object is the output of a
+        # predicate, a connective, or a quantifier. Connectives and quantifiers use this flag to avoid checking
+        # again values that have been already checked. LTN objects created by the user have this flag set to False, in
+        # such a way they are always checked
+        self.truth_checked = False
 
     def __repr__(self):
         return "LTNObject(value=" + str(self.value) + ", free_vars=" + str(self.free_vars) + ")"
@@ -251,17 +256,126 @@ class Variable(LTNObject):
         return "Variable(value=" + str(self.value) + ", free_vars=" + str(self.free_vars) + ")"
 
 
+def broadcast_ltn_objects(objects, expand=True):
+    """
+    This function makes the shapes of the LTN objects given in input compatible, without copying their values.
+
+    In particular, after this function has been called, all the objects are defined on the same variables, and their
+    values have one dimension for each of these variables. The dimensions related to the variables are the first
+    dimensions and follow the same order for every object. The remaining dimensions, if any, are the dimensions related
+    to the features of the individuals.
+
+    If an object does not contain a variable that appears in some other object, a new dimension is added for that
+    variable and the object is expanded along this new dimension. This expansion is performed using `torch.expand`,
+    namely the values of the object are **not** repeated in memory. The expanded object is just a view on the original
+    values.
+
+    If parameter `expand` is set to `False`, the new dimensions are not expanded, namely they are left with size 1. In
+    such a case, the objects do not have the same shape, but their shapes are still compatible for the traditional
+    NumPy/PyTorch broadcasting. This is the most efficient option when the operation that follows supports the
+    broadcasting, since each intermediate result computed on a single object remains small.
+
+    This function has to be used when the operation that follows is element-wise, for example a connective operator
+    or the application of a mask. For predicates and functions, see :func:`ltn.core.process_ltn_objects`.
+
+    Parameters
+    ----------
+    objects: :obj:`list`
+        List of LTN objects of potentially different shapes for which we need to make the shape compatible.
+    expand: :obj:`bool`, default=True
+        Flag indicating whether the dimensions added to the objects have to be expanded to the number of individuals
+        of the variables they refer to (`True`), or they have to be left with size 1 (`False`).
+
+    Returns
+    ----------
+    :obj:`list`
+        The same list given in input but with new LTN objects which now have compatible shapes.
+    :obj:`list`
+        List of labels of all the variables which appear in the LTN objects given in input.
+    :obj:`list`
+        List of integers which contains the number of individuals of each variable contained in the previous list.
+
+    Raises
+    ----------
+    :class:`TypeError`
+        Raises when the type of the input parameter is incorrect.
+
+    Notes
+    -----
+    - the LTN objects given in input are never changed by this function. New LTN objects are returned instead;
+    - the values of the returned LTN objects share the memory with the values of the LTN objects given in input. For this reason, in-place operations must not be performed on them.
+    """
+    # check inputs
+    if not (isinstance(objects, list) and all(isinstance(x, LTNObject) for x in objects)):
+        raise TypeError("The objects should be a list of LTNObject")
+    # we create a new LTN object for each LTN object given in input to avoid problems if the LTN objects given in input
+    # are used in other formulas
+    # we want to give the user the possibility to use the same object in different formulas
+    # if we do not create new objects, the objects themselves will be changed by this function even outside of the
+    # function due to a side effect, since this function re-assigns the `value` and `free_vars` attributes
+    # note that we do not need to copy the values (torch.clone) of the objects. All the operations performed by this
+    # function (unsqueeze, expand, permute) are not in-place, namely they return a new tensor and leave the given
+    # one untouched. So, it is enough to create a new "container" (the LTNObject) which points to the same value
+    # note also that it is enough to create a new list for the free variables. A deep copy is not necessary since the
+    # labels are strings, which are immutable
+    objects_ = [LTNObject(o.value, list(o.free_vars)) for o in objects]
+    vars_to_n = {}  # dict which maps each var to the number of its individuals
+    for o in objects_:
+        for (v_idx, v) in enumerate(o.free_vars):
+            vars_to_n[v] = o.shape()[v_idx]
+    vars = list(vars_to_n.keys())  # list of var labels
+    n_individuals_per_var = list(vars_to_n.values())  # list of n individuals for each var
+    proc_objs = []  # list of processed objects
+    for o in objects_:
+        vars_in_obj = o.free_vars
+        # we keep the order in which the variables have been found, in such a way the behavior is deterministic
+        vars_not_in_obj = [var for var in vars if var not in vars_in_obj]
+        for new_var in vars_not_in_obj:
+            new_var_idx = len(vars_in_obj)
+            # add a new dim of size 1, related to the new variable that has to be added to the object
+            # note that this does not copy the values, it returns a view
+            o.value = torch.unsqueeze(o.value, dim=new_var_idx)
+            vars_in_obj.append(new_var)
+
+        # expand the dims of size 1 that have been just added, in such a way each of them has now a size equal to the
+        # number of individuals of the variable it refers to
+        # -1 means that the size of the dimension has not to be changed. We use it for the dimensions related to the
+        # features of the individuals
+        # note that torch.expand does not allocate new memory. The same values are just "seen" multiple times along
+        # the expanded dims. This is the difference with torch.repeat_interleave, which creates a copy of the values
+        # for each repetition
+        # note also that the expansion is not performed if `expand` is False. In such a case, the new dims remain of
+        # size 1 and the PyTorch broadcasting will take care of them when the element-wise operation is computed
+        if expand:
+            n_feature_dims = len(o.shape()) - len(vars_in_obj)
+            o.value = o.value.expand([vars_to_n[var] for var in vars_in_obj] + [-1] * n_feature_dims)
+
+        # permute the dimensions of the object in such a way the shapes of the processed objects is the same
+        # the shape is computed based on the order in which the variables are found at the beginning of this function
+        # note that also this operation returns a view
+        dims_permutation = [vars_in_obj.index(var) for var in vars] + list(range(len(vars_in_obj), len(o.shape())))
+        o.value = o.value.permute(dims_permutation)
+
+        # change the free variables of the LTN object since it contains now new variables on it
+        # note that at the end of this function, all the LTN objects given in input will be defined on the same
+        # variables since they are now compatible to be processed by element-wise operators
+        o.free_vars = vars
+        proc_objs.append(o)
+
+    return proc_objs, vars, n_individuals_per_var
+
+
 def process_ltn_objects(objects):
     """
-    This function prepares the list of LTN objects given in input for a predicate, function, or connective computation.
-    In particular, it makes the shapes of the objects compatible, in such a way the logical operation that has to be
-    computed after this pre-processing can be done by using element-wise operations.
+    This function prepares the list of LTN objects given in input for a predicate or function computation.
+    In particular, it makes the shapes of the objects compatible, in such a way the predicate or function that has to
+    be computed after this pre-processing receives one row for each combination of individuals of the variables.
     For example, if we have two variables in input that have different shapes or number of individuals, this function
     will change the shape of one variable to match the shape of the second one. This reshaping is done by adding new
     dimensions and repeating the existing ones along the new dimensions.
 
     After these operations have been computed, the objects with compatible shapes are returned as a list and are ready
-    for the computation of the predicate, function, or connective. Along with the processed objects, the labels of the
+    for the computation of the predicate or function. Along with the processed objects, the labels of the
     variables contained in these objects and the number of individuals of each variable are returned. This is needed
     to perform reshapes of the output after the computation of a predicate or function, since each axis of the output
     has to be related to one specific variable.
@@ -284,55 +398,28 @@ def process_ltn_objects(objects):
     ----------
     :class:`TypeError`
         Raises when the type of the input parameter is incorrect.
+
+    Notes
+    -----
+    - the LTN objects given in input are never changed by this function. New LTN objects are returned instead;
+    - differently from :func:`ltn.core.broadcast_ltn_objects`, the values of the returned objects are flat, namely the dimensions related to the variables are merged in one single batch dimension. This is necessary since the models that implement predicates and functions expect a batch of individuals in input;
+    - if an object does not need to be repeated (for example, when only one variable is involved), its returned value shares the memory with the value of the object given in input. For this reason, the model that implements the predicate or function should not perform in-place operations directly on its inputs.
     """
-    # check inputs
-    if not (isinstance(objects, list) and all(isinstance(x, LTNObject) for x in objects)):
-        raise TypeError("The objects should be a list of LTNObject")
-    # we perform a deep copy to avoid problems if the LTN objects given in input are used in other formulas
-    # we want to give the user the possibility to use the same object in different formulas
-    # if we do not perform a deep copy, the object itself will be changed by this function even outside of the function
-    # due to a side effect
-    # note that we copy only if the input object is a constant/variable with grad_fn or if the object has not
-    # grad_fn attribute, namely it is a leaf tensor
-    objects_ = [LTNObject(torch.clone(o.value), copy.deepcopy(o.free_vars))
-                if (o.value.grad_fn is None or (isinstance(o, (Constant, Variable)) and o.value.grad_fn is not None))
-                else o for o in objects]
-    # this deep copy is necessary to avoid the function directly changes the free
-    # variables and values contained in the given LTN objects. We do not want to directly change the input objects
-    # Instead, we need to create new objects based on the input objects since it is possible we have to reuse the
-    # input objects again in coming steps.
-    vars_to_n = {}  # dict which maps each var to the number of its individuals
-    for o in objects_:
-        for (v_idx, v) in enumerate(o.free_vars):
-            vars_to_n[v] = o.shape()[v_idx]
-    vars = list(vars_to_n.keys())  # list of var labels
-    n_individuals_per_var = list(vars_to_n.values())  # list of n individuals for each var
-    proc_objs = []  # list of processed objects
-    for o in objects_:
-        vars_in_obj = o.free_vars
-        vars_not_in_obj = list(set(vars).difference(vars_in_obj))
-        for new_var in vars_not_in_obj:
-            new_var_idx = len(vars_in_obj)
-            o.value = torch.unsqueeze(o.value, dim=new_var_idx)
-            # repeat existing dims along the new dim related to the new variable that has to be added to the object
-            o.value = torch.repeat_interleave(o.value, repeats=vars_to_n[new_var], dim=new_var_idx)
-            vars_in_obj.append(new_var)
+    # first of all, we make the objects compatible without copying their values
+    # after this call, the first dimensions of each object are related to the variables, while the others to the
+    # features of the individuals. See broadcast_ltn_objects() for the details
+    # note that the check of the input is performed by broadcast_ltn_objects()
+    proc_objs, vars, n_individuals_per_var = broadcast_ltn_objects(objects)
 
-        # permute the dimensions of the object in such a way the shapes of the processed objects is the same
-        # the shape is computed based on the order in which the variables are found at the beginning of this function
-        dims_permutation = [vars_in_obj.index(var) for var in vars] + list(range(len(vars_in_obj), len(o.shape())))
-        o.value = o.value.permute(dims_permutation)
-
-        # this flats the batch dimension of the processed LTN object if the flat is set to True
-        flatten_shape = [-1] + list(o.shape()[len(vars_in_obj)::])
+    for o in proc_objs:
+        # this flats the dimensions related to the variables in one single batch dimension, in such a way the
+        # model that implements the predicate or function receives a batch of individuals
+        # note that this is the only point in which the values are copied, and they are copied only once. This
+        # happens only if the object has been expanded by broadcast_ltn_objects(). In such a case, torch.reshape
+        # cannot return a view, so it materializes the repetitions in memory. If the object has not been expanded,
+        # no copies are performed at all
+        flatten_shape = [-1] + list(o.shape()[len(vars)::])
         o.value = torch.reshape(o.value, shape=tuple(flatten_shape))
-
-        # change the free variables of the LTN object since it contains now new variables on it
-        # note that at the end of this function, all the LTN objects given in input will be defined on the same
-        # variables since they are now compatible to be processed by element-wise predicate, function, or connective
-        # operators
-        o.free_vars = vars
-        proc_objs.append(o)
 
     return proc_objs, vars, n_individuals_per_var
 
@@ -616,7 +703,11 @@ class Predicate(nn.Module):
         output = self.model(*[o.value for o in proc_objs], **kwargs)
 
         # check if output of predicate contains only truth values, namely values in the range [0., 1.]
-        if not torch.all(torch.where(torch.logical_and(output >= 0., output <= 1.), 1., 0.)):
+        # note that the check is performed only if the validation is enabled. See ltn.fuzzy_ops.set_validation()
+        # note also that torch.all works directly on the boolean tensor, so there is no need to convert it to a float
+        # tensor first
+        validation = ltn.fuzzy_ops.validation_enabled()
+        if validation and not torch.all(torch.logical_and(output >= 0., output <= 1.)):
             raise ValueError("Expected the output of a predicate to be in the range [0., 1.], but got some values "
                              "outside of this range. Check your predicate implementation!")
 
@@ -624,7 +715,11 @@ class Predicate(nn.Module):
         # we assure the output is float in the case it is double to avoid type incompatibilities
         output = output.float()
 
-        return LTNObject(output, output_vars)
+        output = LTNObject(output, output_vars)
+        # we keep track of the fact that the truth values have been already checked, in such a way the connectives and
+        # quantifiers that will receive this object in input do not check them again
+        output.truth_checked = validation
+        return output
 
 
 class Function(nn.Module):
@@ -1219,16 +1314,35 @@ class Connective:
                             str([type(o) for o in operands]))
 
         # check if operands are in [0., 1.]
-        ltn.fuzzy_ops.check_values(*[o.value for o in operands])
+        # note that we check only the operands that have not been checked yet. The operands that are the output
+        # of a predicate, connective, or quantifier have been already checked, so it would be a waste of time to check
+        # them again
+        ltn.fuzzy_ops.check_values(*[o.value for o in operands if not o.truth_checked])
 
-        proc_objs, vars, n_individuals_per_var = process_ltn_objects(operands)
+        # we make the shapes of the operands compatible
+        # note that we do not use process_ltn_objects() here. A connective operator is an element-wise operation that
+        # supports the PyTorch broadcasting, so there is no need to repeat the values of the operands in memory and to
+        # flat them, as it is done for predicates and functions
+        # with expand=False, each operand gets a dimension of size 1 for each variable that it does not contain. For
+        # example, if the first operand is on variable x (n individuals) and the second one on variable y
+        # (m individuals), their shapes become (n, 1) and (1, m). The PyTorch broadcasting produces then an
+        # output of shape (n, m), and this output is the only tensor of this size which is allocated
+        proc_objs, vars, n_individuals_per_var = broadcast_ltn_objects(operands, expand=False)
         # the connective operator needs the values of the objects and not the objects themselves
         proc_objs = [o.value for o in proc_objs]
         output = self.connective_op(*proc_objs)
-        # reshape the output according to the dimensions given by the processing function
-        # we need to give this shape in order to have different axes associated to different variables, as usual
-        output = torch.reshape(output, n_individuals_per_var)
-        return LTNObject(output, vars)
+        # we assure the output has one dimension for each variable, with a size equal to the number of individuals of
+        # the variable, in such a way to have different axes associated to different variables, as usual
+        # note that the fuzzy operators implemented in LTNtorch already return an output with this shape thanks to the
+        # broadcasting, so this is a no-op for them. It serves only for custom operators that could return an output
+        # which has not been broadcasted (for example, an operator that uses only one of its operands)
+        output = output.expand(n_individuals_per_var)
+        output = LTNObject(output, vars)
+        # the fuzzy connective operators always return truth values in [0., 1.] if their operands are in [0., 1.]
+        # since the operands have been checked, we keep track of the fact that also the output is correct, in such a
+        # way it will not be checked again by the next connective or quantifier
+        output.truth_checked = ltn.fuzzy_ops.validation_enabled()
+        return output
 
 
 class Quantifier:
@@ -1376,9 +1490,9 @@ class Quantifier:
     ...             cond_vars=[x],
     ...             cond_fn=lambda x: torch.less(torch.sum(x.value, dim=1), 1.))
     >>> print(out)
-    LTNObject(value=tensor(0.9844, dtype=torch.float64), free_vars=[])
+    LTNObject(value=tensor(0.9844), free_vars=[])
     >>> print(out.value)
-    tensor(0.9844, dtype=torch.float64)
+    tensor(0.9844)
     >>> print(out.free_vars)
     []
     >>> print(out.shape())
@@ -1471,7 +1585,10 @@ class Quantifier:
             raise TypeError("Expected parameter 'formula' to be an LTNObject, but got " + str(type(formula)))
 
         # check if formula is in [0., 1.]
-        ltn.fuzzy_ops.check_values(formula.value)
+        # note that the check is performed only if the formula has not been checked yet. If the formula is the output
+        # of a predicate, connective, or quantifier, it has been already checked
+        if not formula.truth_checked:
+            ltn.fuzzy_ops.check_values(formula.value)
 
         if isinstance(vars, Variable):
             vars = [vars]  # this serves in the case vars is just a variable and not a list of variables
@@ -1509,11 +1626,11 @@ class Quantifier:
             # We replace the result with 0.0 if the semantics of the aggregator is exists,
             # or 1.0 if the semantics of the aggregator is forall.
             rep_value = 1. if self.quantifier == "f" else 0.
-            output = torch.where(
-                torch.isnan(output),
-                rep_value,
-                output.double()
-            )
+            # note that we use masked_fill instead of torch.where. With torch.where, the output had to be
+            # converted to double to match the type of `rep_value`, and this made the result of every guarded
+            # quantification (and of everything computed after it, loss included) a float64 tensor. masked_fill writes
+            # `rep_value` directly using the type of the output, so the result remains a float32 tensor
+            output = output.masked_fill(torch.isnan(output), rep_value)
         else:  # in this case, the guarded quantification has not to be performed
             # aggregation_dims are the dimensions on which the aggregation has to be performed
             # the aggregator aggregates only on the axes given by aggregations_dims
@@ -1523,7 +1640,12 @@ class Quantifier:
 
         undiag(*vars)
         # update the free variables on the output object by removing variables that have been aggregated
-        return LTNObject(output, [var for var in formula.free_vars if var not in aggregation_vars])
+        output = LTNObject(output, [var for var in formula.free_vars if var not in aggregation_vars])
+        # the fuzzy aggregation operators always return truth values in [0., 1.] if the formula is in [0., 1.]
+        # since the formula has been checked, we keep track of the fact that also the output is correct, in such a
+        # way it will not be checked again by the next connective or quantifier
+        output.truth_checked = ltn.fuzzy_ops.validation_enabled()
+        return output
 
     @staticmethod
     def compute_mask(formula, cond_vars, cond_fn, aggregation_vars):
@@ -1553,9 +1675,11 @@ class Quantifier:
         # this has to be done only if the formula does not include some variables in the condition yet
         cond_vars_not_in_formula = [var for var in cond_vars if var.free_vars[0] not in formula.free_vars]
         if cond_vars_not_in_formula:
-            proc_objs, _, n_ind = process_ltn_objects([formula] + cond_vars_not_in_formula)
+            # note that we use broadcast_ltn_objects() and not process_ltn_objects(). We only need to add the new
+            # dimensions to the formula, so there is no need to repeat its values in memory. The formula is just
+            # expanded along the new dimensions (it is a view), and it has already one dimension for each variable
+            proc_objs, _, _ = broadcast_ltn_objects([formula] + cond_vars_not_in_formula)
             formula = proc_objs[0]
-            formula.value = formula.value.view(tuple(n_ind))
 
         # set the masked (guarded) vars on the first axes
         vars_in_cond_labels = [var.free_vars[0] for var in cond_vars]
@@ -1570,6 +1694,8 @@ class Quantifier:
 
         # compute the boolean mask using the variables in the condition
         # make the shapes of the variables in the condition compatible in order to apply the condition element-wisely
+        # note that here we need process_ltn_objects(), since the condition is a function defined by the user that
+        # expects a batch of individuals for each variable, exactly like the model of a predicate
         cond_vars, vars_order_in_cond, n_individuals_per_var = process_ltn_objects(cond_vars)
         mask = cond_fn(*cond_vars)  # creates the mask
         # give the mask the correct shape after the condition has been computed
@@ -1588,11 +1714,11 @@ class Quantifier:
         # make formula and mask of the same shape in order to apply the mask element-wisely
         if formula.shape() != mask.shape():
             # I have to rearrange the size of the mask if it has a different size respect to the formula
-            # this is needed to apply an element-wise torch.where in order to apply the mask
-            (formula, mask), vars, n_individuals_per_var = process_ltn_objects([formula, mask])
-            mask.value = mask.value.view(n_individuals_per_var)
-            # this fix the side effect due to call to process_ltn_objects
-            formula.value = formula.value.view(n_individuals_per_var)
+            # this is needed to apply the mask to the formula element-wisely
+            # note that we use broadcast_ltn_objects() and not process_ltn_objects(). The mask is just expanded
+            # along the dimensions of the formula that it does not have (it is a view), namely its values are not
+            # repeated in memory. The formula is left untouched since it already contains all the variables
+            (formula, mask), _, _ = broadcast_ltn_objects([formula, mask])
 
         return formula, mask
 

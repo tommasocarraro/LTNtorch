@@ -2,8 +2,9 @@
 # Licensed under the MIT License. See LICENSE file in the project root for details.
 
 from ltn.core import Variable, Predicate, Constant, Function, Connective, diag, undiag, Quantifier, \
-    LTNObject, process_ltn_objects, LambdaModel
+    LTNObject, process_ltn_objects, broadcast_ltn_objects, LambdaModel
 import torch
 import ltn.fuzzy_ops
+from ltn.fuzzy_ops import set_validation, validation_enabled
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
