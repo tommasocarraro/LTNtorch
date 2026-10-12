@@ -27,8 +27,10 @@ Members
     ltn.fuzzy_ops.AggregPMean
     ltn.fuzzy_ops.AggregPMeanError
     ltn.fuzzy_ops.SatAgg
+    ltn.fuzzy_ops.set_validation
+    ltn.fuzzy_ops.validation_enabled
 
 
 .. automodule:: ltn.fuzzy_ops
-    :members: ConnectiveOperator, UnaryConnectiveOperator, BinaryConnectiveOperator, NotStandard, NotGodel, AndMin, AndProd, AndLuk, OrMax, OrProbSum, OrLuk, ImpliesKleeneDienes, ImpliesGodel, ImpliesReichenbach, ImpliesGoguen, Equiv, AggregationOperator, AggregMin, AggregMean, AggregPMean, AggregPMeanError, SatAgg
+    :members: ConnectiveOperator, UnaryConnectiveOperator, BinaryConnectiveOperator, NotStandard, NotGodel, AndMin, AndProd, AndLuk, OrMax, OrProbSum, OrLuk, ImpliesKleeneDienes, ImpliesGodel, ImpliesReichenbach, ImpliesGoguen, Equiv, AggregationOperator, AggregMin, AggregMean, AggregPMean, AggregPMeanError, SatAgg, set_validation, validation_enabled
     :show-inheritance:

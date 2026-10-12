@@ -103,7 +103,7 @@ In order to compute this formula, LTNtorch follows this procedure:
 
 1. it computes the result of the atomic formula :math:`P(x, y)`, which is a tensor :math:`\mathbf{out} \in [0., 1.]^{m_1 \times m_2}`;
 2. it masks the truth values in the tensor :math:`\mathbf{out}` which do not satisfy the given condition (:math:`dist(x, y) < th`);
-3. it aggregates the tensor :math:`mathbf{out}` on both dimensions, since both variables have been quantified. In this aggregation, the truth values masked by the previous step are not considered. Since both variables have been quantified, the result is a scalar in :math:`[0, 1]`.
+3. it aggregates the tensor :math:`\mathbf{out}` on both dimensions, since both variables have been quantified. In this aggregation, the truth values masked by the previous step are not considered. Since both variables have been quantified, the result is a scalar in :math:`[0, 1]`.
 
-For applying guarded quantification in LTNtorch, see :class:`ltn.core.Quantifier`. In particular, see `mask_fn`
+For applying guarded quantification in LTNtorch, see :class:`ltn.core.Quantifier`. In particular, see `cond_fn`
 and `cond_vars` parameters.

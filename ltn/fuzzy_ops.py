@@ -188,6 +188,11 @@ class ConnectiveOperator:
     -----------
     :class:`NotImplementedError`
         Raised when `__call__()` is not implemented in the sub-class.
+
+    Notes
+    -----
+    - the `__call__()` method must be implemented using element-wise operations that support the traditional NumPy/PyTorch broadcasting;
+    - when a connective operator is used with :class:`ltn.core.Connective`, the operands that it receives have one dimension for each variable appearing in the formula, in the same order for every operand. If an operand does not contain a variable, its dimension for that variable has size 1. For example, if the first operand is defined on variable :math:`x` (:math:`n` individuals) and the second one on variable :math:`y` (:math:`m` individuals), the operator receives two tensors of shape :math:`(n, 1)` and :math:`(1, m)`, and it has to return a tensor of shape :math:`(n, m)`. This is what the broadcasting does automatically. See :ref:`LTN broadcasting <broadcasting>` for more information.
     """
     def __call__(self, *args, **kwargs):
         """
@@ -236,6 +241,12 @@ class BinaryConnectiveOperator(ConnectiveOperator):
     -----------
     :class:`NotImplementedError`
         Raised when `__call__()` is not implemented in the sub-class.
+
+    Notes
+    -----
+    The two operands given to `__call__()` could have different shapes, which are compatible for the traditional
+    NumPy/PyTorch broadcasting. For this reason, the operator must be implemented using element-wise operations that
+    support the broadcasting. See :class:`ltn.fuzzy_ops.ConnectiveOperator` for more information.
     """
     def __call__(self, *args, **kwargs):
         """

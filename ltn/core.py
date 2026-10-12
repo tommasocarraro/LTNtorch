@@ -42,7 +42,8 @@ class LTNObject:
     Notes
     -----
     - in LTNtorch, the :ref:`groundings <notegrounding>` of the LTN objects (symbols) are represented using PyTorch tensors, namely :class:`torch.Tensor` instances;
-    - `LTNObject` is used by LTNtorch internally. The user should not create `LTNObject` instances by his/her own, unless strictly necessary.
+    - `LTNObject` is used by LTNtorch internally. The user should not create `LTNObject` instances by his/her own, unless strictly necessary;
+    - an `LTNObject` has also an internal attribute, `truth_checked`, which is `True` when its `value` has been already checked to contain truth values in :math:`[0., 1.]`. It is set by predicates, connectives, and quantifiers on their output, in such a way the same values are not checked again. For an `LTNObject` created by the user it is `False`, namely its `value` is always checked. See :func:`ltn.fuzzy_ops.set_validation` to disable these checks.
     """
 
     def __init__(self, value, var_labels):
@@ -475,7 +476,9 @@ class Predicate(nn.Module):
     - evaluating a predicate with one variable of :math:`n` individuals yields :math:`n` output values, where the :math:`i_{th}` output value corresponds to the predicate calculated with the :math:`i_{th}` individual;
     - evaluating a predicate with :math:`k` variables :math:`(x_1, \dots, x_k)` with respectively :math:`n_1, \dots, n_k` individuals each, yields a result with :math:`n_1 * \dots * n_k` values. The result is organized in a tensor where the first :math:`k` dimensions can be indexed to retrieve the outcome(s) that correspond to each variable;
     - the attribute `free_vars` of the `LTNobject` output by the predicate tells which dimension corresponds to which variable in the `value` of the `LTNObject`. See :ref:`LTN broadcasting <broadcasting>` for more information;
-    - to disable the :ref:`LTN broadcasting <broadcasting>`, see :func:`ltn.core.diag()`.
+    - to disable the :ref:`LTN broadcasting <broadcasting>`, see :func:`ltn.core.diag()`;
+    - the model or function that implements the predicate must not modify its inputs with in-place operations. When the inputs do not need to be repeated by the :ref:`LTN broadcasting <broadcasting>` (for example, when the predicate is computed on one single variable), the model receives directly the `value` of the variable or constant and not a copy of it. An in-place operation would change the variable or constant itself;
+    - the check on the range of the output can be disabled using :func:`ltn.fuzzy_ops.set_validation`.
 
     Attributes
     ----------
@@ -764,7 +767,8 @@ class Function(nn.Module):
     - evaluating a function with one variable of :math:`n` individuals yields :math:`n` output values, where the :math:`i_{th}` output value corresponds to the function calculated with the :math:`i_{th}` individual;
     - evaluating a function with :math:`k` variables :math:`(x_1, \dots, x_k)` with respectively :math:`n_1, \dots, n_k` individuals each, yields a result with :math:`n_1 * \dots * n_k` values. The result is organized in a tensor where the first :math:`k` dimensions can be indexed to retrieve the outcome(s) that correspond to each variable;
     - the attribute `free_vars` of the `LTNobject` output by the function tells which dimension corresponds to which variable in the `value` of the `LTNObject`. See :ref:`LTN broadcasting <broadcasting>` for more information;
-    - to disable the :ref:`LTN broadcasting <broadcasting>`, see :func:`ltn.core.diag()`.
+    - to disable the :ref:`LTN broadcasting <broadcasting>`, see :func:`ltn.core.diag()`;
+    - the model or function that implements the LTN function must not modify its inputs with in-place operations. When the inputs do not need to be repeated by the :ref:`LTN broadcasting <broadcasting>` (for example, when the LTN function is computed on one single variable), the model receives directly the `value` of the variable or constant and not a copy of it. An in-place operation would change the variable or constant itself.
 
     Examples
     --------
@@ -1378,7 +1382,7 @@ class Quantifier:
     -----
     - the LTN quantifier supports various fuzzy aggregation operators, which can be found in :class:`ltn.fuzzy_ops`;
     - the LTN quantifier allows to use these fuzzy aggregators with LTN formulas. It takes care of selecting the formula (`LTNObject`) dimensions to aggregate, given some LTN variables in arguments.
-    - boolean conditions (by setting parameters `mask_fn` and `mask_vars`) can be used for :ref:`guarded quantification <guarded>`;
+    - boolean conditions (by setting parameters `cond_fn` and `cond_vars`) can be used for :ref:`guarded quantification <guarded>`;
     - an LTN quantifier can be applied only to :ref:`LTN objects <noteltnobject>` containing truth values, namely values in :math:`[0., 1.]`;
     - the output of an LTN quantifier is always an :ref:`LTN object <noteltnobject>` (:class:`ltn.core.LTNObject`).
 

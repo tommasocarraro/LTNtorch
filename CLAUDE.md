@@ -7,7 +7,7 @@ PyTorch implementation of Logic Tensor Networks, published on PyPI as `LTNtorch`
 - `ltn/core.py`: `LTNObject`, `Constant`, `Variable`, `Predicate`, `Function`, `Connective`, `Quantifier`, `diag`/`undiag`, and the two functions that make shapes compatible (`broadcast_ltn_objects`, `process_ltn_objects`).
 - `ltn/fuzzy_ops.py`: fuzzy connective operators, aggregators, `SatAgg`, `check_values`, and the validation switch (`set_validation`, `validation_enabled`).
 - `tests/tests.py`: the whole test suite, one function per component.
-- `docsrc/`: Sphinx sources (the API pages use `automodule`, so new public functions appear automatically). `docs/` is the built HTML.
+- `docsrc/`: Sphinx sources. The API pages (`core.rst`, `fuzzy_ops.rst`) list their members explicitly, in both `autosummary` and `:members:`, so a new public class or function has to be added there by hand. `docs/` is the built HTML (`make clean html docs` from `docsrc/`).
 - `examples/`, `tutorials/`: notebooks.
 
 ## Commands
@@ -50,6 +50,13 @@ This needs a change to the public interface, because `Quantifier.__call__` recei
 - it does not help for formulas made only of unary predicates combined by connectives (the grid appears only in the connective, which is a cheap broadcast) or for guards that keep most pairs, so it should stay optional.
 
 Nested tensors (`torch.nested`) are not an option: on torch 2.14 the backward of their reductions is not implemented.
+
+### Documentation, at release time
+
+The docstrings and the Sphinx sources in `docsrc/source` are up to date with the efficiency changes (a test build rendered correctly). Two things are left for when the next version is released:
+
+- rebuild `docs/` with `make clean html docs` from `docsrc/`. The built HTML is still the one of version 1.0.2: for example, it shows `dtype=torch.float64` in the guarded quantification example of `Quantifier` and does not contain `set_validation`. Note that `conf.py` imports `pytorch_sphinx_theme`, which has to be installed even if the theme in use is `sphinx_rtd_theme`;
+- update `release` in `docsrc/source/conf.py`, which is still `'0.9'` while `setup.py` is at 1.0.2.
 
 ### Changelog for the next version
 
