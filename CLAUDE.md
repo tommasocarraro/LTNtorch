@@ -51,27 +51,6 @@ This needs a change to the public interface, because `Quantifier.__call__` recei
 
 Nested tensors (`torch.nested`) are not an option: on torch 2.14 the backward of their reductions is not implemented.
 
-### Documentation, at release time
+### Release 1.1.0
 
-The docstrings and the Sphinx sources in `docsrc/source` are up to date with the efficiency changes (a test build rendered correctly). Two things are left for when the next version is released:
-
-- rebuild `docs/` with `make clean html docs` from `docsrc/`. The built HTML is still the one of version 1.0.2: for example, it shows `dtype=torch.float64` in the guarded quantification example of `Quantifier` and does not contain `set_validation`. Note that `conf.py` imports `pytorch_sphinx_theme`, which has to be installed even if the theme in use is `sphinx_rtd_theme`;
-- update `release` in `docsrc/source/conf.py`, which is still `'0.9'` while `setup.py` is at 1.0.2.
-
-### Changelog for the next version
-
-Help write the changelog when the next version is prepared. The source is `efficiency_report.pdf` in the repo root (not tracked by git), which has the before/after code and the measurements. Its content in short:
-
-- connectives use broadcasting instead of repeating their operands (new `ltn.broadcast_ltn_objects`);
-- inputs are no longer cloned, and LTN objects are never modified by the library, so a sub-formula such as `px = P(x)` can be reused;
-- predicates and functions repeat their inputs with a single copy;
-- truth values are checked once per formula, and the checks can be disabled with `ltn.set_validation(False)`;
-- guarded quantification returns float32 instead of float64;
-- the Lukasiewicz operators and the masked aggregators no longer allocate temporary tensors.
-
-Behavior changes to call out for users:
-
-- guarded quantification now returns float32;
-- custom connective operators receive broadcastable operands (one dimension per variable, some of size 1) instead of two flat vectors;
-- when nothing has to be repeated, a model receives a view of the variable's tensor, so it must not modify its input in place;
-- outputs of connectives and quantifiers are trusted, so a custom operator returning values outside [0, 1] is caught only by `SatAgg`.
+`CHANGELOG.md` has the 1.1.0 entry, `setup.py` and `release` in `docsrc/source/conf.py` are at 1.1.0, and `docs/` has been rebuilt with Sphinx 9.1 and `sphinx_rtd_theme` 3.1 (note that `conf.py` imports `pytorch_sphinx_theme` and needs `numpydoc`, which have to be installed even if the theme in use is `sphinx_rtd_theme`). Left to do: merge into `main`, tag `v1.1.0`, publish on PyPI.

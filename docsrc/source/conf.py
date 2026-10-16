@@ -23,7 +23,7 @@ copyright = '2021, Tommaso Carraro'
 author = 'Tommaso Carraro'
 
 # The full version, including alpha/beta/rc tags
-release = '0.9'
+release = '1.1.0'
 
 
 # -- General configuration ---------------------------------------------------
