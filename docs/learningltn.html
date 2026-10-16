@@ -1,20 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction to Learning in Logic Tensor Networks &mdash; LTNtorch 0.9 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <title>Introduction to Learning in Logic Tensor Networks &mdash; LTNtorch 1.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=fc837d61"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> LTNtorch
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            LTNtorch
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -59,11 +64,117 @@
 <p class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="core.html">ltn.core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="core.html#members">Members</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#members">Members</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.LTNObject"><code class="docutils literal notranslate"><span class="pre">LTNObject</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#ltn.core.LTNObject.shape"><code class="docutils literal notranslate"><span class="pre">LTNObject.shape()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.Constant"><code class="docutils literal notranslate"><span class="pre">Constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.Variable"><code class="docutils literal notranslate"><span class="pre">Variable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.Predicate"><code class="docutils literal notranslate"><span class="pre">Predicate</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#ltn.core.Predicate.forward"><code class="docutils literal notranslate"><span class="pre">Predicate.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.Function"><code class="docutils literal notranslate"><span class="pre">Function</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#ltn.core.Function.forward"><code class="docutils literal notranslate"><span class="pre">Function.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.diag"><code class="docutils literal notranslate"><span class="pre">diag()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.undiag"><code class="docutils literal notranslate"><span class="pre">undiag()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.Connective"><code class="docutils literal notranslate"><span class="pre">Connective</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#ltn.core.Connective.__call__"><code class="docutils literal notranslate"><span class="pre">Connective.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="core.html#ltn.core.Quantifier"><code class="docutils literal notranslate"><span class="pre">Quantifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#ltn.core.Quantifier.__call__"><code class="docutils literal notranslate"><span class="pre">Quantifier.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="fuzzy_ops.html">ltn.fuzzy_ops</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fuzzy_ops.html#members">Members</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fuzzy_ops.html#members">Members</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.set_validation"><code class="docutils literal notranslate"><span class="pre">set_validation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.validation_enabled"><code class="docutils literal notranslate"><span class="pre">validation_enabled()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ConnectiveOperator"><code class="docutils literal notranslate"><span class="pre">ConnectiveOperator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.UnaryConnectiveOperator"><code class="docutils literal notranslate"><span class="pre">UnaryConnectiveOperator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.BinaryConnectiveOperator"><code class="docutils literal notranslate"><span class="pre">BinaryConnectiveOperator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.NotStandard"><code class="docutils literal notranslate"><span class="pre">NotStandard</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.NotStandard.__call__"><code class="docutils literal notranslate"><span class="pre">NotStandard.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.NotGodel"><code class="docutils literal notranslate"><span class="pre">NotGodel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.NotGodel.__call__"><code class="docutils literal notranslate"><span class="pre">NotGodel.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndMin"><code class="docutils literal notranslate"><span class="pre">AndMin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndMin.__call__"><code class="docutils literal notranslate"><span class="pre">AndMin.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndProd"><code class="docutils literal notranslate"><span class="pre">AndProd</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndProd.__call__"><code class="docutils literal notranslate"><span class="pre">AndProd.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndLuk"><code class="docutils literal notranslate"><span class="pre">AndLuk</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AndLuk.__call__"><code class="docutils literal notranslate"><span class="pre">AndLuk.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.OrMax"><code class="docutils literal notranslate"><span class="pre">OrMax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.OrMax.__call__"><code class="docutils literal notranslate"><span class="pre">OrMax.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.OrProbSum"><code class="docutils literal notranslate"><span class="pre">OrProbSum</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.OrProbSum.__call__"><code class="docutils literal notranslate"><span class="pre">OrProbSum.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.OrLuk"><code class="docutils literal notranslate"><span class="pre">OrLuk</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.OrLuk.__call__"><code class="docutils literal notranslate"><span class="pre">OrLuk.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesKleeneDienes"><code class="docutils literal notranslate"><span class="pre">ImpliesKleeneDienes</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesKleeneDienes.__call__"><code class="docutils literal notranslate"><span class="pre">ImpliesKleeneDienes.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesGodel"><code class="docutils literal notranslate"><span class="pre">ImpliesGodel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesGodel.__call__"><code class="docutils literal notranslate"><span class="pre">ImpliesGodel.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesReichenbach"><code class="docutils literal notranslate"><span class="pre">ImpliesReichenbach</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesReichenbach.__call__"><code class="docutils literal notranslate"><span class="pre">ImpliesReichenbach.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesGoguen"><code class="docutils literal notranslate"><span class="pre">ImpliesGoguen</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.ImpliesGoguen.__call__"><code class="docutils literal notranslate"><span class="pre">ImpliesGoguen.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.Equiv"><code class="docutils literal notranslate"><span class="pre">Equiv</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.Equiv.__call__"><code class="docutils literal notranslate"><span class="pre">Equiv.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregationOperator"><code class="docutils literal notranslate"><span class="pre">AggregationOperator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregMin"><code class="docutils literal notranslate"><span class="pre">AggregMin</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregMin.__call__"><code class="docutils literal notranslate"><span class="pre">AggregMin.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregMean"><code class="docutils literal notranslate"><span class="pre">AggregMean</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregMean.__call__"><code class="docutils literal notranslate"><span class="pre">AggregMean.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregPMean"><code class="docutils literal notranslate"><span class="pre">AggregPMean</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregPMean.__call__"><code class="docutils literal notranslate"><span class="pre">AggregPMean.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregPMeanError"><code class="docutils literal notranslate"><span class="pre">AggregPMeanError</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.AggregPMeanError.__call__"><code class="docutils literal notranslate"><span class="pre">AggregPMeanError.__call__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.SatAgg"><code class="docutils literal notranslate"><span class="pre">SatAgg</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fuzzy_ops.html#ltn.fuzzy_ops.SatAgg.__call__"><code class="docutils literal notranslate"><span class="pre">SatAgg.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -81,8 +192,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Introduction to Learning in Logic Tensor Networks</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction to Learning in Logic Tensor Networks</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/learningltn.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -93,7 +204,7 @@
            <div itemprop="articleBody">
              
   <section id="introduction-to-learning-in-logic-tensor-networks">
-<h1>Introduction to Learning in Logic Tensor Networks<a class="headerlink" href="#introduction-to-learning-in-logic-tensor-networks" title="Permalink to this headline"></a></h1>
+<h1>Introduction to Learning in Logic Tensor Networks<a class="headerlink" href="#introduction-to-learning-in-logic-tensor-networks" title="Link to this heading"></a></h1>
 <p id="notelearning">In order to train a Logic Tensor Network, one has to define:</p>
 <ol class="arabic simple">
 <li><p>a First-Order Logic knowledge base containing some logical axioms;</p></li>

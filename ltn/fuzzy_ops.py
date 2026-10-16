@@ -263,7 +263,7 @@ class BinaryConnectiveOperator(ConnectiveOperator):
 
 
 class NotStandard(UnaryConnectiveOperator):
-    """
+    r"""
     Standard fuzzy negation operator.
 
     :math:`\lnot_{standard}(x) = 1 - x`
@@ -307,10 +307,10 @@ class NotStandard(UnaryConnectiveOperator):
 
 
 class NotGodel(UnaryConnectiveOperator):
-    """
+    r"""
     Godel fuzzy negation operator.
 
-    :math:`\lnot_{Godel}(x) = \\left\\{\\begin{array}{ c l }1 & \\quad \\textrm{if } x = 0 \\\ 0 & \\quad \\textrm{otherwise} \\end{array} \\right.`
+    :math:`\lnot_{Godel}(x) = \left\{\begin{array}{ c l }1 & \quad \textrm{if } x = 0 \\ 0 & \quad \textrm{otherwise} \end{array} \right.`
 
     Examples
     --------
@@ -353,7 +353,7 @@ class NotGodel(UnaryConnectiveOperator):
 
 
 class AndMin(BinaryConnectiveOperator):
-    """
+    r"""
     Godel fuzzy conjunction operator (min operator).
 
     :math:`\land_{Godel}(x, y) = \operatorname{min}(x, y)`
@@ -410,7 +410,7 @@ class AndMin(BinaryConnectiveOperator):
 
 
 class AndProd(BinaryConnectiveOperator):
-    """
+    r"""
     Goguen fuzzy conjunction operator (product operator).
 
     :math:`\land_{Goguen}(x, y) = xy`
@@ -498,7 +498,7 @@ class AndProd(BinaryConnectiveOperator):
 
 
 class AndLuk(BinaryConnectiveOperator):
-    """
+    r"""
     Lukasiewicz fuzzy conjunction operator.
 
     :math:`\land_{Lukasiewicz}(x, y) = \operatorname{max}(x + y - 1, 0)`
@@ -558,7 +558,7 @@ class AndLuk(BinaryConnectiveOperator):
 
 
 class OrMax(BinaryConnectiveOperator):
-    """
+    r"""
     Godel fuzzy disjunction operator (max operator).
 
     :math:`\lor_{Godel}(x, y) = \operatorname{max}(x, y)`
@@ -615,7 +615,7 @@ class OrMax(BinaryConnectiveOperator):
 
 
 class OrProbSum(BinaryConnectiveOperator):
-    """
+    r"""
     Goguen fuzzy disjunction operator (probabilistic sum).
 
     :math:`\lor_{Goguen}(x, y) = x + y - xy`
@@ -703,7 +703,7 @@ class OrProbSum(BinaryConnectiveOperator):
 
 
 class OrLuk(BinaryConnectiveOperator):
-    """
+    r"""
     Lukasiewicz fuzzy disjunction operator.
 
     :math:`\lor_{Lukasiewicz}(x, y) = \operatorname{min}(x + y, 1)`
@@ -761,10 +761,10 @@ class OrLuk(BinaryConnectiveOperator):
 
 
 class ImpliesKleeneDienes(BinaryConnectiveOperator):
-    """
+    r"""
     Kleene Dienes fuzzy implication operator.
 
-    :math:`\\rightarrow_{KleeneDienes}(x, y) = \operatorname{max}(1 - x, y)`
+    :math:`\rightarrow_{KleeneDienes}(x, y) = \operatorname{max}(1 - x, y)`
 
     Examples
     --------
@@ -818,10 +818,10 @@ class ImpliesKleeneDienes(BinaryConnectiveOperator):
 
 
 class ImpliesGodel(BinaryConnectiveOperator):
-    """
+    r"""
     Godel fuzzy implication operand.
 
-    :math:`\\rightarrow_{Godel}(x, y) = \\left\\{\\begin{array}{ c l }1 & \\quad \\textrm{if } x \le y \\\ y & \\quad \\textrm{otherwise} \\end{array} \\right.`
+    :math:`\rightarrow_{Godel}(x, y) = \left\{\begin{array}{ c l }1 & \quad \textrm{if } x \le y \\ y & \quad \textrm{otherwise} \end{array} \right.`
 
     Examples
     --------
@@ -875,10 +875,10 @@ class ImpliesGodel(BinaryConnectiveOperator):
 
 
 class ImpliesReichenbach(BinaryConnectiveOperator):
-    """
+    r"""
     Reichenbach fuzzy implication operator.
 
-    :math:`\\rightarrow_{Reichenbach}(x, y) = 1 - x + xy`
+    :math:`\rightarrow_{Reichenbach}(x, y) = 1 - x + xy`
 
     Parameters
     ----------
@@ -963,10 +963,10 @@ class ImpliesReichenbach(BinaryConnectiveOperator):
 
 
 class ImpliesGoguen(BinaryConnectiveOperator):
-    """
+    r"""
     Goguen fuzzy implication operator.
 
-    :math:`\\rightarrow_{Goguen}(x, y) = \\left\\{\\begin{array}{ c l }1 & \\quad \\textrm{if } x \le y \\\ \\frac{y}{x} & \\quad \\textrm{otherwise} \\end{array} \\right.`
+    :math:`\rightarrow_{Goguen}(x, y) = \left\{\begin{array}{ c l }1 & \quad \textrm{if } x \le y \\ \frac{y}{x} & \quad \textrm{otherwise} \end{array} \right.`
 
     Parameters
     ----------
@@ -1051,10 +1051,10 @@ class ImpliesGoguen(BinaryConnectiveOperator):
 
 
 class ImpliesLuk(BinaryConnectiveOperator):
-    """
+    r"""
     Lukasiewicz fuzzy implication operator.
 
-    :math:`\\rightarrow_{Lukasiewicz}(x, y) = \operatorname{min}(1 - x + y, 1)`
+    :math:`\rightarrow_{Lukasiewicz}(x, y) = \operatorname{min}(1 - x + y, 1)`
 
     Examples
     --------
@@ -1111,10 +1111,10 @@ class ImpliesLuk(BinaryConnectiveOperator):
 
 
 class Equiv(BinaryConnectiveOperator):
-    """
+    r"""
     Equivalence (:math:`\leftrightarrow`) fuzzy operator.
 
-    :math:`x \leftrightarrow y \equiv x \\rightarrow y \land y \\rightarrow x`
+    :math:`x \leftrightarrow y \equiv x \rightarrow y \land y \rightarrow x`
 
     Parameters
     ----------
@@ -1132,9 +1132,9 @@ class Equiv(BinaryConnectiveOperator):
 
     Notes
     -----
-    - the equivalence operator (:math:`\leftrightarrow`) is implemented in LTNtorch as an operator which computes: :math:`x \\rightarrow y \land y \\rightarrow x`;
+    - the equivalence operator (:math:`\leftrightarrow`) is implemented in LTNtorch as an operator which computes: :math:`x \rightarrow y \land y \rightarrow x`;
     - the `and_op` parameter defines the operator for :math:`\land`;
-    - the `implies_op` parameter defines the operator for :math:`\\rightarrow`.
+    - the `implies_op` parameter defines the operator for :math:`\rightarrow`.
 
     Examples
     --------
@@ -1233,10 +1233,10 @@ class AggregationOperator:
 
 
 class AggregMin(AggregationOperator):
-    """
+    r"""
     Min fuzzy aggregation operator.
 
-    :math:`A_{T_{M}}(x_1, \\dots, x_n) = \\operatorname{min}(x_1, \\dots, x_n)`
+    :math:`A_{T_{M}}(x_1, \dots, x_n) = \operatorname{min}(x_1, \dots, x_n)`
 
     Examples
     --------
@@ -1301,10 +1301,10 @@ class AggregMin(AggregationOperator):
 
 
 class AggregMean(AggregationOperator):
-    """
+    r"""
     Mean fuzzy aggregation operator.
 
-    :math:`A_{M}(x_1, \\dots, x_n) = \\frac{1}{n} \\sum_{i = 1}^n x_i`
+    :math:`A_{M}(x_1, \dots, x_n) = \frac{1}{n} \sum_{i = 1}^n x_i`
 
     Examples
     --------
@@ -1371,10 +1371,10 @@ class AggregMean(AggregationOperator):
 
 
 class AggregPMean(AggregationOperator):
-    """
+    r"""
     `pMean` fuzzy aggregation operator.
 
-    :math:`A_{pM}(x_1, \\dots, x_n) = (\\frac{1}{n} \\sum_{i = 1}^n x_i^p)^{\\frac{1}{p}}`
+    :math:`A_{pM}(x_1, \dots, x_n) = (\frac{1}{n} \sum_{i = 1}^n x_i^p)^{\frac{1}{p}}`
 
     Parameters
     ----------
@@ -1394,7 +1394,7 @@ class AggregPMean(AggregationOperator):
     -----
     The `pMean` aggregation operator has been selected as an approximation of
     :math:`\exists` with :math:`p \geq 1`.
-    If :math:`p \\to \infty`, then the `pMean` operator tends to the
+    If :math:`p \to \infty`, then the `pMean` operator tends to the
     maximum of the input values (classical behavior of :math:`\exists`).
 
     Examples
@@ -1486,10 +1486,10 @@ class AggregPMean(AggregationOperator):
 
 
 class AggregPMeanError(AggregationOperator):
-    """
+    r"""
     `pMeanError` fuzzy aggregation operator.
 
-    :math:`A_{pME}(x_1, \\dots, x_n) = 1 - (\\frac{1}{n} \\sum_{i = 1}^n (1 - x_i)^p)^{\\frac{1}{p}}`
+    :math:`A_{pME}(x_1, \dots, x_n) = 1 - (\frac{1}{n} \sum_{i = 1}^n (1 - x_i)^p)^{\frac{1}{p}}`
 
     Parameters
     ----------
@@ -1508,8 +1508,8 @@ class AggregPMeanError(AggregationOperator):
     Notes
     -----
     The `pMeanError` aggregation operator has been selected as an approximation of
-    :math:`\\forall` with :math:`p \geq 1`. If :math:`p \\to \infty`, then the `pMeanError` operator tends to the
-    minimum of the input values (classical behavior of :math:`\\forall`).
+    :math:`\forall` with :math:`p \geq 1`. If :math:`p \to \infty`, then the `pMeanError` operator tends to the
+    minimum of the input values (classical behavior of :math:`\forall`).
 
     Examples
     --------
@@ -1600,14 +1600,14 @@ class AggregPMeanError(AggregationOperator):
 
 
 class SatAgg:
-    """
+    r"""
     `SatAgg` aggregation operator.
 
-    :math:`\operatorname{SatAgg}_{\phi \in \mathcal{K}} \mathcal{G}_{\\theta} (\phi)`
+    :math:`\operatorname{SatAgg}_{\phi \in \mathcal{K}} \mathcal{G}_{\theta} (\phi)`
 
     It aggregates the truth values of the closed formulas given in input, namely the formulas
     :math:`\phi_1, \dots, \phi_n` contained in the knowledge base :math:`\mathcal{K}`. In the notation,
-    :math:`\mathcal{G}_{\\theta}` is the :ref:`grounding <notegrounding>` function, parametrized by :math:`\\theta`.
+    :math:`\mathcal{G}_{\theta}` is the :ref:`grounding <notegrounding>` function, parametrized by :math:`\theta`.
 
     Parameters
     ----------

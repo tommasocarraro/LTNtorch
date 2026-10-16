@@ -448,7 +448,7 @@ class LambdaModel(nn.Module):
 
 
 class Predicate(nn.Module):
-    """
+    r"""
     Class representing an LTN predicate.
 
     An LTN predicate is :ref:`grounded <notegrounding>` as a mathematical function (either pre-defined or learnable)
@@ -1176,7 +1176,7 @@ def undiag(*vars):
 
 
 class Connective:
-    """
+    r"""
     Class representing an LTN connective.
 
     An LTN connective is :ref:`grounded <notegrounding>` as a fuzzy connective operator.
@@ -1216,7 +1216,7 @@ class Connective:
 
     Examples
     --------
-    Use of :math:`\\land` to create a formula which is the conjunction of two predicates. Note that:
+    Use of :math:`\land` to create a formula which is the conjunction of two predicates. Note that:
 
     - a connective operator can be applied only to inputs which represent truth values. In this case with have two predicates;
     - LTNtorch provides various semantics for the conjunction, here we use the Goguen conjunction (:class:`ltn.fuzzy_ops.AndProd`);
@@ -1350,7 +1350,7 @@ class Connective:
 
 
 class Quantifier:
-    """
+    r"""
     Class representing an LTN quantifier.
 
     An LTN quantifier is :ref:`grounded <notegrounding>` as a fuzzy aggregation operator. See :ref:`quantification in LTN <quantification>`
@@ -1427,7 +1427,7 @@ class Quantifier:
 
     - `quantifier='f'` means that we are defining the fuzzy semantics for the universal quantifier;
     - the result of a quantification operator is always a :class:`ltn.core.LTNObject` instance;
-    - LTNtorch supports various sematics for quantifiers, here we use :class:`ltn.fuzzy_ops.AggregPMeanError` for :math:`\\forall`;
+    - LTNtorch supports various sematics for quantifiers, here we use :class:`ltn.fuzzy_ops.AggregPMeanError` for :math:`\forall`;
     - the shape of the `LTNObject` in output is `(3)` since the quantification has been performed on variable `x`. Only the dimension associated with variable `y` has left since the quantification has been computed by LTNtorch as an aggregation on the dimension related with variable `x`;
     - the attribute `free_vars` of the `LTNObject` in output contains only the label of variable `y`. This is because variable `x` has been quantified, namely it is not a free variable anymore;
     - in LTNtorch, the quantification is performed by computing the value of the predicate first and then by aggregating on the selected dimensions, specified by the quantified variables.
@@ -1465,7 +1465,7 @@ class Quantifier:
 
     - the only way in LTNtorch to apply two different quantifiers to the same formula is a nested syntax;
     - `quantifier='e'` means that we are defining the fuzzy semantics for the existential quantifier;
-    - LTNtorch supports various sematics for quantifiers, here we use :class:`ltn.fuzzy_ops.AggregPMean` for :math:`\\exists`.
+    - LTNtorch supports various sematics for quantifiers, here we use :class:`ltn.fuzzy_ops.AggregPMean` for :math:`\exists`.
 
     >>> Exists = ltn.Quantifier(ltn.fuzzy_ops.AggregPMean(), quantifier='e')
     >>> print(Exists)
@@ -1487,7 +1487,7 @@ class Quantifier:
     - `cond_vars` contains the variables on which the guarded condition is based on. In this case, we have decided to create a condition on `x`;
     - `cond_fn` contains the function which is the guarded condition. In this case, it verifies if the sum of features of the individuals of `x` is lower than 1. (our threshold);
     - the second individual of `x`, which is `[0.3, 0.3]`, satisfies the condition, namely it will not be considered when the aggregation has to be performed. In other words, all the results of the predicate computed using the second individual of `x` will not be considered in the aggregation;
-    - notice the result changes compared to the previous example (:math:`\\forall x \\forall y P(x, y)`). This is due to the fact that some truth values of the result of the predicate are not considered in the aggregation due to guarded quantification. These values are at positions `(1, 0)`, `(1, 1)`, and `(1, 2)`, namely all the positions related with the second individual of `x` in the result of the predicate;
+    - notice the result changes compared to the previous example (:math:`\forall x \forall y P(x, y)`). This is due to the fact that some truth values of the result of the predicate are not considered in the aggregation due to guarded quantification. These values are at positions `(1, 0)`, `(1, 1)`, and `(1, 2)`, namely all the positions related with the second individual of `x` in the result of the predicate;
     - notice that the shape of the `LTNObject` in output and its attribute `free_vars` remain the same compared to the previous example. This is because the quantification is still on both variables, namely it is perfomed on both dimensions of the result of the predicate.
 
     >>> out = Forall([x, y], p(x, y),

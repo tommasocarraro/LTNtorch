@@ -12,7 +12,7 @@ called, the framework automatically performs the broadcasting of the inputs.
 To make a simple example, assume that we have two variables, :math:`x` and :math:`y`, with the following :ref:`groundings <notegrounding>`:
 
 - :math:`\mathcal{G}(x)=[[1.6, 1.8, 2.3], [9.3, 4.5, 3.4]] \in \mathbb{R}^{2 \times 3}`;
-- :math:`\mathcal{G}(y)=[[1.2, 1.3, 2.7, 10.4], [4.3, 5.6, 9.5, 1.3], [5.4, 1.5, 9.5, 8.4]] \in \mathbb{R}^{3 \times 4}``.
+- :math:`\mathcal{G}(y)=[[1.2, 1.3, 2.7, 10.4], [4.3, 5.6, 9.5, 1.3], [5.4, 1.5, 9.5, 8.4]] \in \mathbb{R}^{3 \times 4}`.
 
 Variable :math:`x` has two individuals with three features each, while variable :math:`y` has three individuals with four
 features each.
@@ -84,20 +84,20 @@ a simple example.
 
 Suppose that we have variables :math:`x`, :math:`y`, :math:`z`, and :math:`u`, with :ref:`groundings <notegrounding>`:
 
-- :math:`mathcal{G}(x) \in \mathbb{R}^{2 \times 3}`, namely :math:`x` contains two individuals in :math:`\mathbb{R}^3`;
-- :math:`mathcal{G}(y) \in \mathbb{R}^{4 \times 3 \times 5}`, namely :math:`y` contains four individuals in :math:`\mathbb{R}^{3 \times 5}`;
-- :math:`mathcal{G}(z) \in \mathbb{R}^{3 \times 5}`, namely :math:`z` contains three individuals in :math:`\mathbb{R}^5`;
-- :math:`mathcal{G}(u) \in \mathbb{R}^{6 \times 2}`, namely :math:`u` contains six individuals in :math:`\mathbb{R}^2`.
+- :math:`\mathcal{G}(x) \in \mathbb{R}^{2 \times 3}`, namely :math:`x` contains two individuals in :math:`\mathbb{R}^3`;
+- :math:`\mathcal{G}(y) \in \mathbb{R}^{4 \times 3 \times 5}`, namely :math:`y` contains four individuals in :math:`\mathbb{R}^{3 \times 5}`;
+- :math:`\mathcal{G}(z) \in \mathbb{R}^{3 \times 5}`, namely :math:`z` contains three individuals in :math:`\mathbb{R}^5`;
+- :math:`\mathcal{G}(u) \in \mathbb{R}^{6 \times 2}`, namely :math:`u` contains six individuals in :math:`\mathbb{R}^2`.
 
-Then, suppose that we have two binary predicates, :math:`P(a, b)` and :math:`Q(a, b)`. :math:`P` maps from :math:`\mathbb{R}^18` to
+Then, suppose that we have two binary predicates, :math:`P(a, b)` and :math:`Q(a, b)`. :math:`P` maps from :math:`\mathbb{R}^{18}` to
 :math:`[0., 1.]`, while :math:`Q` maps from :math:`\mathbb{R}^7` to :math:`[0., 1.]`.
 
 Suppose now that we want to compute the formula: :math:`P(x, y) \land Q(z, u)`. In order to evaluate this formula, LTNtorch
 follows the following procedure:
 
 1. it computes the result of the atomic formula :math:`P(x, y)`, which is a tensor :math:`\mathbf{out_1} \in [0., 1.]^{2 \times 4}`. Note that before the computation of :math:`P(x, y)`, LTNtorch performed the LTN broadcasting of variables :math:`x` and :math:`y`;
-2. it computes the result of the atomic formula :math:`Q(z, u)`, which is a tensor :math:`\mathbf{out_2} \in [0., 1.]^{3 \times 6}`. Note that before the computation of :math:`P(z, u)`, LTNtorch performed the LTN broadcasting of variables :math:`z` and :math:`u`;
-3. it performs the LTN broadcasting of :math:`\mathbf{out_1}` and :math:`\mathbf{out_2}`;
+2. it computes the result of the atomic formula :math:`Q(z, u)`, which is a tensor :math:`\mathbf{out_2} \in [0., 1.]^{3 \times 6}`. Note that before the computation of :math:`Q(z, u)`, LTNtorch performed the LTN broadcasting of variables :math:`z` and :math:`u`;
+3. it performs the LTN broadcasting of :math:`\mathbf{out_1}` and :math:`\mathbf{out_2}`. Note that, differently from the case of predicates and functions, the values of :math:`\mathbf{out_1}` and :math:`\mathbf{out_2}` are not repeated in memory in this step. Since fuzzy connectives are element-wise operations, LTNtorch only adds to each operand a dimension of size 1 for each variable that the operand does not contain, and then relies on the traditional PyTorch broadcasting. In this example, :math:`\mathbf{out_1}` is reshaped to :math:`2 \times 4 \times 1 \times 1`, while :math:`\mathbf{out_2}` to :math:`1 \times 1 \times 3 \times 6`;
 4. it applies the fuzzy conjunction :math:`\mathbf{out_1} \land_{fuzzy} \mathbf{out_2}`. The result is a tensor :math:`\mathbf{out} \in [0., 1.]^{2 \times 4 \times 3 \times 6}`.
 
 Notice that the output of a logical connective is always wrapped into an :ref:`LTN object <noteltnobject>`, like it happens for predicates and functions.
